@@ -3,12 +3,12 @@ This repo contains the collection of codes to find designer interfacial mutation
 ## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
 
 ## Dependencies
--numpy
--pandas
--matplotlib
--seaborn
--shutil
--time
+1.numpy
+2.pandas
+3.matplotlib
+4.seaborn
+5.shutil
+6.time
 
 ## Clone the repository
 ```
