@@ -1,0 +1,291 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                       AMINO ACID PARAMETER TABLE FOR EVOEF
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                       HISTORY
+!! 1. The original parameter was adapted from CHARMM19 Polar Hydrogen FORCE FIELD, atomic charge was 
+!!    modified based on EEF1 energy function
+!! 2. Current parameter was adapted from ROSETTA REF2015 parameters, atomic charge was modified based
+!!    on PARSE dataset
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!                                      AUTHOR
+!!                          Xiaoqiang Huang, xiaoqiah@umich.edu
+!!-----------------------------------------------------------------------------------------------------
+!!                                         <- VDW, SOLVATION, ELEC ->   <- GEOMETRY-DEPENDENT HBOND ->
+!Residue  Name    Type    Backbone  Polar   epsilon   Radius  charge    HbH/A   HbD/B   HbB2    Hybrid  
+ALA       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+ALA       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+ALA       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ALA       CB      CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ALA       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+ALA       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+ARG       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+ARG       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+ARG       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ARG       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ARG       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ARG       CD      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ARG       NE      NC2     N         C        0.1617   1.7632   -0.40     -       -       -       SP2     
+ARG       HE      H       N         P        0.0218   0.8773    0.40     H       NE      -       N       
+ARG       CZ      C       N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ARG       NH1     NC2     N         C        0.1617   1.7632   -0.80     -       -       -       SP2     
+ARG       HH11    HC      N         P        0.0218   0.8773    0.40     H       NH1     -       N       
+ARG       HH12    HC      N         P        0.0218   0.8773    0.40     H       NH1     -       N       
+ARG       NH2     NC2     N         C        0.1617   1.7632   -0.80     -       -       -       SP2     
+ARG       HH21    HC      N         P        0.0218   0.8773    0.40     H       NH2     -       N       
+ARG       HH22    HC      N         P        0.0218   0.8773    0.40     H       NH2     -       N       
+ARG       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+ARG       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+ASN       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+ASN       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+ASN       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ASN       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ASN       CG      C       N         NP1      0.0626   1.9922    0.55     -       -       -       N       
+ASN       OD1     O       N         P        0.1424   1.5760   -0.55     A       CG      CB      SP2     
+ASN       ND2     NH2     N         P        0.0688   1.7632   -0.80     -       -       -       SP2     
+ASN       HD21    H       N         P        0.0218   0.8773    0.40     H       ND2     -       N       
+ASN       HD22    H       N         P        0.0218   0.8773    0.40     H       ND2     -       N       
+ASN       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+ASN       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+ASP       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+ASP       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+ASP       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ASP       CB      CHE2    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ASP       CG      C       N         NP1      0.0946   1.9649    1.20     -       -       -       N       
+ASP       OD1     OC      N         C        0.1619   1.4492   -0.60     A       CG      CB      SP2     
+ASP       OD2     OC      N         C        0.1619   1.4492   -0.60     A       CG      CB      SP2     
+ASP       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+ASP       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+CYS       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+CYS       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+CYS       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+CYS       CB      CH2E    N         NP1      0.0626   2.0112    0.19     -       -       -       N       
+CYS       SG      SH1E    N         NP1      0.0626   2.0171   -0.19     -       -       -       N       
+CYS       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+CYS       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+GLN       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+GLN       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+GLN       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLN       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLN       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLN       CD      C       N         NP1      0.0626   1.9922    0.55     -       -       -       N       
+GLN       OE1     O       N         P        0.1424   1.5760   -0.55     A       CD      CG      SP2     
+GLN       NE2     NH2     N         P        0.0688   1.7632   -0.80     -       -       -       SP2     
+GLN       HE21    H       N         P        0.0218   0.8773    0.40     H       NE2     -       N       
+GLN       HE22    H       N         P        0.0218   0.8773    0.40     H       NE2     -       N       
+GLN       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+GLN       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+GLU       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+GLU       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+GLU       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLU       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLU       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLU       CD      C       N         NP1      0.0626   1.9649    1.20     -       -       -       N       
+GLU       OE1     OC      N         C        0.1619   1.4492   -0.60     A       CD      CG      SP2     
+GLU       OE2     OC      N         C        0.1619   1.4492   -0.60     A       CD      CG      SP2     
+GLU       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+GLU       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+GLY       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+GLY       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+GLY       CA      CH2E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+GLY       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+GLY       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+HSD       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+HSD       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+HSD       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSD       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSD       CG      C       N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSD       ND1     NR      N         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+HSD       HD1     H       N         P        0.0218   0.8773    0.40     H       ND1     -       N       
+HSD       CD2     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSD       CE1     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSD       NE2     NR      N         P        0.1617   1.7632    0.00     A       CD2     CG      SP2     
+HSD       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+HSD       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+HSE       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+HSE       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+HSE       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSE       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSE       CG      C       N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSE       ND1     NR      N         P        0.1617   1.7632    0.00     A       CE1     NE2     SP2     
+HSE       CE1     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSE       CD2     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSE       NE2     NR      N         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+HSE       HE2     H       N         P        0.0218   0.8773    0.40     H       NE2     -       N       
+HSE       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+HSE       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+HSP       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+HSP       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+HSP       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSP       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+HSP       CG      C       N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSP       CD2     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSP       ND1     NR      N         C        0.1617   1.7632   -0.60     -       -       -       SP2     
+HSP       HD1     H       N         P        0.0218   0.8773    0.60     H       ND1     -       N       
+HSP       CE1     CR1E    N         NP1      0.1418   1.9859    0.00     -       -       -       N       
+HSP       NE2     NR      N         C        0.1617   1.7632   -0.60     -       -       -       SP2     
+HSP       HE2     H       N         P        0.0218   0.8773    0.60     H       NE2     -       N       
+HSP       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+HSP       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+ILE       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+ILE       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+ILE       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ILE       CB      CH1E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ILE       CG2     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ILE       CG1     CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ILE       CD      CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+ILE       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+ILE       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+LEU       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+LEU       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+LEU       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LEU       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LEU       CG      CH1E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LEU       CD1     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LEU       CD2     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LEU       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+LEU       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+LYS       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+LYS       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+LYS       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LYS       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LYS       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LYS       CD      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LYS       CE      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+LYS       NZ      NH3     N         C        0.1617   1.7632   -1.35     -       -       -       SP3     
+LYS       HZ1     HC      N         P        0.0218   0.8773    0.45     H       NZ      -       N       
+LYS       HZ2     HC      N         P        0.0218   0.8773    0.45     H       NZ      -       N       
+LYS       HZ3     HC      N         P        0.0218   0.8773    0.45     H       NZ      -       N       
+LYS       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+LYS       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+
+MET       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+MET       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+MET       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+MET       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+MET       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+MET       SD      S       N         NP1      0.1829   2.0171    0.00     -       -       -       N       
+MET       CE      CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+MET       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+MET       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+PHE       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+PHE       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+PHE       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PHE       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PHE       CG      CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       CD1     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       CD2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       CE1     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       CE2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       CZ      CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+PHE       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+PHE       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+PRO       N       N       Y         P        0.1617   1.7632    0.00     -       -       -       N     
+PRO       CD      CH2E    N         NP1      0.0616   0.8773    0.00     -       -       -       N       
+PRO       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PRO       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PRO       CG      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PRO       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+PRO       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+SER       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+SER       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+SER       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+SER       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+SER       OG      OH1     N         P        0.1617   1.7632   -0.49     A       CB      CA      SP3     
+SER       HG      H       N         P        0.0218   0.8773    0.49     H       OG      -       N       
+SER       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+SER       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+THR       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+THR       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+THR       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+THR       CB      CH1E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+THR       OG1     OH1     N         P        0.1617   1.7632   -0.49     A       CB      CA      SP3     
+THR       HG1     H       N         P        0.0218   0.8773    0.49     H       OG1     -       N       
+THR       CG2     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+THR       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+THR       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+TRP       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+TRP       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+TRP       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+TRP       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+TRP       CG      C       N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CD2     C       N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CE2     C       N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CE3     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CD1     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       NE1     NH1     N         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+TRP       HE1     H       N         P        0.0218   0.8773    0.40     H       NE1     -       N       
+TRP       CZ2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CZ3     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       CH2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TRP       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+TRP       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+TYR       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+TYR       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+TYR       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+TYR       CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+TYR       CG      C       N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       CD1     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       CD2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       CE1     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       CE2     CR1E    N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       CZ      C       N         NP2      0.1418   1.9859    0.00     -       -       -       N       
+TYR       OH      OH1     N         P        0.1617   1.7632   -0.49     A       CZ      CE1     SP2     
+TYR       HH      H       N         P        0.0218   0.8773    0.49     H       OH      -       N       
+TYR       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+TYR       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+VAL       N       NH1     Y         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+VAL       H       H       Y         P        0.0218   0.8773    0.40     H       N       -       N       
+VAL       CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+VAL       CB      CH1E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+VAL       CG1     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+VAL       CG2     CH3E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+VAL       C       C       Y         NP1      0.1418   1.9649    0.55     -       -       -       N       
+VAL       O       O       Y         P        0.1617   1.5268   -0.55     A       C       CA      SP2     
+                                             
+NTER      N       NH3     Y         P        0.1617   1.7632   -1.35     -       -       -       SP3     
+NTER      HT1     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+NTER      HT2     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+NTER      HT3     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+NTER      CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+                                             
+GLYP      N       NH3     Y         P        0.1617   1.7632   -1.35     -       -       -       SP3     
+GLYP      HT1     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+GLYP      HT2     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+GLYP      HT3     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+GLYP      CA      CH2E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+                                             
+PROP      N       NH2     Y         P        0.1617   1.7632   -0.90     -       -       -       SP2     
+PROP      HT1     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+PROP      HT2     HC      Y         P        0.0218   0.8773    0.45     H       N       -       N       
+PROP      CA      CH1E    Y         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PROP      CD      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+                                             
+CTER      C       C       Y         P        0.0946   1.9649    1.20     -       -       -       N       
+CTER      O       OC      Y         P        0.1619   1.4492   -0.60     A       C       CA      SP2     
+CTER      OXT     OC      Y         P        0.1619   1.4492   -0.60     A       C       CA      SP2     
+                                             
+PSER      CB      CH2E    N         NP1      0.0626   2.0112    0.00     -       -       -       N       
+PSER      OG      O*      N         P        0.1617   1.7632    0.00     A       CB      CA      SP3     
+                                             
+PLYS      NZ      NH1     N         P        0.1617   1.7632   -0.40     -       -       -       SP2     
+PLYS      HZ1     H       N         P        0.0218   0.8773    0.40     H       NZ      -       N     
