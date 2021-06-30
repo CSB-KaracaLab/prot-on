@@ -3,9 +3,9 @@ This repo contains the collection of codes to find designer interfacial mutation
 ## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
 
 ## Clone the repository
-'''
+```
 git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
-'''
+```
 
 ## Bugs Report
 If you find bugs when you run the proton program, please contact Mehdi Koşaca or Dr. Ezgi Karaca.
