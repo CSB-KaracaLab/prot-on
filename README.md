@@ -3,20 +3,16 @@ This repo contains the collection of codes to find designer interfacial mutation
 ## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
 
 ## Dependencies
-1.numpy
-2.pandas
-3.matplotlib
-4.seaborn
-5.shutil
-6.time
+* numpy
+* pandas
+* matplotlib
+* seaborn
+* shutil
+* time
 
 ## Clone the repository
 ```
 git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
-```
-or
-```
-wget https://github.com/CSB-KaracaLab/find-designer-mutations/archive/main.zip
 ```
 
 ## Bugs Report
