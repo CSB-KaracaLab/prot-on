@@ -1,4 +1,3 @@
-                           EvoEF Quick Start
 ------------------------------------------------------------------------------
 
 What's EvoEF?
@@ -32,52 +31,52 @@ What EvoEF can do?
 Installation
 ------------
   in the EvoEF home directory, run the command:
-
+```
   g++ -O3 --fast-math -o EvoEF src/*.cpp
-
+```
   to build the binary executable program EvoEF in the home directory.
 
   OR:
 
   directly run:
-  
+```  
   ./build.sh
-
+```
   if you use a UNIX/Linux environment.
 
 
 Usage
 -----
   o To compute protein stability, you can run:
-
+```
   ./EvoEF --command=ComputeStability  --pdb=protein.pdb
-
+```
 
   o To compute protein-protein binding affinity, you can run:
-
+```
   ./EvoEF --command=ComputeBinding --pdb=complex.pdb
-  
+```  
   or:
-  
+```  
   ./EvoEF --command=ComputeBinding --split=A,BC --pdb=complex.pdb
-
+```
   user should specify how to split the chains into two parts for computing
   the binding affinity. Otherwise EvoEF will output the interaction energy
   between any two chain pair.
 
   o To repair the structure model and do energy minimization:
-
+```
   ./EvoEF --command=RepairStructure --pdb=protein.pdb
-
+```
   A new structure model name "model_Repair.pdb" will be built in the 
 directory where you run the command. Running the command successfully 
 should generate a new structure file named “mod-el_Repair_Model_1.pdb”. 
 In the mutant model, the optimized polar hydrogen coordinates are also shown.
 
   o To build mutation model, you can run:
-
+```
   ./EvoEF --command=BuildMutant --pdb=model.pdb --mutant_file=individual_list.txt
-
+```
   Here, the "individual_list.txt" file shows the mutants that you 
 want to build. It has the following format:
 
