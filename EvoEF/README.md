@@ -1,5 +1,4 @@
 ------------------------------------------------------------------------------
-
 What's EvoEF?
 ------------------------------------------------------------------------------
   EvoEF is the abbreviation of physcics-base Energy Function for EvoDesign. 
@@ -16,16 +15,11 @@ What EvoEF can do?
 ---------------------
   The following useful functions are supported by EvoEF:
 
-  o  compute the stability of a given protein molecule in PDB format.
-
-  o  compute the binding affinity of protein-protein dimeric complexes.
-
-  o  repair incomplete side chains of user-provided model and minimize 
-     energy of give model to reduce possible steric clashes.
-  
-  o  build mutation model.
-  
-  o  optimize the hydrogen position of hydroxyl groups.
+* compute the stability of a given protein molecule in PDB format.
+* compute the binding affinity of protein-protein dimeric complexes.
+* repair incomplete side chains of user-provided model and minimize energy of give model to reduce possible steric clashes.
+* build mutation model.
+* optimize the hydrogen position of hydroxyl groups.
 
 
 Installation
@@ -47,12 +41,11 @@ Installation
 
 Usage
 -----
-  o To compute protein stability, you can run:
+To compute protein stability, you can run:
 ```
   ./EvoEF --command=ComputeStability  --pdb=protein.pdb
 ```
-
-  o To compute protein-protein binding affinity, you can run:
+To compute protein-protein binding affinity, you can run:
 ```
   ./EvoEF --command=ComputeBinding --pdb=complex.pdb
 ```  
@@ -64,7 +57,7 @@ Usage
   the binding affinity. Otherwise EvoEF will output the interaction energy
   between any two chain pair.
 
-  o To repair the structure model and do energy minimization:
+To repair the structure model and do energy minimization:
 ```
   ./EvoEF --command=RepairStructure --pdb=protein.pdb
 ```
@@ -73,7 +66,7 @@ directory where you run the command. Running the command successfully
 should generate a new structure file named “mod-el_Repair_Model_1.pdb”. 
 In the mutant model, the optimized polar hydrogen coordinates are also shown.
 
-  o To build mutation model, you can run:
+To build mutation model, you can run:
 ```
   ./EvoEF --command=BuildMutant --pdb=model.pdb --mutant_file=individual_list.txt
 ```
@@ -94,17 +87,17 @@ the optimized polar hydrogen coordinates are also shown.
 
 Update History
 --------------
-  2020/10/22:
-    o Update command 'BuildMutant'. In previous version, only one mutant model 
-      can be built based on a PDB file at a time. This bug has been fixed now!
-      Multiple mutants can be written in the 'individual_list.txt' or the 
-      specified mutation file with the above format.
-  2019/05/19:
-    o Update the list of supported commands
-    o Update the function for computing the binding affinity of the multi-chain
-      protein complexes by user-specified chain splitting pattern.
-  2019/01/25:
-    o The first version of EvoEF program was released
+#### 2020/10/22:
+* Update command 'BuildMutant'. In previous version, only one mutant model 
+can be built based on a PDB file at a time. This bug has been fixed now!
+Multiple mutants can be written in the 'individual_list.txt' or the 
+specified mutation file with the above format.
+#### 2019/05/19:
+  
+* Update the list of supported commands
+* Update the function for computing the binding affinity of the multi-chain protein complexes by user-specified chain splitting pattern.
+#### 2019/01/25:
+* The first version of EvoEF program was released
 
 
 Cost and Availability
