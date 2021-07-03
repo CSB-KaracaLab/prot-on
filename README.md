@@ -101,7 +101,7 @@ python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ## Reviewing Ouput Files
 Created all the ouput files after running the proton.py script with specific pdb and chain ID are collected in a folder that named as <pdb>_chain_<chainID>_outputs. Context of those files that belongs to that folder are listed below:
   * **{pdb}_chain_{chainID}_mutation_models:** Generated mutant models of mutations that are listed in the mutation list file. These models are modelled by using BuildMutant command of EvoEF1.
-  * **{pdb}_chain_{chainID}_individual_score_files:** Calculated binding affinity predictions and energy terms values with optimized EvoEF scoring function. These affinities are calculated with ComputeBinding command of EvoEF1.
+  * **{pdb}_chain_{chainID}_individual_score_files:** Binding affinity predictions and energy terms values that were optimized EvoEF scoring function. These affinities are calculated with ComputeBinding command of EvoEF1.
   * **{pdb}_chain_{chainID}_boxplot.png:** Statistical output for "DDG_PROTON_Scores" column of {pdb}_proton_scores file. 
   * **{pdb}_chain_{chainID}_heatmap.png:** Statistical output for "DDG_PROTON_Scores" column of heatmap_mutations file. You can have general opinion about effects of all potential interfacial mutations by examining it.
   * **{pdb}_distance_list:** It is a contact list between two chains in 5A cut-off.
