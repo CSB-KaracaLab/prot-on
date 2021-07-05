@@ -106,8 +106,12 @@ Created all the ouput files after running the proton.py script with specific pdb
   * **{pdb}_chain_{chainID}_heatmap.png:** Statistical output for "DDG_PROTON_Scores" column of heatmap_mutations file. You can have general opinion about effects of all potential interfacial mutations by examining it.
   * **{pdb}_distance_list:** It is a contact list between two chains in 5A cut-off.
   * **{pdb}_chain_{chainID}_distance_list:** Interfacial amino acid list that belongs to you interested chain ID.
-  * **{pdb}_chain_{chainID}_mutation_list:** 
+  * **{pdb}_chain_{chainID}_mutation_list:** It is a list that is used for BuildMutant command of EvoEF1. It includes all possible mutations of interfacial mutations in the EvoEF1 mutation format. (Format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
+  * **{pdb}_chain_{chainID}_depleted_mutations:** They are positive outliers of box plot. These mutations act as a depleted effect to the binding affinity.  
+  * **{pdb}_chain_{chainID}_enriched_mutations:** They are negative outliers of box plot. These mutations act as an enriched effect to the binding affinity.
 
+## Acknowledgement
+  
 ## Bugs Report
 If you find bugs when you run the proton program, please contact Mehdi Koşaca or Dr. Ezgi Karaca.
 
