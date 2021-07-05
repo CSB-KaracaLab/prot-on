@@ -1,7 +1,7 @@
 # Find Designer Mutations
 This repo contains the collection of codes to find designer interfacial mutations
 ## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
-  Many metabolic activities in our body occur through the interactions of proteins with each other. Through computational biology approaches that have developed rapidly in the last century, functionality and mutation effect studies on proteins have also increased.
+  Many metabolic activities in our body occur through the interactions of proteins with each other. Through computational biology approaches that have developed rapidly in the last century, functionality and mutation effect studies on proteins become popular.
   
   Although molecular simulation studies have become popular with the developing computer systems, many algorithms have been developed to understand the effects of single point mutations on the protein structure. Examples of these algorithms are FoldX, EvoEF1&2, SSIPe and MutaBind. However, these programs are not specilized such as focus on the interfacial amino acids. Their functions were developed for generalized processes like energy minimization, binding affinity prediction and etc. Also users need to extra scripts for predicting more than one mutation effect on the same protein and extra statistical analysis to comb out noisy data.
   
