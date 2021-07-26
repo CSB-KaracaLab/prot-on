@@ -111,7 +111,7 @@ Created all the ouput files after running the proton.py script with specific pdb
   * **{pdb}_chain_{chainID}_enriched_mutations:** They are negative outliers of box plot. These mutations act as an enriched effect to the binding affinity.
 
 ## Acknowledgement
-  
+Thanks to Ayşe Berçin Barlas for her advisor in python script writing and project planning. Also much appreciated to Eda Şamiloğlu and Mehmet Ergüven for their helpful in the performans analyses of mutation effect algorithms in the litarature.
 ## Bugs Report
 If you find bugs when you run the proton program, please contact Mehdi Koşaca or Dr. Ezgi Karaca.
 
