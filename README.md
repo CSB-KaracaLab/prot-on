@@ -44,9 +44,7 @@ Example:
 
 python3 proton.py cluster1_1 D
 ```
-Also you can run the assistant scripts in the src folder individually.
-
-If you are interested only the contact list between two chain in 5A cut-off, or interfacial amino acids that belongs to a specific chain, run interface_residues.py script in the src folder as follows:
+Also you can run each of the individual scripts located under src/ independently. For example, if you are interested only the contact list between two chain in 5A cut-off, or interfacial amino acids that belongs to a specific chain, run interface_residues.py script in the src folder as follows:
 ```
 python interface_residues.py <pdb> <chainID>
 
@@ -62,7 +60,7 @@ Example:
 
 python3 inteface_residues.py cluster1_1 D
 ```
-If you are insterested just the binding affinity prediction that are calculated with optimized EvoEF scoring function for a specific mutation list run the energy_calculation.py script in the src folder as follows:
+If you are insterested just in the binding affinity prediction that are calculated with optimized EvoEF scoring function for a specific mutation list run the energy_calculation.py script in the src folder as follows:
 ```
 python energy_calculation.py <pdb> <mutation_list> 
 
