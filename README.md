@@ -1,11 +1,7 @@
 # Find Designer Mutations
 This repo contains the collection of codes to find designer interfacial mutations
 ## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
-  Many metabolic activities in our body occur through the interactions of proteins with each other. Through computational biology approaches that have developed rapidly in the last century, functionality and mutation effect studies on proteins become popular.
-  
-  Although molecular simulation studies have become popular with the developing computer systems, many algorithms have been developed to understand the effects of single point mutations on the protein structure. Examples of these algorithms are FoldX, EvoEF1&2, SSIPe and MutaBind. However, these programs are not specilized such as focus on the interfacial amino acids. Their functions were developed for generalized processes like energy minimization, binding affinity prediction and etc. Also users need to extra scripts for predicting more than one mutation effect on the same protein and extra statistical analysis to comb out noisy data.
-  
-  We have optimized the scoring function of EvoEF1 that is one of the best program for predicting the effect of single point mutation in the literature for PROT-ON. Also, we have wrote some assistant scripts that are useful for filtering the interfacial mutations, mutating other 19 amino acids and calculating the binding affinity prediction with optimized EvoEF scoring function. You can redesing protein-protein interface in any direction you want by using output files that are depleted and enriched mutations or you can have an idea about effects of intefacial mutations by examine heatmap. Moreover, you can perform all these operations in 2 minutes.
+  Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 to scan the impact of all possible interfacial mutations. Our tool also performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take two minutes on a standard laptop.
 
 ## Code Architecture
 ![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
