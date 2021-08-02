@@ -54,14 +54,6 @@ foreach i(`cat $2`)
 	mv "$1"_Repair_Model_0001.pdb "$1"_"$i"_Mutant.pdb
 end
 
-# The following command set the optimized weights for electrostatic, HB_bbbb_dist and HB_scbb_dist energy terms
-#################################################################
-
-cd ../src
-python optimized_weights.py
-cd ../EvoEF
-./build.sh
-
 #Each mutations' score files are created and moved to mutation_models and individual_score_files folders.
 ###############################################################
 foreach i(*Mutant.pdb)
@@ -124,6 +116,3 @@ mv $1_heatmap_mutation_list ../src
 
 cd ../src
 sed -i 's/\t/ /g' $1_heatmap_mutation_list
-python normal_weights.py
-cd ../EvoEF
-./build.sh
