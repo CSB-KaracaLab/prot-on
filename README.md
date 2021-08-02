@@ -6,6 +6,18 @@ This repo contains the collection of codes to find designer interfacial mutation
 ## Code Architecture
 ![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
 
+## Reviewing Output Files
+Created all the ouput files after running the proton.py script with specific pdb and chain ID are collected in an output folder Context of those files that belongs to that folder are listed below:
+  * **Mutation models:** Generated mutant models that are listed in the mutation list file. These models are modelled by using BuildMutant command of EvoEF1.
+  * **Individual EvoEF score files:** Binding affinity predictions and energy terms values. These affinities are calculated with ComputeBinding command of EvoEF1.
+  * **Boxplot for proton scores:** Statistical output for "DDG_PROTON_Scores" column of proton_scores. 
+  * **Heatmap for proton scores:** Statistical output for "DDG_PROTON_Scores" column of heatmap_mutations file. You can have general opinion about effects of all potential interfacial mutations by examining it.
+  * **Contact list:** It is an interaction list between two chains in 5A cut-off.
+  * **Interface amino acid list:** Interfacial amino acid list that belongs to you interested chain ID.
+  * **Mutation list:** It is a list that is used for BuildMutant command of EvoEF1. It includes all possible mutations of interfacial mutations in the EvoEF1 mutation format. (Format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
+  * **Depleted mutations:** They are positive outliers of box plot. These mutations act as a depleted effect to the binding affinity.  
+  * **Enriched mutations:** They are negative outliers of box plot. These mutations act as an enriched effect to the binding affinity.
+
 ## Dependencies
 * numpy
 * pandas
@@ -92,17 +104,6 @@ Example:
 
 python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ```
-## Reviewing Output Files
-Created all the ouput files after running the proton.py script with specific pdb and chain ID are collected in a folder that named as <pdb>_chain_<chainID>_outputs. Context of those files that belongs to that folder are listed below:
-  * **{pdb}_chain_{chainID}_mutation_models:** Generated mutant models of mutations that are listed in the mutation list file. These models are modelled by using BuildMutant command of EvoEF1.
-  * **{pdb}_chain_{chainID}_individual_score_files:** Binding affinity predictions and energy terms values that were optimized EvoEF scoring function. These affinities are calculated with ComputeBinding command of EvoEF1.
-  * **{pdb}_chain_{chainID}_boxplot.png:** Statistical output for "DDG_PROTON_Scores" column of {pdb}_proton_scores file. 
-  * **{pdb}_chain_{chainID}_heatmap.png:** Statistical output for "DDG_PROTON_Scores" column of heatmap_mutations file. You can have general opinion about effects of all potential interfacial mutations by examining it.
-  * **{pdb}_distance_list:** It is a contact list between two chains in 5A cut-off.
-  * **{pdb}_chain_{chainID}_distance_list:** Interfacial amino acid list that belongs to you interested chain ID.
-  * **{pdb}_chain_{chainID}_mutation_list:** It is a list that is used for BuildMutant command of EvoEF1. It includes all possible mutations of interfacial mutations in the EvoEF1 mutation format. (Format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **{pdb}_chain_{chainID}_depleted_mutations:** They are positive outliers of box plot. These mutations act as a depleted effect to the binding affinity.  
-  * **{pdb}_chain_{chainID}_enriched_mutations:** They are negative outliers of box plot. These mutations act as an enriched effect to the binding affinity.
 
 ## Acknowledgement
 Thanks to Ayşe Berçin Barlas for her advisor in python script writing and project planning. Also much appreciated to Eda Şamiloğlu and Mehmet Ergüven for their helpful in the performans analyses of mutation effect algorithms in the litarature.
