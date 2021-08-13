@@ -17,8 +17,9 @@
 import os
 
 os.system("sudo apt-get update -y")
+os.system("sudo apt-get install g++")
 os.system("sudo apt-get install -y yum")
-os.system("yum install gcc-c++")
+os.system("sudo yum install gcc-c++")
 os.system("sudo apt-get install csh")
 os.chdir("src")
 os.system("chmod +x rapid_EvoEF1_PROTON.csh")
