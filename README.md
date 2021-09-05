@@ -30,6 +30,9 @@ Created all the ouput files after running the proton.py script with specific pdb
 ```
 git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 ```
+```
+cd find-designer-mutations
+```
 ## Installation
 Run the following command to make the necessary installations and make executable some scripts to work of PROT-ON for trouble-free operation.
 ```
