@@ -15,14 +15,28 @@
 # limitations under the License.
 
 import os
+from sys import platform 
 
-os.system("sudo apt-get update -y")
-os.system("sudo apt-get install g++")
-os.system("sudo apt-get install -y yum")
-os.system("sudo yum install gcc-c++")
-os.system("sudo apt-get install csh")
-os.chdir("src")
-os.system("chmod +x rapid_EvoEF1_PROTON.csh")
-os.chdir("../EvoEF")
-os.system("chmod +x build.sh")
-os.system("./build.sh")
+if platform == "linux" or platform == "linux2":
+    os.system("sudo apt-get update")
+    os.system("sudo apt-get install build-essential")
+    os.system("sudo apt-get install csh")
+    os.chdir("src")
+    os.system("chmod +x rapid_EvoEF1_PROTON.csh")
+    os.chdir("../EvoEF")
+    os.system("chmod +x build.sh")
+    os.system("./build.sh")
+
+elif platform == "darwin":
+    os.system("sudo brew update")
+    os.system("sudo brew install build-essential")
+    os.system("sudo brew insall csh")
+    os.system("sudo brew install gawk")
+    os.chdir("src")
+    os.system("chmod +x rapid_EvoEF1_PROTON.csh")
+    os.chdir("../EvoEF")
+    os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
+
+else:
+    print("Your operating system does not proper for this repository")
+
