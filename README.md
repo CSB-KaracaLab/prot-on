@@ -38,6 +38,7 @@ Run the following command to make the necessary installations and make executabl
 ```
 python setup.py
 ```
+Script works with sudo command. Please enter your password.
 ## Usage
 PROT-ON can be run in two different ways. If conda is installed on your system, you need to activate conda first.
 ```
