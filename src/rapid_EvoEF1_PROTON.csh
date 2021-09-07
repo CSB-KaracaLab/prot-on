@@ -100,7 +100,6 @@ rm mutant_EvoEF_Scores
 awk '{printf "%.2f\n", $3-$2}' all_scores > ddg
 paste -d ' ' all_scores ddg >> proton_scores
 awk 'BEGIN{print "Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores"}1' proton_scores >  $1_proton_scores 
-sed -i 's/\t/ /g' $1_proton_scores
 awk '{print $4}' $1_proton_scores > ddg
 paste -d ' ' heatmap_mutation_list ddg > $1_heatmap_mutation_list
 rm heatmap_mutation_list
