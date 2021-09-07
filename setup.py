@@ -28,10 +28,10 @@ if platform == "linux" or platform == "linux2":
     os.system("./build.sh")
 
 elif platform == "darwin":
-    os.system("sudo brew update")
-    os.system("sudo brew install build-essential")
-    os.system("sudo brew insall csh")
-    os.system("sudo brew install gawk")
+    os.system("/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"")
+    os.system("brew update")
+    os.system("brew install gcc")
+    os.system("brew install tcsh")
     os.chdir("src")
     os.system("chmod +x rapid_EvoEF1_PROTON.csh")
     os.chdir("../EvoEF")
