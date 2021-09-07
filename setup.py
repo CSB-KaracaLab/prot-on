@@ -28,7 +28,6 @@ if platform == "linux" or platform == "linux2":
     os.system("./build.sh")
 
 elif platform == "darwin":
-    os.system("/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"")
     os.system("brew update")
     os.system("brew install gcc")
     os.system("brew install tcsh")
