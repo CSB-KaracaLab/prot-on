@@ -71,11 +71,11 @@ end
 
 # The following command calculate the interaction energy and repeats the wild type score until number of mutants for repaired structure.
 ###############################################################
-	./EvoEF --command=ComputeBinding --pdb=$1_Repair.pdb > wt
-	echo `grep "^Total                 =" wt` | awk '{print $3}' > wt_score
+	./EvoEF --command=ComputeBinding --pdb=$1_Repair.pdb > dg_wt_score
+	echo `grep "^Total                 =" dg_wt_score` | awk '{print $3}' > wt_score
 	awk '{for(i=1; i<n+1; i++) print}' n=`wc -l $2 | awk '{print $1}'` wt_score > WT
-	paste $2 WT > mutants_wt
-	rm wt
+	paste -d ' ' $2 WT > mutants_wt
+	rm dg_wt_score
 	rm wt_score
 	rm WT
 
@@ -94,18 +94,19 @@ end
 ###############################################################
 mv mutant_EvoEF_Scores ../
 cd ..
-paste mutants_wt mutant_EvoEF_Scores > all_scores
+paste -d ' ' mutants_wt mutant_EvoEF_Scores > all_scores
 rm mutants_wt
 rm mutant_EvoEF_Scores
 awk '{printf "%.2f\n", $3-$2}' all_scores > ddg
-paste all_scores ddg >> $1_proton_scores
-sed -i '1i Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores' $1_proton_scores
+paste -d ' ' all_scores ddg >> proton_scores
+awk 'BEGIN{print "Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores"}1' proton_scores >  $1_proton_scores 
 sed -i 's/\t/ /g' $1_proton_scores
 awk '{print $4}' $1_proton_scores > ddg
-paste heatmap_mutation_list ddg > $1_heatmap_mutation_list
+paste -d ' ' heatmap_mutation_list ddg > $1_heatmap_mutation_list
 rm heatmap_mutation_list
 rm all_scores
 rm ddg
+rm proton_scores
 mv $1_proton_scores ../src
 mv $1_Repair.pdb ../
 mv $1_mutation_models ../
@@ -113,6 +114,3 @@ mv $1_individual_score_files ../
 mv $1.pdb ../src
 mv $2 ../
 mv $1_heatmap_mutation_list ../src
-
-cd ../src
-sed -i 's/\t/ /g' $1_heatmap_mutation_list
