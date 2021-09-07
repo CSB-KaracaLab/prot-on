@@ -35,6 +35,11 @@ cd find-designer-mutations
 ```
 ## Installation
 Run the following command to make the necessary installations and make executable some scripts to work of PROT-ON for trouble-free operation.
+If you are using MacOS please firstly run following command to install homebrew.
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+and then run following command.
 ```
 python setup.py
 ```
