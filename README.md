@@ -116,7 +116,7 @@ python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ```
 
 ## Acknowledgement
-Thanks to Ayşe Berçin Barlas for her advisor in python script writing and project planning. Also much appreciated to Eda Şamiloğlu and Mehmet Ergüven for their helpful in the performans analyses of mutation effect algorithms in the litarature.
+Thanks to Ayşe Berçin Barlas for her advisor in python script writing and project planning. Also much appreciated to Eda Şamiloğlu and Mehmet Ergüven for their helpful in the performance analyses of mutation effect algorithms in the litarature.
 ## Bugs Report
 If you find bugs when you run the proton program, please contact Mehdi Koşaca or Dr. Ezgi Karaca.
 
