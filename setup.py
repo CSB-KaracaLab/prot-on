@@ -22,9 +22,9 @@ if platform == "linux" or platform == "linux2":
     os.system("sudo apt-get install build-essential")
     os.system("sudo apt-get install csh")
     os.chdir("src")
-    os.system("chmod +x rapid_EvoEF1_PROTON.csh")
+    os.system("sudo chmod +x rapid_EvoEF1_PROTON.csh")
     os.chdir("../EvoEF")
-    os.system("chmod +x build.sh")
+    os.system("sudo chmod +x build.sh")
     os.system("./build.sh")
 
 elif platform == "darwin":
