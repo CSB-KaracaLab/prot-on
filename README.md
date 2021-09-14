@@ -41,7 +41,11 @@ If you are using MacOS please firstly run following command to install homebrew.
 ```
 and then run following command.
 ```
-python setup.py
+python3 setup.py
+```
+or
+```
+(base) python setup.py
 ```
 Script works with sudo command. Please enter your password.
 ## Usage
