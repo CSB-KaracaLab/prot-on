@@ -19,6 +19,15 @@ import sys
 import time
 import shutil
 
+import os
+from sys import platform
+
+if platform == "linux" or platform == "linux2":
+    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
+
+elif platform == "darwin":
+    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
+
 t0 = time.time()
 
 try:
@@ -26,13 +35,13 @@ try:
 except:
 	print("""
 **********************************
-Please specify a PDB file 
+Please specify the root name of your PDB file 
 		
 Example:
 
-python proton.py --pdb --chain_id
-    		
-python proton.py cluster1_1 D
+python proton.py <root-pdb-filename> <chainID>
+
+python proton.py complex D
 
 **********************************	
 	""")
@@ -43,13 +52,13 @@ try:
 except:
 	print("""
 **********************************
-Please specify a chain ID 
+Please specify the relevant chain ID 
 		
 Example:
 
-python proton.py --pdb --chain_id
-    		
-python proton.py cluster1_1 D
+python proton.py <root-pdb-filename> <chainID>    		
+
+python proton.py complex D
 
 **********************************	
 	""")
@@ -62,13 +71,13 @@ def check_argv():
 **************************************************
 Usage:
 
-    python proton.py <pdb> <chain_id>
-    <chain_id>: chain id of interest
-    <pdb>: pdb file without .pdb extension
+    python proton.py <root-pdb-filename> <chainID>
+    <root-pdb-filename>: pdb filename without .pdb extension
+    <chainID>: chain id of interest
 
 Example:
 
-    python proton.py cluster1_1 D
+    python proton.py complex D
 **************************************************    
 	""")
 		sys.exit()
@@ -76,14 +85,11 @@ Example:
 	if len(sys.argv) > 3:
 		print("""
 *************************************************
-Too many parameters entered. Please select just 
-a PDB file without .pdb extension and a chain!
+Too many input files! Please follow the advised usage:
     
-Example:
+python proton.py <root-pdb-filename> <chainID>
 
-python proton.py --pdb --chain_id
-    		
-python proton.py cluster1_1 D
+python proton.py complex D
 *************************************************
     	""")
 		sys.exit()
@@ -93,13 +99,11 @@ python proton.py cluster1_1 D
 	except IOError:
 		print("""
 ********************************************
-Please check the file you provided as input. 
+Please check your input files to follow:
 		
-Example:
-
-python proton.py --pdb --chain_id
-    		
-python proton.py cluster1_1 D
+python proton.py <root-pdb-filename> <chainID>
+	
+python proton.py complex D
 ********************************************
 		""")
 		sys.exit()
@@ -120,8 +124,7 @@ python proton.py cluster1_1 D
 	if len(unique_chains) != 2:
 		print("""
 **********************************
-PROTON work with only dimers.
-Please provide a dimer structure. 
+PROT-ON works only with dimers! Please isolate the relevant dimer from your complex.
 **********************************	
 			""")
 		sys.exit()
@@ -138,13 +141,8 @@ Please provide a dimer structure.
 	else:
 		print("""
 *********************************************
-Please check the chain ID that you interest. 
+We could not find the indicated chain id in your complex!
 	
-Example:
-
-python proton.py --pdb --chain_id
-    		
-python proton.py cluster1_1 D
 *********************************************
 				
 """)
@@ -154,8 +152,7 @@ python proton.py cluster1_1 D
 		if i[0] != " ":
 			print("""
 ******************************************
-Your PDB file have multiple conformations. 
-Please modify your PDB file with a PDBTool. 
+Your PDB file contains multiple occupancies for certain atoms. You can clean your file with PDB-Tools.
 ******************************************			
 		""") 
 			sys.exit()
@@ -179,14 +176,14 @@ def main():
 	os.mkdir("{}_chain_{}_outputs".format(pdb,chain))	
 	check_argv()
 	shutil.move("{}.pdb".format(pdb), "src")	
-	print("INTERFACE DETECTION PROCESS WAS STARTED")
+	print("Defining the Interface Residues...")
 	time.sleep(1)
 	os.chdir("src")
 	Interface_Residues()
 	shutil.move("{}_chain_{}_distance_list".format(pdb,chain), "../{}_chain_{}_outputs".format(pdb,chain))
 	shutil.move("{}_distance_list".format(pdb), "../{}_chain_{}_outputs".format(pdb,chain))
 	shutil.move("heatmap_mutation_list".format(pdb, chain), "../EvoEF")
-	print("MUTATION BUILDING AND ENERGY COMPUTATION PROCESSES WERE STARTED")
+	print("Mutant structures and their energies are being calculated ...")
 	time.sleep(3)	
 	Energy_Calculation()
 	Detect_Outliers()
