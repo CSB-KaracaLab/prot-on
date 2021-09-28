@@ -5,7 +5,7 @@ This repo contains the collection of codes to find designer interfacial mutation
   Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 [MK: link] to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
 
 ### PROT-ON Architecture
-![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
+<img src="proton_code_architecture.png" alt="proton_code_architecture" width="200" />
 
 ### PROT-ON Input
 [MK: Protein takes in .. -- applies on a single monomer -- which should be specified with the related chain id]
