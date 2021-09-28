@@ -22,14 +22,17 @@ This repo contains the collection of codes to find designer interfacial mutation
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
 ### Dependencies
+* EvoEF
+* conda (OR python3)
+* gcc
+* csh
 * numpy
 * pandas
 * matplotlib
 * seaborn
 * shutil
 * time
-* conda (for python3)
-* Homebrew (for MacOS)
+
 
 ## Usage
 ### Clone the repository
@@ -39,6 +42,7 @@ git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 ```
 cd find-designer-mutations
 ```
+After this, the pre-installed EvoEF folder should be moved into the `find-designer-mutations` directory.
 ### Installation
 Run the following to generate the executables for running PROT-ON scheme (which can only run on linux of MacOS).
 
@@ -46,26 +50,16 @@ Run the following to generate the executables for running PROT-ON scheme (which 
 conda activate
 ```
 ```
-python setup.py
-```
-
-## To run PROT-ON
-
-then run the proton.py main script as follows:
-```
-python proton.py <pdb> <chainID>
+python proton.py <root-pdb-filename> <chainID>
 
 Example:
 
-python proton.py cluster1_1 D
+python proton.py complex D
 ```
-If conda not installed on your system. Please make sure python3 is installed on your system. Then run the proton.py main script as follows:
+If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py <pdb> <chainID>
+python3 proton.py <root-pdb-filename> <chainID>
 
-Example:
-
-python3 proton.py cluster1_1 D
 ```
 ### Usage of individual scripts
 Also you can run each of the individual scripts located under src/ independently. For example, if you are interested only the contact list between two chain in 5A cut-off, or interfacial amino acids that belongs to a specific chain, run interface_residues.py script in the src folder as follows:
