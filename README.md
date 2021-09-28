@@ -50,11 +50,11 @@ Run the following to generate the executables for running PROT-ON scheme (which 
 conda activate
 ```
 ```
-python proton.py <root-pdb-filename> <chainID>
+python proton.py <root-pdb-filename> <chainID> 
 
 Example:
 
-python proton.py complex D
+python proton.py complex D > proton.log
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
@@ -62,53 +62,32 @@ python3 proton.py <root-pdb-filename> <chainID>
 
 ```
 ### Usage of individual scripts
-Also you can run each of the individual scripts located under src/ independently. For example, if you are interested only the contact list between two chain in 5A cut-off, or interfacial amino acids that belongs to a specific chain, run interface_residues.py script in the src folder as follows:
+If you want, you can also run the PROT-ON scripts located under `src/` independently. 
+
+As an example, if you are interested only getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
-python interface_residues.py <pdb> <chainID>
+python inteface_residues.py <root-pdb-filename> <chainID> 
+
+Example:
+python inteface_residues.py complex D
+```
+
+Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation.py` as in:
+```
+python energy_calculation.py <root-pdb-filename> <mutation_list> 
 
 Example:
 
-python inteface_residues.py cluster1_1 D
+python energy_calculation.py complex mutation_list
 ```
-or
-```
-python3 interface_residues.py <pdb> <chainID>
 
-Example:
-
-python3 inteface_residues.py cluster1_1 D
+You can generate boxplot, heatmap, or depleted&enriched mutation list with `detect_outliers.py`:
 ```
-If you are insterested just in the binding affinity prediction for a specific mutation list, run the energy_calculation.py script in the src folder as follows:
-```
-python energy_calculation.py <pdb> <mutation_list> 
-
-Example:
-
-python energy_calculation.py cluster1_1 cluster1_1_chain_D_mutation_list
-```
-or
-```
-python3 energy_calculation.py <pdb> <mutation_list>
-
-Example:
-
-python3 energy_calculation.py cluster1_1 cluster1_1_chain_D_mutation_list
-```
-If you are insterested just the statistical outputs such as boxplot, heatmap, or depleted&enriched mutation list, run the detect_outliers.py script in the src foler as follows:
-```
-python detect_outliers.py <pdb> <chainID> <proton_scores>
+python detect_outliers.py <root-pdb-filename> <chainID> <proton_scores>
 
 Example:
 
 python detect_outliers.py cluster1_1 D cluster1_1_proton_scores
-```
-or
-```
-python3 detect_outliers.py <pdb> <chainID> <proton_scores>
-
-Example:
-
-python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ```
 
 ## Acknowledgement
