@@ -1,22 +1,25 @@
 # Find Designer Mutations
-This repo contains the collection of codes to find designer interfacial mutations
-## PROT-ON: Structure-based detection of critical mutations in redesigning protein-protein interfaces
-  Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 to scan the impact of all possible interfacial mutations. Our tool also performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take two minutes on a standard laptop.
+This repo contains the collection of codes to find designer interfacial mutations by setting multiple runs with EvoEF1 [MK: link].
 
-## Code Architecture
+## PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
+  Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 [MK: link] to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
+
+## PROT-ON Architecture
 ![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
 
-## Reviewing Output Files
-Created all the ouput files after running the proton.py script with specific pdb and chain ID are collected in an output folder Context of those files that belongs to that folder are listed below:
-  * **Mutation models:** Generated mutant models that are listed in the mutation list file. These models are modelled by using BuildMutant command of EvoEF1.
-  * **Individual EvoEF score files:** Binding affinity predictions and energy terms values. These affinities are calculated with ComputeBinding command of EvoEF1.
-  * **Boxplot for proton scores:** Statistical output for "DDG_PROTON_Scores" column of proton_scores. 
-  * **Heatmap for proton scores:** Statistical output for "DDG_PROTON_Scores" column of heatmap_mutations file. You can have general opinion about effects of all potential interfacial mutations by examining it.
-  * **Contact list:** It is an interaction list between two chains in 5A cut-off.
-  * **Interface amino acid list:** Interfacial amino acid list that belongs to you interested chain ID.
-  * **Mutation list:** It is a list that is used for BuildMutant command of EvoEF1. It includes all possible mutations of interfacial mutations in the EvoEF1 mutation format. (Format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **Depleted mutations:** They are positive outliers of box plot. These mutations act as a depleted effect to the binding affinity.  
-  * **Enriched mutations:** They are negative outliers of box plot. These mutations act as an enriched effect to the binding affinity.
+## PROT-ON Input
+[MK: Protein takes in .. -- applies on a single monomer -- which should be specified with the related chain id]
+
+## PROT-ON Output Files
+`proton.py` [MK] script with the described Usage [MK:link] generates: 
+  * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
+  * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
+  * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
+  * **Individual EvoEF score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
+  * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where
+  * **Depleted mutations:** are defined by the positive outliers of box plot, and   
+  * **Enriched mutations:** are defined by the negative outliers of box plot. 
+  * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
 ## Dependencies
 * numpy
