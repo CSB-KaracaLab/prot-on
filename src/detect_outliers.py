@@ -21,7 +21,7 @@ import time
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-print("OUTLIER DETECTION WAS STARTED")
+print("Outlier Detection Process Started ...")
 time.sleep(1)
 
 pdb = sys.argv[1]
@@ -38,7 +38,7 @@ def Plots():
     ax = sns.boxplot(x = Scores_File["DDG_PROTON_Scores"])
     boxplotfig = ax.get_figure()
     boxplotfig.savefig("{}_chain_{}_boxplot.png".format(pdb,chain), dpi = 300)
-    print("BOX PLOT WAS GENERATED")
+    print("Box plot analysis is being perfomed ...")
     time.sleep(1)
     heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
     pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_PROTON_Scores")
@@ -46,7 +46,7 @@ def Plots():
     heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True)
     heatmapfig = heatmap.get_figure()
     heatmapfig.savefig("{}_chain_{}_heatmap.png".format(pdb,chain), dpi = 300)
-    print("HEATMAP WAS GENERATED")
+    print("Heatmap is being generated ...")
     time.sleep(1)
 
 def Detect_Outliers():
@@ -76,22 +76,22 @@ def Sorted():
     sorted_enriched_mutations = enriched_mutations.sort_values("DDG_PROTON_Scores")
     sorted_depleted_mutations.to_csv("{}_chain_{}_depleted_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_depleted_mutations) > 1:
-    	print("Depleted mutations were detected")
+    	print("Depleting mutations are selected!")
     else:
-        print("Depleted mutations can not found")
+        print("No Depleting mutations are found!")
     time.sleep(1)
     sorted_enriched_mutations.to_csv("{}_chain_{}_enriched_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_enriched_mutations) > 1:
-    	print("Enriched mutations were detected")
+    	print("Enriching mutations are selected!")
     else:
-        print("Enriched mutations can not found")
+        print("No Enriching mutations are found!")
     time.sleep(1)
 
 def main():
     Plots()
     Detect_Outliers()
     Sorted()
-    print("OUTLIER DETECTION FINISHED")
+    print("PROT-ON Finished! <3")
     time.sleep(1)
 	
 if __name__ == "__main__":

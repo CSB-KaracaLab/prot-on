@@ -19,7 +19,6 @@ import sys
 import time
 import shutil
 
-import os
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
