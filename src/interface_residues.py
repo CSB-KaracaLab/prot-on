@@ -20,7 +20,8 @@ import pandas as pd
 import os
 
 try:
-	pdb = sys.argv[1][:-4]
+	pdb_file = sys.argv[1]
+	pdb = pdb_file[:-4] #pdb filename without .pdb extension
 	
 except:
 	print("""
@@ -99,7 +100,7 @@ python interface_residues.py complex.pdb D
 """)
 			sys.exit()
 			
-		with open("{}.pdb".format(pdb), "r") as pdbfile:
+		with open("{}".format(pdb_file), "r") as pdbfile:
 			for line in pdbfile:
 				if line[:4] == "ATOM":
 					self.chain_ids.append(line[21])
@@ -145,7 +146,8 @@ python interface_residues.py complex.pdb D
 				print("""
 ******************************************
 Your PDB file have multiple conformations. 
-Please modify your PDB file with a PDBTool. 
+Please modify your PDB file with a PDBTool.
+(https://github.com/haddocking/pdb-tools)
 ******************************************			
 		""") 
 				sys.exit()
@@ -153,7 +155,7 @@ Please modify your PDB file with a PDBTool.
 				pass	
 			
 	def PDBParse(self):
-		with open("{}.pdb".format(pdb), "r") as pdbfile:
+		with open("{}".format(pdb_file), "r") as pdbfile:
 			for line in pdbfile:
 				if line[:4] == "ATOM":
 					self.chains.append(line[21])
