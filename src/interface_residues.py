@@ -20,7 +20,8 @@ import pandas as pd
 import os
 
 try:
-	pdb = sys.argv[1]
+	pdb = sys.argv[1][:-4]
+	
 except:
 	print("""
 **********************************
@@ -28,9 +29,9 @@ Please specify a PDB file
 		
 Example:
 
-python Interface_Residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id
     		
-python Interface_Residues.py cluster1_1 D
+python interface_residues.py complex.pdb D
 
 **********************************	
 	""")
@@ -45,9 +46,9 @@ Please specify a chain ID
 		
 Example:
 
-python Interface_Residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id
     		
-python Interface_Residues.py cluster1_1 D
+python interface_residues.py complex.pdb D
 
 **********************************	
 	""")
@@ -74,13 +75,13 @@ class InterfaceResidues():
 **************************************************
 Usage:
 
-    python Interface_Residues.py <pdb> <chain_id>
+    python interface_residues.py <pdb> <chain_id>
     <chain_id>: chain id of interest
-    <pdb>: pdb file without .pdb extension
+    <pdb>: pdb file 
 
 Example:
 
-    python Interface_Residues.py cluster1_1 D
+    python interface_residues.py complex.pdb D
 **************************************************    
 	""")
 			sys.exit()
@@ -89,11 +90,11 @@ Example:
 			print("""
 *****************************************************    
 Too many parameters entered. Please select just 
-a PDB file without .pdb extension and a chain!
+a PDB file and a chain!
     
 Example:
 
-python interface_residues.py cluster1_1 D
+python interface_residues.py complex.pdb D
 *****************************************************
 """)
 			sys.exit()
@@ -111,7 +112,7 @@ python interface_residues.py cluster1_1 D
 		if len(self.unique_chains) != 2:
 			print("""
 **********************************
-PROTON work with only dimers.
+PROT-ON work with only dimers.
 Please provide a dimer structure. 
 **********************************	
 			""")
@@ -131,9 +132,9 @@ Please check the chain ID that you interest.
 	
 Example:
 
-python Interface_Residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id
     		
-python Interface_Residues.py cluster1_1 D
+python interface_residues.py complex.pdb D
 *************************************************************
 				
 """)
