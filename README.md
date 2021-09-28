@@ -5,7 +5,7 @@ This repo contains the collection of codes to find designer interfacial mutation
   Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 [MK: link] to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
 
 ### PROT-ON Architecture
-![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
+<img src="proton_code_architecture.png" alt="proton_code_architecture" width="500" />
 
 ### PROT-ON Input
 [MK: Protein takes in .. -- applies on a single monomer -- which should be specified with the related chain id]
@@ -21,11 +21,13 @@ This repo contains the collection of codes to find designer interfacial mutation
   * **Enriched mutations:** are defined by the negative outliers of box plot. 
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
-### Dependencies
-* EvoEF
-* conda (OR python3)
+### System dependencies
+* EvoEF [MK: link]
 * gcc
 * csh
+* conda (OR python3)
+
+### Python dependencies
 * numpy
 * pandas
 * matplotlib
@@ -44,7 +46,7 @@ cd find-designer-mutations
 ```
 After this, the pre-installed EvoEF folder should be moved into the `find-designer-mutations` directory.
 ### Installation
-Run the following to generate the executables for running PROT-ON scheme (which can only run on linux of MacOS).
+Run the following to generate the executables for running PROT-ON (which can only run on Linux or MacOS).
 
 ```
 conda activate
