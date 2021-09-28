@@ -24,24 +24,25 @@ import matplotlib.pyplot as plt
 print("Outlier Detection Process Started ...")
 time.sleep(1)
 
-pdb = sys.argv[1]
+pdb_file = sys.argv[1]
+pdb = pdb_file[:-4] #pdb filename without .pdb extension
 chain = sys.argv[2]
 PROTON_Scores_File = sys.argv[3]
 Scores_File = pd.read_table(PROTON_Scores_File, sep = " ")
 
 Positive_Outliers = open("{}_chain_{}_depleted_mutations".format(pdb,chain), "w")
 Negative_Outliers = open("{}_chain_{}_enriched_mutations".format(pdb,chain), "w")
-print("Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores", file = Positive_Outliers)
-print("Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores", file = Negative_Outliers)
+print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Positive_Outliers)
+print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Negative_Outliers)
 
 def Plots():
-    ax = sns.boxplot(x = Scores_File["DDG_PROTON_Scores"])
+    ax = sns.boxplot(x = Scores_File["DDG_EvoEF_Scores"])
     boxplotfig = ax.get_figure()
     boxplotfig.savefig("{}_chain_{}_boxplot.png".format(pdb,chain), dpi = 300)
     print("Box plot analysis is being perfomed ...")
     time.sleep(1)
     heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
-    pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_PROTON_Scores")
+    pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_EvoEF_Scores")
     fig, ax = plt.subplots(figsize=(10,10)) 
     heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True)
     heatmapfig = heatmap.get_figure()
@@ -50,19 +51,19 @@ def Plots():
     time.sleep(1)
 
 def Detect_Outliers():
-    Q1 = np.quantile(Scores_File["DDG_PROTON_Scores"], 0.25)
-    Q3 = np.quantile(Scores_File["DDG_PROTON_Scores"], 0.75)
+    Q1 = np.quantile(Scores_File["DDG_EvoEF_Scores"], 0.25)
+    Q3 = np.quantile(Scores_File["DDG_EvoEF_Scores"], 0.75)
     IQR = Q3 - Q1
 
     Upper_Bound = Q3 + (1.5*IQR)
     Lower_Bound = Q1 - (1.5*IQR)
 
     for i in range(0, len(Scores_File)):
-        if Scores_File.iloc[i]["DDG_PROTON_Scores"] >= Upper_Bound:
-            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["PROTON_WT_Scores"],Scores_File.iloc[i]["PROTON_Mutant_Scores"],Scores_File.iloc[i]["DDG_PROTON_Scores"], file = Positive_Outliers)
+        if Scores_File.iloc[i]["DDG_EvoEF_Scores"] >= Upper_Bound:
+            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Positive_Outliers)
     for i in range(0, len(Scores_File)):
-        if Scores_File.iloc[i]["DDG_PROTON_Scores"] <= Lower_Bound:
-            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["PROTON_WT_Scores"],Scores_File.iloc[i]["PROTON_Mutant_Scores"],Scores_File.iloc[i]["DDG_PROTON_Scores"], file = Negative_Outliers)
+        if Scores_File.iloc[i]["DDG_EvoEF_Scores"] <= Lower_Bound:
+            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Negative_Outliers)
     Positive_Outliers.close()
     Negative_Outliers.close()
 
@@ -72,8 +73,8 @@ enriched = open("{}_chain_{}_enriched_mutations".format(pdb,chain), "r")
 def Sorted():
     depleted_mutations = pd.read_table(depleted, sep = " ")
     enriched_mutations = pd.read_table(enriched, sep = " ")
-    sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_PROTON_Scores", ascending = False)
-    sorted_enriched_mutations = enriched_mutations.sort_values("DDG_PROTON_Scores")
+    sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
+    sorted_enriched_mutations = enriched_mutations.sort_values("DDG_EvoEF_Scores")
     sorted_depleted_mutations.to_csv("{}_chain_{}_depleted_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_depleted_mutations) > 1:
     	print("Depleting mutations are selected!")
@@ -91,7 +92,7 @@ def main():
     Plots()
     Detect_Outliers()
     Sorted()
-    print("PROT-ON Finished! <3")
+    print("PROT-ON Finished! ツ")
     time.sleep(1)
 	
 if __name__ == "__main__":
