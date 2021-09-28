@@ -1,27 +1,27 @@
 # Find Designer Mutations
-This repo contains the collection of codes to find designer interfacial mutations by setting multiple runs with EvoEF1 [MK: link].
+This repo contains the collection of codes to find designer interfacial mutations by setting multiple runs with EvoEF1 [MK: link]. 
 
-## PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
+### PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
   Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses EvoEF1 [MK: link] to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
 
-## PROT-ON Architecture
+### PROT-ON Architecture
 ![proton_code_architecture](https://github.com/CSB-KaracaLab/find-designer-mutations/blob/main/proton_code_architecture.png)
 
-## PROT-ON Input
+### PROT-ON Input
 [MK: Protein takes in .. -- applies on a single monomer -- which should be specified with the related chain id]
 
-## PROT-ON Output Files
+### PROT-ON Output Files
 `proton.py` [MK] script with the described Usage [MK:link] generates: 
   * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
   * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
   * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
   * **Individual EvoEF score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
-  * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where
-  * **Depleted mutations:** are defined by the positive outliers of box plot, and   
+  * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
+  * **Depleted mutations:** are defined by the positive outliers of box plot, and;
   * **Enriched mutations:** are defined by the negative outliers of box plot. 
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
-## Dependencies
+### Dependencies
 * numpy
 * pandas
 * matplotlib
@@ -29,14 +29,15 @@ This repo contains the collection of codes to find designer interfacial mutation
 * shutil
 * time
 
-## Clone the repository
+## Usage
+### Clone the repository
 ```
 git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 ```
 ```
 cd find-designer-mutations
 ```
-## Installation
+### Installation
 Run the following command to make the necessary installations and make executable some scripts to work of PROT-ON for trouble-free operation.
 If you are using MacOS please firstly run following command to install homebrew.
 ```
@@ -51,7 +52,7 @@ or
 (base) python setup.py
 ```
 Script works with sudo command. Please enter your password.
-## Usage
+## To run PROT-ON
 PROT-ON can be run in two different ways. If conda is installed on your system, you need to activate conda first.
 ```
 conda activate
@@ -123,9 +124,10 @@ python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ```
 
 ## Acknowledgement
-Thanks to Ayşe Berçin Barlas for her advisor in python script writing and project planning. Also much appreciated to Eda Şamiloğlu and Mehmet Ergüven for their helpful in the performance analyses of mutation effect algorithms in the litarature.
-## Bugs Report
-If you find bugs when you run the proton program, please contact Mehdi Koşaca or Dr. Ezgi Karaca.
+We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project.
+
+## Bug Report
+If you encounter any problem, you can contact Mehdi or Ezgi via:
 
 ## Contacts
 * ezgi.karaca@ibg.edu.tr
