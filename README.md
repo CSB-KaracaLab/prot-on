@@ -21,11 +21,13 @@ This repo contains the collection of codes to find designer interfacial mutation
   * **Enriched mutations:** are defined by the negative outliers of box plot. 
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
-### Dependencies
-* EvoEF
-* conda (OR python3)
+### System dependencies
+* EvoEF [MK: link]
 * gcc
 * csh
+* conda (OR python3)
+
+### Python dependencies
 * numpy
 * pandas
 * matplotlib
@@ -44,7 +46,7 @@ cd find-designer-mutations
 ```
 After this, the pre-installed EvoEF folder should be moved into the `find-designer-mutations` directory.
 ### Installation
-Run the following to generate the executables for running PROT-ON scheme (which can only run on linux of MacOS).
+Run the following to generate the executables for running PROT-ON (which can only run on Linux or MacOS).
 
 ```
 conda activate
