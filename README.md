@@ -28,6 +28,8 @@ This repo contains the collection of codes to find designer interfacial mutation
 * seaborn
 * shutil
 * time
+* conda (for python3)
+* Homebrew (for MacOS)
 
 ## Usage
 ### Clone the repository
@@ -38,25 +40,17 @@ git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 cd find-designer-mutations
 ```
 ### Installation
-Run the following command to make the necessary installations and make executable some scripts to work of PROT-ON for trouble-free operation.
-If you are using MacOS please firstly run following command to install homebrew.
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-and then run following command.
-```
-python3 setup.py
-```
-or
-```
-(base) python setup.py
-```
-Script works with sudo command. Please enter your password.
-## To run PROT-ON
-PROT-ON can be run in two different ways. If conda is installed on your system, you need to activate conda first.
+Run the following to generate the executables for running PROT-ON scheme (which can only run on linux of MacOS).
+
 ```
 conda activate
 ```
+```
+python setup.py
+```
+
+## To run PROT-ON
+
 then run the proton.py main script as follows:
 ```
 python proton.py <pdb> <chainID>
