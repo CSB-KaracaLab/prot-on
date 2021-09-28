@@ -22,12 +22,17 @@ This repo contains the collection of codes to find designer interfacial mutation
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 
 ### Dependencies
+* EvoEF
+* conda (OR python3)
+* gcc
+* csh
 * numpy
 * pandas
 * matplotlib
 * seaborn
 * shutil
 * time
+
 
 ## Usage
 ### Clone the repository
@@ -37,90 +42,52 @@ git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 ```
 cd find-designer-mutations
 ```
+After this, the pre-installed EvoEF folder should be moved into the `find-designer-mutations` directory.
 ### Installation
-Run the following command to make the necessary installations and make executable some scripts to work of PROT-ON for trouble-free operation.
-If you are using MacOS please firstly run following command to install homebrew.
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-and then run following command.
-```
-python3 setup.py
-```
-or
-```
-(base) python setup.py
-```
-Script works with sudo command. Please enter your password.
-## To run PROT-ON
-PROT-ON can be run in two different ways. If conda is installed on your system, you need to activate conda first.
+Run the following to generate the executables for running PROT-ON scheme (which can only run on linux of MacOS).
+
 ```
 conda activate
 ```
-then run the proton.py main script as follows:
 ```
-python proton.py <pdb> <chainID>
+python proton.py <root-pdb-filename> <chainID> 
 
 Example:
 
-python proton.py cluster1_1 D
+python proton.py complex D > proton.log
 ```
-If conda not installed on your system. Please make sure python3 is installed on your system. Then run the proton.py main script as follows:
+If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py <pdb> <chainID>
+python3 proton.py <root-pdb-filename> <chainID>
 
-Example:
-
-python3 proton.py cluster1_1 D
 ```
 ### Usage of individual scripts
-Also you can run each of the individual scripts located under src/ independently. For example, if you are interested only the contact list between two chain in 5A cut-off, or interfacial amino acids that belongs to a specific chain, run interface_residues.py script in the src folder as follows:
+If you want, you can also run the PROT-ON scripts located under `src/` independently. 
+
+As an example, if you are interested only getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
-python interface_residues.py <pdb> <chainID>
+python inteface_residues.py <root-pdb-filename> <chainID> 
+
+Example:
+python inteface_residues.py complex D
+```
+
+Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation.py` as in:
+```
+python energy_calculation.py <root-pdb-filename> <mutation_list> 
 
 Example:
 
-python inteface_residues.py cluster1_1 D
+python energy_calculation.py complex mutation_list
 ```
-or
-```
-python3 interface_residues.py <pdb> <chainID>
 
-Example:
-
-python3 inteface_residues.py cluster1_1 D
+You can generate boxplot, heatmap, or depleted&enriched mutation list with `detect_outliers.py`:
 ```
-If you are insterested just in the binding affinity prediction for a specific mutation list, run the energy_calculation.py script in the src folder as follows:
-```
-python energy_calculation.py <pdb> <mutation_list> 
-
-Example:
-
-python energy_calculation.py cluster1_1 cluster1_1_chain_D_mutation_list
-```
-or
-```
-python3 energy_calculation.py <pdb> <mutation_list>
-
-Example:
-
-python3 energy_calculation.py cluster1_1 cluster1_1_chain_D_mutation_list
-```
-If you are insterested just the statistical outputs such as boxplot, heatmap, or depleted&enriched mutation list, run the detect_outliers.py script in the src foler as follows:
-```
-python detect_outliers.py <pdb> <chainID> <proton_scores>
+python detect_outliers.py <root-pdb-filename> <chainID> <proton_scores>
 
 Example:
 
 python detect_outliers.py cluster1_1 D cluster1_1_proton_scores
-```
-or
-```
-python3 detect_outliers.py <pdb> <chainID> <proton_scores>
-
-Example:
-
-python3 detect_outliers.py cluster1_1 D cluster1_1_proton_scores
 ```
 
 ## Acknowledgement
