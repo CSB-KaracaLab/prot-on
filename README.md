@@ -26,7 +26,7 @@ Protein takes in  applies on a single monomer which should be specified with the
 * conda (OR python3)
 ### Python dependencies
 * numpy
-* pandas
+* pandas(**latest version**)
 * matplotlib
 * seaborn
 * shutil
