@@ -216,8 +216,7 @@ Please modify your PDB file with a PDBTool.
 	
 	def MutationFile(self):
 		heatmap_mutations = open("heatmap_mutation_list", "w")
-		mutation_list = open("{}_chain_{}_mutation_list".format(pdb,chain), "w")
-		print("Positions Mutations", file = heatmap_mutations)	
+		mutation_list = open("{}_chain_{}_mutation_list".format(pdb,chain), "w")	
 		EvoEF_Mut_Pattern = self.one_letter_codes + self.interaction_list[1] + self.interaction_list[2].astype(str)
 		EvoEF_Mut_Pattern_Sorted = sorted(EvoEF_Mut_Pattern)
 		aa = ["A","C","D","E","F","G","H","I","K","L","M","N","P","Q","R","S","T","V","W","Y"]
