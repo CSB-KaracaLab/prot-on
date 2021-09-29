@@ -79,14 +79,14 @@ def Sorted():
     sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_depleted_mutations) > 1:
     	print("Depleting mutations are selected!")
-	os.system("cat {}_chain_{}_depleting_mutations".format(pdb,chain))
+        os.system("cat {}_chain_{}_depleting_mutations".format(pdb,chain))
     else:
         print("No Depleting mutations are found!")
     time.sleep(1)
     sorted_enriched_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_enriched_mutations) > 1:
     	print("Enriching mutations are selected!")
-	os.system("cat {}_chain_{}_enriching_mutations".format(pdb,chain))
+        os.system("cat {}_chain_{}_enriching_mutations".format(pdb,chain))
     else:
         print("No Enriching mutations are found!")
     time.sleep(1)
