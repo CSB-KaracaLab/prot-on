@@ -83,7 +83,7 @@ end
 #All scores and corresponding mutation names are combined in all_scores file. 
 ###############################################################
 
-cd $1_individual_score_files
+cd "$pdb"_individual_score_files
 
 foreach i(*.score)
 
