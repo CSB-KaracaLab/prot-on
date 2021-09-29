@@ -14,19 +14,19 @@ Protein takes in  applies on a single monomer which should be specified with the
   * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
   * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
   * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
-  * **Individual EvoEF score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
+  * **Individual EvoEF1 score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
   * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
   * **Depleted mutations:** are defined by the positive outliers of box plot, and;
   * **Enriched mutations:** are defined by the negative outliers of box plot. 
   * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 ### System dependencies
-* [EvoEF](https://github.com/tommyhuangthu/EvoEF)
+* [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
 * csh
 * conda (OR python3)
 ### Python dependencies
 * numpy
-* pandas(**latest version**)
+* pandas (**least 1.3.0 version**)
 * matplotlib
 * seaborn
 * shutil
