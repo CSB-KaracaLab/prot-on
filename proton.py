@@ -14,91 +14,167 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-import numpy as np
-import pandas as pd
-import time
-import seaborn as sns
-import matplotlib.pyplot as plt
 import os
+import sys
+import time
+import shutil
+from sys import platform
 
-print("Outlier Detection Process Started ...")
-time.sleep(1)
+if platform == "linux" or platform == "linux2":
+    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
 
-pdb_file = sys.argv[1]
-pdb = pdb_file[:-4]
-chain = sys.argv[2]
-PROTON_Scores_File = sys.argv[3]
-Scores_File = pd.read_table(PROTON_Scores_File, sep = " ")
+elif platform == "darwin":
+    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
 
-Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "w")
-Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "w")
-print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Positive_Outliers)
-print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Negative_Outliers)
+t0 = time.time()
 
-def Plots():
-    ax = sns.boxplot(x = Scores_File["DDG_EvoEF_Scores"])
-    boxplotfig = ax.get_figure()
-    boxplotfig.savefig("{}_chain_{}_boxplot.png".format(pdb,chain), dpi = 300)
-    print("Box plot analysis is being perfomed ...")
-    time.sleep(1)
-    heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
-    pivot_table = heatmap_df.pivot_table(index="Positions",columns="Mutations",values="DDG_EvoEF_Scores",sort=False)
-    fig, ax = plt.subplots(figsize=(10,10)) 
-    heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True)
-    heatmapfig = heatmap.get_figure()
-    heatmapfig.savefig("{}_chain_{}_heatmap.png".format(pdb,chain), dpi = 300)
-    print("Heatmap is being generated ...")
-    time.sleep(1)
+try:
+	pdb_file = sys.argv[1]
+	pdb = pdb_file[:-4] #pdb filename without .pdb extension
+except:
+	print("""
+**********************************
+Please specify of your PDB file 
+		
+Example:
+python proton.py <pdb-file> <chainID>
+python proton.py complex.pdb D
+**********************************	
+	""")
+	sys.exit()
+	
+try:
+	chain = sys.argv[2]
+except:
+	print("""
+**********************************
+Please specify the relevant chain ID 
+		
+Example:
+python proton.py <pdb-file> <chainID>    		
+python proton.py complex.pdb D
+**********************************	
+	""")
+	sys.exit()
+
+
+def check_argv():
+	if sys.argv[1] in ["help","h"]:
+		print("""
+**************************************************
+Usage:
+    python proton.py <pdb-file> <chainID>
+    <pdb-file>: pdb file
+    <chainID>: chain id of interest
+Example:
+    python proton.py complex.pdb D
+**************************************************    
+	""")
+		sys.exit()
+		
+	if len(sys.argv) > 3:
+		print("""
+*************************************************
+Too many input files! Please follow the advised usage:
+    
+python proton.py <pdb-filen> <chainID>
+python proton.py complex.pdb D
+*************************************************
+    	""")
+		sys.exit()
+		
+	chains = []	
+	unique_chains = []
+	amino_acids = []
+	with open("{}".format(pdb_file), "r") as pdbfile:
+		for line in pdbfile:
+			if line[:4] == "ATOM":
+				chains.append(line[21])
+				amino_acids.append(line[16:21])
+				
+	for x in chains:
+		if x not in unique_chains:
+			unique_chains.append(x)
+	
+	if len(unique_chains) != 2:
+		print("""
+**********************************
+PROT-ON works only with dimers! Please isolate the relevant dimer from your complex.
+**********************************	
+			""")
+		sys.exit()
+	else:
+		pass
+
+	chain1 = unique_chains[0]
+	chain2 = unique_chains[1]
+	
+	if chain == chain1:
+		pass
+	elif chain == chain2:
+		pass
+	else:
+		print("""
+*********************************************
+We could not find the indicated chain id in your complex!
+*********************************************
+				
+""")
+		sys.exit(0)
+		
+	for i in amino_acids:
+		if i[0] != " ":
+			print("""
+******************************************
+Your PDB file contains multiple occupancies for certain atoms. You can clean your file with PDB-Tools. (https://github.com/haddocking/pdb-tools)
+******************************************			
+		""") 
+			sys.exit()
+		else:
+			pass
+
+InterfaceResidues = "python interface_residues.py {} {}".format(pdb_file,chain) 
+EnergyCalculation = "python energy_calculation.py {} {}_chain_{}_mutation_list".format(pdb_file,pdb,chain)
+DetectOutliers = "python detect_outliers.py {} {} {}_proton_scores".format(pdb_file,chain,pdb)
+
+def Interface_Residues():
+	 return os.system(InterfaceResidues)
+
+def Energy_Calculation():
+	return os.system(EnergyCalculation)
 
 def Detect_Outliers():
-    Q1 = np.quantile(Scores_File["DDG_EvoEF_Scores"], 0.25)
-    Q3 = np.quantile(Scores_File["DDG_EvoEF_Scores"], 0.75)
-    IQR = Q3 - Q1
-
-    Upper_Bound = Q3 + (1.5*IQR)
-    Lower_Bound = Q1 - (1.5*IQR)
-
-    for i in range(0, len(Scores_File)):
-        if Scores_File.iloc[i]["DDG_EvoEF_Scores"] >= Upper_Bound:
-            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Positive_Outliers)
-    for i in range(0, len(Scores_File)):
-        if Scores_File.iloc[i]["DDG_EvoEF_Scores"] <= Lower_Bound:
-            print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Negative_Outliers)
-    Positive_Outliers.close()
-    Negative_Outliers.close()
-
-depleted = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "r")
-enriched = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "r")
-
-def Sorted():
-	depleting_screening = "cat {}_chain_{}_depleting_mutations".format(pdb,chain)
-	enriching_screening = "cat {}_chain_{}_enriching_mutations".format(pdb,chain)
-	depleted_mutations = pd.read_table(depleted, sep = " ")
-	enriched_mutations = pd.read_table(enriched, sep = " ")
-	sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
-	sorted_enriched_mutations = enriched_mutations.sort_values("DDG_EvoEF_Scores")
-	sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
-	if len(sorted_depleted_mutations) > 1:
-		print("Depleting mutations are selected!")
-		os.system(depleting_screening)
-	else:
-		print("No Depleting mutations are found!")
+	return os.system(DetectOutliers)
+	
+def main():	
+	check_argv()
+	os.mkdir("{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}".format(pdb_file), "src")	
+	print("Defining the Interface Residues...")
 	time.sleep(1)
-	sorted_enriched_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
-	if len(sorted_enriched_mutations) > 1:
-		print("Enriching mutations are selected!")
-		os.system(enriching_screening)
-	else:
-		print("No Enriching mutations are found!")
-	time.sleep(1)
-
-def main():
-    Plots()
-    Detect_Outliers()
-    Sorted()
-    print("PROT-ON Finished! ツ")
-    time.sleep(1)
+	os.chdir("src")
+	Interface_Residues()
+	shutil.move("{}_chain_{}_distance_list".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_distance_list".format(pdb), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("heatmap_mutation_list", "../EvoEF")
+	print("Mutant structures and their energies are being calculated ...")
+	time.sleep(3)	
+	Energy_Calculation()
+	Detect_Outliers()
+	shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_proton_scores".format(pdb), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}".format(pdb_file), "../")
+	shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	os.remove("{}_heatmap_mutation_list".format(pdb))
+	os.chdir("../")
+	shutil.move("{}_individual_score_files".format(pdb), "{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_mutation_models".format(pdb), "{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_mutation_list".format(pdb,chain), "{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_Repair.pdb".format(pdb), "{}_chain_{}_output".format(pdb,chain))
+	t1 = time.time()
+	print("Time elapsed: ", t1-t0, "seconds") 
 	
 if __name__ == "__main__":
 	main()
