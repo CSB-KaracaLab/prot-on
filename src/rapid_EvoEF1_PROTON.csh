@@ -40,8 +40,8 @@ mv $2 ../EvoEF
 
 cd ../EvoEF
 
-mkdir $pdb_mutation_models
-mkdir $pdb_individual_score_files
+mkdir "$pdb"_mutation_models
+mkdir "$pdb"_individual_score_files
 
 ./EvoEF --command=RepairStructure --pdb=$1
 
@@ -50,7 +50,7 @@ mkdir $pdb_individual_score_files
 foreach i(`cat $2`)
 	touch individual_list.txt
 	echo "$i;" > individual_list.txt
-	./EvoEF --command=BuildMutant --pdb=$pdb_Repair.pdb --mutant_file=individual_list.txt 	
+	./EvoEF --command=BuildMutant --pdb="$pdb"_Repair.pdb --mutant_file=individual_list.txt 	
 	rm individual_list.txt
 	mv "$pdb"_Repair_Model_0001.pdb "$pdb"_"$i"_Mutant.pdb
 end
@@ -61,18 +61,18 @@ foreach i(*Mutant.pdb)
 
 	touch "$i".score
 	./EvoEF --command=ComputeBinding --pdb="$i" >> "$i".score
-	mv "$i" $pdb_mutation_models
+	mv "$i" "$pdb"_mutation_models
 	
 end
 
 foreach i(*.score)
 
-	mv "$i" $pdb_individual_score_files
+	mv "$i" "$pdb"_individual_score_files
 end
 
 # The following command calculate the interaction energy and repeats the wild type score until number of mutants for repaired structure.
 ###############################################################
-	./EvoEF --command=ComputeBinding --pdb=$pdb_Repair.pdb > dg_wt_score
+	./EvoEF --command=ComputeBinding --pdb="$pdb"_Repair.pdb > dg_wt_score
 	echo `grep "^Total                 =" dg_wt_score` | awk '{print $3}' > wt_score
 	awk '{for(i=1; i<n+1; i++) print}' n=`wc -l $2 | awk '{print $1}'` wt_score > WT
 	paste -d ' ' $2 WT > mutants_wt
@@ -100,17 +100,17 @@ rm mutants_wt
 rm mutant_EvoEF_Scores
 awk '{printf "%.2f\n", $3-$2}' all_scores > ddg
 paste -d ' ' all_scores ddg >> proton_scores
-awk 'BEGIN{print "Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores"}1' proton_scores >  $pdb_proton_scores 
-awk '{print $4}' $pdb_proton_scores > ddg
-paste -d ' ' heatmap_mutation_list ddg > $pdb_heatmap_mutation_list
+awk 'BEGIN{print "Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores"}1' proton_scores >  "$pdb"_proton_scores 
+awk '{print $4}' "$pdb"_proton_scores > ddg
+paste -d ' ' heatmap_mutation_list ddg > "$pdb"_heatmap_mutation_list
 rm heatmap_mutation_list
 rm all_scores
 rm ddg
 rm proton_scores
-mv $pdb_proton_scores ../src
-mv $pdb_Repair.pdb ../
-mv $pdb_mutation_models ../
-mv $pdb_individual_score_files ../
+mv "$pdb"_proton_scores ../src
+mv "$pdb"_Repair.pdb ../
+mv "$pdb"_mutation_models ../
+mv "$pdb"_individual_score_files ../
 mv $1 ../src
 mv $2 ../
-mv $pdb_heatmap_mutation_list ../src
+mv "$pdb"_heatmap_mutation_list ../src
