@@ -42,7 +42,7 @@ def Plots():
     print("Box plot analysis is being perfomed ...")
     time.sleep(1)
     heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
-    pivot_table = heatmap_df.pivot_table("Positions","Mutations","DDG_EvoEF_Scores",sort=False)
+    pivot_table = heatmap_df.pivot_table(index="Positions",columns="Mutations",values="DDG_EvoEF_Scores",sort=False)
     fig, ax = plt.subplots(figsize=(10,10)) 
     heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True, cbar_kws={'label': 'DDG_EvoEF_Scores'})
     heatmapfig = heatmap.get_figure()
