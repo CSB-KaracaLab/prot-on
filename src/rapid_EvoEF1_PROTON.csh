@@ -99,11 +99,14 @@ paste -d ' ' mutants_wt mutant_EvoEF_Scores > all_scores
 rm mutants_wt
 rm mutant_EvoEF_Scores
 awk '{printf "%.2f\n", $3-$2}' all_scores > ddg
+paste -d ' ' heatmap_mutation_list ddg > heatmap_mutation_list_with_ddg_scores
+sort -k1.2n heatmap_mutation_list_with_ddg_scores > heatmap_mutation_list_with_ddg_scores_sorted
+awk 'BEGIN{print "Positions Mutations DDG_EvoEF_Scores"}1' heatmap_mutation_list_with_ddg_scores_sorted >  "$pdb"_heatmap_mutation_list 
 paste -d ' ' all_scores ddg >> proton_scores
 awk 'BEGIN{print "Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores"}1' proton_scores >  "$pdb"_proton_scores 
-awk '{print $4}' "$pdb"_proton_scores > ddg
-paste -d ' ' heatmap_mutation_list ddg > "$pdb"_heatmap_mutation_list
 rm heatmap_mutation_list
+rm heatmap_mutation_list_with_ddg_scores
+rm heatmap_mutation_list_with_ddg_scores_sorted
 rm all_scores
 rm ddg
 rm proton_scores
