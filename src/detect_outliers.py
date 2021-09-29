@@ -72,6 +72,8 @@ depleted = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "r")
 enriched = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "r")
 
 def Sorted():
+	depleting_screening = "cat {}_chain_{}_depleting_mutations".format(pdb,chain)
+	enriching_screening = "cat {}_chain_{}_enriching_mutations".format(pdb,chain)
     depleted_mutations = pd.read_table(depleted, sep = " ")
     enriched_mutations = pd.read_table(enriched, sep = " ")
     sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
@@ -79,14 +81,14 @@ def Sorted():
     sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_depleted_mutations) > 1:
     	print("Depleting mutations are selected!")
-        os.system("cat {}_chain_{}_depleting_mutations".format(pdb,chain))
+	os.system(depleting_screening)
     else:
         print("No Depleting mutations are found!")
     time.sleep(1)
     sorted_enriched_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_enriched_mutations) > 1:
     	print("Enriching mutations are selected!")
-        os.system("cat {}_chain_{}_enriching_mutations".format(pdb,chain))
+	os.system(enriching_screening)
     else:
         print("No Enriching mutations are found!")
     time.sleep(1)
