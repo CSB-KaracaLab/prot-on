@@ -20,6 +20,7 @@ import pandas as pd
 import time
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
 
 print("Outlier Detection Process Started ...")
 time.sleep(1)
@@ -30,8 +31,8 @@ chain = sys.argv[2]
 PROTON_Scores_File = sys.argv[3]
 Scores_File = pd.read_table(PROTON_Scores_File, sep = " ")
 
-Positive_Outliers = open("{}_chain_{}_depleted_mutations".format(pdb,chain), "w")
-Negative_Outliers = open("{}_chain_{}_enriched_mutations".format(pdb,chain), "w")
+Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "w")
+Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "w")
 print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Positive_Outliers)
 print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Negative_Outliers)
 
@@ -67,23 +68,25 @@ def Detect_Outliers():
     Positive_Outliers.close()
     Negative_Outliers.close()
 
-depleted = open("{}_chain_{}_depleted_mutations".format(pdb,chain), "r")
-enriched = open("{}_chain_{}_enriched_mutations".format(pdb,chain), "r")
+depleted = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "r")
+enriched = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "r")
 
 def Sorted():
     depleted_mutations = pd.read_table(depleted, sep = " ")
     enriched_mutations = pd.read_table(enriched, sep = " ")
     sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
     sorted_enriched_mutations = enriched_mutations.sort_values("DDG_EvoEF_Scores")
-    sorted_depleted_mutations.to_csv("{}_chain_{}_depleted_mutations".format(pdb,chain), sep = " ", index=False)
+    sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_depleted_mutations) > 1:
     	print("Depleting mutations are selected!")
+	os.system("cat {}_chain_{}_depleting_mutations".format(pdb,chain))
     else:
         print("No Depleting mutations are found!")
     time.sleep(1)
-    sorted_enriched_mutations.to_csv("{}_chain_{}_enriched_mutations".format(pdb,chain), sep = " ", index=False)
+    sorted_enriched_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
     if len(sorted_enriched_mutations) > 1:
     	print("Enriching mutations are selected!")
+	os.system("cat {}_chain_{}_enriching_mutations".format(pdb,chain))
     else:
         print("No Enriching mutations are found!")
     time.sleep(1)
