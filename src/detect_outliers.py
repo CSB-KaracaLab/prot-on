@@ -25,7 +25,8 @@ import os
 print("Outlier Detection Process Started ...")
 time.sleep(1)
 
-pdb = sys.argv[1]
+pdb_file = sys.argv[1]
+pdb = pdb_file[:-4]
 chain = sys.argv[2]
 PROTON_Scores_File = sys.argv[3]
 Scores_File = pd.read_table(PROTON_Scores_File, sep = " ")
