@@ -44,7 +44,7 @@ def Plots():
     heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
     pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_EvoEF_Scores")
     fig, ax = plt.subplots(figsize=(10,10)) 
-    heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True)
+    heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True, cbar_kws={'label': 'DDG_EvoEF_Scores'})
     heatmapfig = heatmap.get_figure()
     heatmapfig.savefig("{}_chain_{}_heatmap.png".format(pdb,chain), dpi = 300)
     print("Heatmap is being generated ...")
