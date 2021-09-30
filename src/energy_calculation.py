@@ -22,8 +22,9 @@ import sys
 import os
 
 structure = sys.argv[1]
-mutation_list = sys.argv[2]
-BashCommand = "./rapid_EvoEF1_PROTON.csh {} {}".format(structure, mutation_list)
+chain_id = sys.argv[2]
+mutation_list = sys.argv[3]
+BashCommand = "./rapid_EvoEF1_PROTON.csh {} {} {}".format(structure,chain_id,mutation_list)
 
 def Energy_Calculation():
 	os.system(BashCommand)
