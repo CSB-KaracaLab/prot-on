@@ -82,7 +82,21 @@ python proton.py complex.pdb D
 *************************************************
     	""")
 		sys.exit()
+	
+	try:
+		f = open("{}".format(pdb_file))
+	except IOError:
+		print("""
+**********************************
+Please specify of your PDB file 
 		
+Example:
+python proton.py <pdb-file> <chainID>
+python proton.py complex.pdb D
+**********************************	
+		""")
+		sys.exit()
+
 	chains = []	
 	unique_chains = []
 	amino_acids = []
@@ -134,7 +148,7 @@ Your PDB file contains multiple occupancies for certain atoms. You can clean you
 			pass
 
 InterfaceResidues = "python interface_residues.py {} {}".format(pdb_file,chain) 
-EnergyCalculation = "python energy_calculation.py {} {}_chain_{}_mutation_list".format(pdb_file,pdb,chain)
+EnergyCalculation = "python energy_calculation.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain)
 DetectOutliers = "python detect_outliers.py {} {} {}_proton_scores".format(pdb_file,chain,pdb)
 
 def Interface_Residues():
@@ -163,6 +177,8 @@ def main():
 	Detect_Outliers()
 	shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}_proton_scores".format(pdb), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}".format(pdb_file), "../")
 	shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
