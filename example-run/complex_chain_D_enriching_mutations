@@ -1,10 +1,3 @@
-Mutation_ID PROTON_WT_Scores PROTON_Mutant_Scores DDG_PROTON_Scores 
-LD71R -68.48 -73.42 -4.94
-TD75R -68.48 -71.53 -3.05
-TD75H -68.48 -71.07 -2.59
-VD79F -68.48 -70.99 -2.51
-LD71K -68.48 -70.89 -2.41
-DD84K -68.48 -70.83 -2.35
-LD71Q -68.48 -70.49 -2.01
-TD77L -68.48 -70.44 -1.96
-TD77W -68.48 -70.23 -1.75
+Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores
+VD79F -31.01 94.2 -33.52 94.78 -2.51 0.58
+TD77L -31.01 94.2 -32.97 93.3 -1.96 -0.9
