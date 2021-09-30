@@ -33,11 +33,16 @@ Scores_File = pd.read_table(PROTON_Scores_File, sep = " ")
 
 Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "w")
 Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "w")
-print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Positive_Outliers)
-print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores", file = Negative_Outliers)
+Stability_Depletings = open("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "w")
+Stability_Enrichings = open("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "w")
+print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Positive_Outliers)
+print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Negative_Outliers)
+print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Stability_Depletings)
+print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Stability_Enrichings)
 
 def Plots():
 	ax = sns.boxplot(x = Scores_File["DDG_EvoEF_Scores"])
+	ax.set_title("{}_chain_{}_boxplot".format(pdb,chain))
 	boxplotfig = ax.get_figure()
 	boxplotfig.savefig("{}_chain_{}_boxplot.png".format(pdb,chain), dpi = 300)
 	print("Box plot analysis is being perfomed ...")
@@ -45,7 +50,8 @@ def Plots():
 	heatmap_df = pd.read_table("{}_heatmap_mutation_list".format(pdb), sep = " ")
 	pivot_table = heatmap_df.pivot_table(index="Positions",columns="Mutations",values="DDG_EvoEF_Scores",sort=False)
 	fig, ax = plt.subplots(figsize=(10,10)) 
-	heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True)
+	heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True,cbar_kws={'label': 'DDG_EvoEF_Scores'})
+	heatmap.set_title("{}_chain_{}_heatmap".format(pdb,chain))
 	heatmapfig = heatmap.get_figure()
 	heatmapfig.savefig("{}_chain_{}_heatmap.png".format(pdb,chain), dpi = 300)
 	print("Heatmap is being generated ...")
@@ -60,21 +66,19 @@ def Detect_Outliers():
 	Lower_Bound = Q1 - (1.5*IQR)
 	for i in range(0, len(Scores_File)):
 		if Scores_File.iloc[i]["DDG_EvoEF_Scores"] >= Upper_Bound:
-			print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Positive_Outliers)
+			print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["Stability_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["Stability_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"],Scores_File.iloc[i]["DDG_Stability_Scores"], file = Positive_Outliers)
 	for i in range(0, len(Scores_File)):
 		if Scores_File.iloc[i]["DDG_EvoEF_Scores"] <= Lower_Bound:
-			print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"], file = Negative_Outliers)
+			print(Scores_File.iloc[i]["Mutation_ID"],Scores_File.iloc[i]["EvoEF_WT_Scores"],Scores_File.iloc[i]["Stability_WT_Scores"],Scores_File.iloc[i]["EvoEF_Mutant_Scores"],Scores_File.iloc[i]["Stability_Mutant_Scores"],Scores_File.iloc[i]["DDG_EvoEF_Scores"],Scores_File.iloc[i]["DDG_Stability_Scores"], file = Negative_Outliers)
 	Positive_Outliers.close()
 	Negative_Outliers.close()
 
-depleted = open("{}_chain_{}_depleting_mutations".format(pdb,chain), "r")
-enriched = open("{}_chain_{}_enriching_mutations".format(pdb,chain), "r")
 depleting_screening = "cat {}_chain_{}_depleting_mutations".format(pdb,chain)
 enriching_screening = "cat {}_chain_{}_enriching_mutations".format(pdb,chain)
 
 def Sorted():
-	depleted_mutations = pd.read_table(depleted, sep = " ")
-	enriched_mutations = pd.read_table(enriched, sep = " ")
+	depleted_mutations = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ")
+	enriched_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
 	sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
 	sorted_enriched_mutations = enriched_mutations.sort_values("DDG_EvoEF_Scores")
 	sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
@@ -92,10 +96,26 @@ def Sorted():
 		print("No Enriching mutations are found!")
 	time.sleep(1)
 
+def Stability_Filter():
+	depletings = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep =" ")
+	for i in range(0, len(depletings)):
+		if depletings.iloc[i]["DDG_Stability_Scores"] < 0:
+			print(depletings.iloc[i]["Mutation_ID"],depletings.iloc[i]["EvoEF_WT_Scores"],depletings.iloc[i]["Stability_WT_Scores"],depletings.iloc[i]["EvoEF_Mutant_Scores"],depletings.iloc[i]["Stability_Mutant_Scores"],depletings.iloc[i]["DDG_EvoEF_Scores"],depletings.iloc[i]["DDG_Stability_Scores"], file = Stability_Depletings)
+	print("Stabilizing depleting mutations are being filtered!")
+
+	enrichings = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
+	for i in range(0, len(enrichings)):
+		if enrichings.iloc[i]["DDG_Stability_Scores"] < 0:
+			print(enrichings.iloc[i]["Mutation_ID"],enrichings.iloc[i]["EvoEF_WT_Scores"],enrichings.iloc[i]["Stability_WT_Scores"],enrichings.iloc[i]["EvoEF_Mutant_Scores"],enrichings.iloc[i]["Stability_Mutant_Scores"],enrichings.iloc[i]["DDG_EvoEF_Scores"],enrichings.iloc[i]["DDG_Stability_Scores"], file = Stability_Enrichings)
+	print("Stabilizing enriching mutations are being filtered!")
+	Stability_Enrichings.close()
+	Stability_Depletings.close()
+
 def main():
 	Plots()
 	Detect_Outliers()
 	Sorted()
+	Stability_Filter()
 	print("PROT-ON Finished! ツ")
 	time.sleep(1)
 	
