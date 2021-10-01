@@ -61,27 +61,27 @@ If you want, you can also run the PROT-ON scripts located under `src/` independe
 
 As an example, if you are interested only getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
-python inteface_residues.py <root-pdb-filename> <chainID> 
+python inteface_residues.py <pdb-filename> <chainID> 
 
 Example:
 
-python inteface_residues.py complex D
+python inteface_residues.py complex.pdb D
 ```
 Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation.py` as in:
 ```
-python energy_calculation.py <root-pdb-filename> <mutation_list> 
+python energy_calculation.py <pdb-filename> <mutation_list> 
 
 Example:
 
-python energy_calculation.py complex mutation_list
+python energy_calculation.py complex.pdb D mutation_list
 ```
 You can generate boxplot, heatmap, or depleted&enriched mutation list with `detect_outliers.py`:
 ```
-python detect_outliers.py <root-pdb-filename> <chainID> <proton_scores>
+python detect_outliers.py <pdb-filename> <chainID> <proton_scores>
 
 Example:
 
-python detect_outliers.py complex D cluster1_1_proton_scores
+python detect_outliers.py complex.pdb D cluster1_1_proton_scores
 ```
 ## Acknowledgement
 We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project.
