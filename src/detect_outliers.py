@@ -193,6 +193,7 @@ PSSM filter won't work.
 
 	shutil.move("{}_chain_{}_depletings_pssm".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}_chain_{}_enrichings_pssm".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_pssm.csv".format(pdb,chain), "..")
 
 	
 	
