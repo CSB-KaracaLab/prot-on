@@ -57,6 +57,10 @@ python proton.py complex.pdb D
 	""")
 	sys.exit()
 
+try:
+	shutil.move("{}_chain_{}_pssm.csv".format(pdb,chain), "src")
+except:
+	pass
 
 def check_argv():
 	if sys.argv[1] in ["help","h"]:
@@ -112,9 +116,9 @@ python proton.py complex.pdb D
 	
 	if len(unique_chains) != 2:
 		print("""
-**********************************
+*************************************************************************************
 PROT-ON works only with dimers! Please isolate the relevant dimer from your complex.
-**********************************	
+*************************************************************************************	
 			""")
 		sys.exit()
 	else:
@@ -129,9 +133,9 @@ PROT-ON works only with dimers! Please isolate the relevant dimer from your comp
 		pass
 	else:
 		print("""
-*********************************************
+*********************************************************
 We could not find the indicated chain id in your complex!
-*********************************************
+*********************************************************
 				
 """)
 		sys.exit(0)
@@ -139,9 +143,10 @@ We could not find the indicated chain id in your complex!
 	for i in amino_acids:
 		if i[0] != " ":
 			print("""
-******************************************
-Your PDB file contains multiple occupancies for certain atoms. You can clean your file with PDB-Tools. (https://github.com/haddocking/pdb-tools)
-******************************************			
+**********************************************************************************
+Your PDB file contains multiple occupancies for certain atoms. 
+You can clean your file with PDB-Tools. (https://github.com/haddocking/pdb-tools)
+**********************************************************************************			
 		""") 
 			sys.exit()
 		else:
@@ -184,11 +189,6 @@ def main():
 	shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	os.remove("{}_heatmap_mutation_list".format(pdb))
-	os.chdir("../")
-	shutil.move("{}_individual_score_files".format(pdb), "{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_mutation_models".format(pdb), "{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_chain_{}_mutation_list".format(pdb,chain), "{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_Repair.pdb".format(pdb), "{}_chain_{}_output".format(pdb,chain))
 	t1 = time.time()
 	print("Time elapsed: ", t1-t0, "seconds") 
 	
