@@ -156,9 +156,9 @@ rm proton_scores_v1
 rm chain_"$2".pdb
 rm chain_"$2"_Repair.pdb
 mv "$pdb"_proton_scores ../src
-mv "$pdb"_Repair.pdb ../
-mv "$pdb"_mutation_models ../
-mv "$pdb"_individual_score_files ../
+mv "$pdb"_Repair.pdb ../"$pdb"_chain_"$2"_output
+mv "$pdb"_mutation_models ../"$pdb"_chain_"$2"_output
+mv "$pdb"_individual_score_files ../"$pdb"_chain_"$2"_output
 mv $1 ../src
-mv $3 ../
+mv $3 ../"$pdb"_chain_"$2"_output
 mv "$pdb"_heatmap_mutation_list ../src
