@@ -21,6 +21,7 @@ import time
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+import shutil
 
 print("Outlier Detection Process Started ...")
 time.sleep(1)
@@ -39,6 +40,8 @@ print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stabi
 print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Negative_Outliers)
 print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Stability_Depletings)
 print("Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = Stability_Enrichings)
+depleting_screening = "cat {}_chain_{}_depleting_mutations".format(pdb,chain)
+enriching_screening = "cat {}_chain_{}_enriching_mutations".format(pdb,chain)
 
 def Plots():
 	ax = sns.boxplot(x = Scores_File["DDG_EvoEF_Scores"])
@@ -73,23 +76,21 @@ def Detect_Outliers():
 	Positive_Outliers.close()
 	Negative_Outliers.close()
 
-depleting_screening = "cat {}_chain_{}_depleting_mutations".format(pdb,chain)
-enriching_screening = "cat {}_chain_{}_enriching_mutations".format(pdb,chain)
 
 def Sorted():
-	depleted_mutations = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ")
-	enriched_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
-	sorted_depleted_mutations = depleted_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
-	sorted_enriched_mutations = enriched_mutations.sort_values("DDG_EvoEF_Scores")
-	sorted_depleted_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
-	if len(sorted_depleted_mutations) > 1:
+	depleting_mutations = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ")
+	enriching_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
+	sorted_depleting_mutations = depleting_mutations.sort_values(by = "DDG_EvoEF_Scores", ascending = False)
+	sorted_enriching_mutations = enriching_mutations.sort_values("DDG_EvoEF_Scores")
+	sorted_depleting_mutations.to_csv("{}_chain_{}_depleting_mutations".format(pdb,chain), sep = " ", index=False)
+	if len(sorted_depleting_mutations) > 1:
 		print("Depleting mutations are selected!")
 		os.system(depleting_screening)
 	else:
 		print("No Depleting mutations are found!")
 	time.sleep(1)
-	sorted_enriched_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
-	if len(sorted_enriched_mutations) > 1:
+	sorted_enriching_mutations.to_csv("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ", index=False)
+	if len(sorted_enriching_mutations) > 1:
 		print("Enriching mutations are selected!")
 		os.system(enriching_screening)
 	else:
@@ -97,25 +98,110 @@ def Sorted():
 	time.sleep(1)
 
 def Stability_Filter():
-	depletings = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep =" ")
-	for i in range(0, len(depletings)):
-		if depletings.iloc[i]["DDG_Stability_Scores"] < 0:
-			print(depletings.iloc[i]["Mutation_ID"],depletings.iloc[i]["EvoEF_WT_Scores"],depletings.iloc[i]["Stability_WT_Scores"],depletings.iloc[i]["EvoEF_Mutant_Scores"],depletings.iloc[i]["Stability_Mutant_Scores"],depletings.iloc[i]["DDG_EvoEF_Scores"],depletings.iloc[i]["DDG_Stability_Scores"], file = Stability_Depletings)
+	depleting_mutations = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep =" ")
+	for i in range(0, len(depleting_mutations)):
+		if depleting_mutations.iloc[i]["DDG_Stability_Scores"] < 0:
+			print(depleting_mutations.iloc[i]["Mutation_ID"],depleting_mutations.iloc[i]["EvoEF_WT_Scores"],depleting_mutations.iloc[i]["Stability_WT_Scores"],depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],depleting_mutations.iloc[i]["Stability_Mutant_Scores"],depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],depleting_mutations.iloc[i]["DDG_Stability_Scores"], file = Stability_Depletings)
 	print("Stabilizing depleting mutations are being filtered!")
 
-	enrichings = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
-	for i in range(0, len(enrichings)):
-		if enrichings.iloc[i]["DDG_Stability_Scores"] < 0:
-			print(enrichings.iloc[i]["Mutation_ID"],enrichings.iloc[i]["EvoEF_WT_Scores"],enrichings.iloc[i]["Stability_WT_Scores"],enrichings.iloc[i]["EvoEF_Mutant_Scores"],enrichings.iloc[i]["Stability_Mutant_Scores"],enrichings.iloc[i]["DDG_EvoEF_Scores"],enrichings.iloc[i]["DDG_Stability_Scores"], file = Stability_Enrichings)
+	enriching_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep = " ")
+	for i in range(0, len(enriching_mutations)):
+		if enriching_mutations.iloc[i]["DDG_Stability_Scores"] < 0:
+			print(enriching_mutations.iloc[i]["Mutation_ID"],enriching_mutations.iloc[i]["EvoEF_WT_Scores"],enriching_mutations.iloc[i]["Stability_WT_Scores"],enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],enriching_mutations.iloc[i]["Stability_Mutant_Scores"],enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],enriching_mutations.iloc[i]["DDG_Stability_Scores"], file = Stability_Enrichings)
 	print("Stabilizing enriching mutations are being filtered!")
 	Stability_Enrichings.close()
 	Stability_Depletings.close()
 
+def PSSM_Filter():
+	try:
+		f = open("{}_chain_{}_pssm.csv".format(pdb,chain))
+	except IOError:
+		print("""
+****************************************
+Warning: You didn't enter any PSSM file.
+PSSM filter won't work. 
+****************************************
+	""")
+		time.sleep(2)
+		print("PROT-ON Finished! ツ")
+		time.sleep(1)
+		sys.exit()
+	
+	PSSM_Depletings = open("{}_chain_{}_pssm_depletings".format(pdb,chain),"w")
+	PSSM_Enrichings = open("{}_chain_{}_pssm_enrichings".format(pdb,chain),"w")
+	PSSM_Filter_for_Depletings = open("{}_chain_{}_depletings_pssm".format(pdb,chain),"w")
+	PSSM_Filter_for_Enrichings = open("{}_chain_{}_enrichings_pssm".format(pdb,chain),"w")
+	print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Depletings)
+	print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Enrichings)
+	position = []
+	with open("{}".format(pdb_file),"r") as structure:
+		for line in structure:
+			if line[:4] == "ATOM":
+				if line[21] == chain:
+					psp = line[22:26]
+					position.append(psp)
+	position_starting_point = int(position[0])
+
+	depleting_mutations = pd.read_table("{}_chain_{}_depleting_mutations".format(pdb,chain), sep =" ")
+	enriching_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(pdb,chain), sep =" ")
+	pssm_df = pd.read_csv("{}_chain_{}_pssm.csv".format(pdb,chain),sep = ",")
+
+	for i in range(0,len(depleting_mutations)):
+		mutant_aa = depleting_mutations["Mutation_ID"][i][-1:]
+		wt_aa = depleting_mutations["Mutation_ID"][i][0]
+		seq_number = int(depleting_mutations["Mutation_ID"][i][:-1][2:])
+		pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
+		pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
+		pssm_diff = pssm_mut - pssm_wt
+		print(depleting_mutations.iloc[i]["Mutation_ID"],depleting_mutations.iloc[i]["EvoEF_WT_Scores"],depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
+
+	for i in range(0,len(enriching_mutations)):
+		mutant_aa = enriching_mutations["Mutation_ID"][i][-1:]
+		wt_aa = enriching_mutations["Mutation_ID"][i][0]
+		seq_number = int(enriching_mutations["Mutation_ID"][i][:-1][2:])
+		pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
+		pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
+		pssm_diff = pssm_mut - pssm_wt
+		print(enriching_mutations.iloc[i]["Mutation_ID"],enriching_mutations.iloc[i]["EvoEF_WT_Scores"],enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
+
+	PSSM_Depletings.close()
+	PSSM_Enrichings.close()
+
+	pssm_dep = pd.read_table("{}_chain_{}_pssm_depletings".format(pdb,chain), sep = " ")
+	pssm_enr = pd.read_table("{}_chain_{}_pssm_enrichings".format(pdb,chain), sep = " ")
+
+	print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Filter_for_Depletings)
+	print("Mutation_ID EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Filter_for_Enrichings)
+
+	for i in range(0, len(pssm_dep)):
+		if pssm_dep.iloc[i]["PSSM_diff"] <= 0:
+			print(pssm_dep.iloc[i]["Mutation_ID"],pssm_dep.iloc[i]["EvoEF_WT_Scores"],pssm_dep.iloc[i]["EvoEF_Mutant_Scores"],pssm_dep.iloc[i]["DDG_EvoEF_Scores"],pssm_dep.iloc[i]["PSSM_wt"],pssm_dep.iloc[i]["PSSM_mut"],pssm_dep.iloc[i]["PSSM_diff"], file = PSSM_Filter_for_Depletings)
+	print("Depleting mutations are being filtered according to the PSSM differences!")
+	time.sleep(1)
+
+	for i in range(0, len(pssm_enr)):
+		if pssm_enr.iloc[i]["PSSM_diff"] >= -1:
+			print(pssm_enr.iloc[i]["Mutation_ID"],pssm_enr.iloc[i]["EvoEF_WT_Scores"],pssm_enr.iloc[i]["EvoEF_Mutant_Scores"],pssm_enr.iloc[i]["DDG_EvoEF_Scores"],pssm_enr.iloc[i]["PSSM_wt"],pssm_enr.iloc[i]["PSSM_mut"],pssm_enr.iloc[i]["PSSM_diff"], file = PSSM_Filter_for_Enrichings)
+	print("Enriching mutations are being filtered according to the PSSM differences!")
+	time.sleep(1)
+
+	PSSM_Filter_for_Depletings.close()
+	PSSM_Filter_for_Enrichings.close()
+
+	os.remove("{}_chain_{}_pssm_enrichings".format(pdb,chain))
+	os.remove("{}_chain_{}_pssm_depletings".format(pdb,chain))
+
+	shutil.move("{}_chain_{}_depletings_pssm".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+	shutil.move("{}_chain_{}_enrichings_pssm".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
+
+	
+	
 def main():
 	Plots()
 	Detect_Outliers()
 	Sorted()
 	Stability_Filter()
+	PSSM_Filter()
 	print("PROT-ON Finished! ツ")
 	time.sleep(1)
 	
