@@ -4,11 +4,11 @@ This repo contains the collection of codes to find designer interfacial mutation
   Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses [EvoEF1](https://github.com/tommyhuangthu/EvoEF) to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
 ### PROT-ON Architecture
 <p align="center">
-<img align="center" src="proton_code_architecture.png" alt="proton_code_architecture" width="500" />
+<img align="center" src="proton_code_architecture.png" alt="proton_code_architecture" width = "600" />
 </p>
 
 ### PROT-ON Input
-Protein takes in  applies on a single monomer which should be specified with the related chain id
+Protein takes in  applies on a single monomer which should be specified with the related chain id of a dimer protein structure. PSSM filter is user's request. If you want to use PSSM filter on PROT-ON, please rename your PSSM score file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` format with `,` seperator and move on the main directory.
 ### PROT-ON Output Files
 `proton.py` script with the described [Usage](https://github.com/CSB-KaracaLab/find-designer-mutations/tree/main#usage) generates: 
   * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
@@ -16,9 +16,10 @@ Protein takes in  applies on a single monomer which should be specified with the
   * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
   * **Individual EvoEF1 score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
   * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
-  * **Depleted mutations:** are defined by the positive outliers of box plot, and;
-  * **Enriched mutations:** are defined by the negative outliers of box plot. 
-  * **Heatmap pf PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
+  * **Depleting mutations:** are defined by the positive outliers of box plot, and;
+  * **Enriching mutations:** are defined by the negative outliers of box plot. 
+  * **Filtered mutations:** are defined as positive and negative outliers of box plot by filtering with stability changes or PSSM differences between mutant and wild type.
+  * **Heatmap of PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
@@ -46,15 +47,15 @@ Run the following to generate the executables for running PROT-ON (which can onl
 conda activate
 ```
 ```
-python proton.py <root-pdb-filename> <chainID> 
+python proton.py <pdb-filename> <chainID> 
 
 Example:
 
-python proton.py complex D > proton.log
+python proton.py complex.pdb D > proton.log
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py <root-pdb-filename> <chainID>
+python3 proton.py <pdb-filename> <chainID>
 ```
 ### Usage of individual scripts
 If you want, you can also run the PROT-ON scripts located under `src/` independently. 
