@@ -10,18 +10,19 @@ This repo contains the collection of codes to find designer interfacial mutation
 </p>
 
 ### PROT-ON Input
-Protein takes in  applies on a single monomer which should be specified with the related chain id of a dimer protein structure. PSSM filter is user's request. If you want to use PSSM filter on PROT-ON, please rename your PSSM score file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` format with `,` seperator and move on the main directory.
+PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format) as an input together with the chain ID that should be modified/scanned by the program. If the user would like to incorporate a PSSM-based filter on the predictions, an externally generated PSSM score file (in csv format with the   `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The PSSM scores should be seperated with a comma `,`. An exemplary PSSM file is located in the `example-run` directory.
+
 ### PROT-ON Output Files
 `proton.py` script with the described [Usage](https://github.com/CSB-KaracaLab/find-designer-mutations/tree/main#usage) generates: 
-  * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
+  * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script outputs the pairwise contacts, as **Contact list:**
   * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
+  * **Mutation models:** Generated mutant models modelled by `BuildMutant` command of EvoEF1.
   * **Individual EvoEF1 score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
-  * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
-  * **Depleting mutations:** are defined by the positive outliers of box plot, and;
-  * **Enriching mutations:** are defined by the negative outliers of box plot. 
-  * **Filtered mutations:** are defined as positive and negative outliers of box plot by filtering with stability changes or PSSM differences between mutant and wild type.
+  * **Boxplot of EvoEF1 scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
+  * **Depleting mutations:** are defined by the positive outliers, and;
+  * **Enriching mutations:** are defined by the negative outliers. 
   * **Heatmap of PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
+  * **Filtered mutations:** PSSM-filtered & stability-probed enriching and depleting mutations.
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
@@ -29,7 +30,7 @@ Protein takes in  applies on a single monomer which should be specified with the
 * conda (OR python3)
 ### Python dependencies
 * numpy
-* pandas (**least 1.3.0 version**)
+* pandas (**should be version 1.3.0 or higher**)
 * matplotlib
 * seaborn
 * shutil
