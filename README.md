@@ -10,7 +10,9 @@ This repo contains the collection of codes to find designer interfacial mutation
 </p>
 
 ### PROT-ON Input
-PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format) as an input together with the chain ID that should be modified/scanned by the program. If the user would like to incorporate a PSSM-based filter on the predictions, an externally generated PSSM score file (in csv format with the   `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The PSSM scores should be seperated with a comma `,`. An exemplary PSSM file is located in the `example-run` directory.
+PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format) as an input together with the chain ID that should be modified/scanned by the program. 
+
+If the user would like to incorporate a PSSM-based filter on the predictions, an externally generated PSSM score file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The PSSM scores should be seperated with a comma `,`. An exemplary PSSM file is located in the `example-run` directory. 
 
 ### PROT-ON Output Files
 `proton.py` script with the described [Usage](https://github.com/CSB-KaracaLab/prot-on/tree/main#usage) generates: 
@@ -22,7 +24,7 @@ PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format)
   * **Depleting mutations:** are defined by the positive outliers, and;
   * **Enriching mutations:** are defined by the negative outliers. 
   * **Heatmap of PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
-  * **Filtered mutations:** PSSM-filtered & stability-probed enriching and depleting mutations.
+  * **Filtered mutations:** PSSM-filtered (Enriching mutations: PSSM-score >0 && Depleting mutations: PSSM-score <=0) & stability-probed (uses `ComputeStability` command of EvoEF1, where DDG-stability<0) enriching and depleting mutations.
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
