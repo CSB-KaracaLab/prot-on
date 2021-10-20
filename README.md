@@ -1,8 +1,6 @@
-### PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
-
+# Find Designer Mutations
 This repo contains the collection of codes to find designer interfacial mutations by setting multiple runs with [EvoEF1](https://github.com/tommyhuangthu/EvoEF). 
-
-### Motivation
+### PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
   Protein interactions are essential to any biological process. Therefore, understanding the impact of interfacial mutations on protein-protein interactions is vital. In this work, we present our PROT-ON tool, which uses [EvoEF1](https://github.com/tommyhuangthu/EvoEF) to scan the impact of all possible interfacial mutations. Our tool  performs a statistical analyis on the scanned mutational landscape to present the mostly-enriching and depleting-mutations. All these analyses take a couple minutes on a standard laptop.
 ### PROT-ON Architecture
 <p align="center">
@@ -10,19 +8,18 @@ This repo contains the collection of codes to find designer interfacial mutation
 </p>
 
 ### PROT-ON Input
-PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format) as an input together with the chain ID that should be modified/scanned by the program. If the user would like to incorporate a PSSM-based filter on the predictions, an externally generated PSSM score file (in csv format with the   `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The PSSM scores should be seperated with a comma `,`. An exemplary PSSM file is located in the `example-run` directory.
-
+Protein takes in  applies on a single monomer which should be specified with the related chain id of a dimer protein structure. PSSM filter is user's request. If you want to use PSSM filter on PROT-ON, please rename your PSSM score file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` format with `,` seperator and move on the main directory.
 ### PROT-ON Output Files
 `proton.py` script with the described [Usage](https://github.com/CSB-KaracaLab/find-designer-mutations/tree/main#usage) generates: 
-  * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script outputs the pairwise contacts, as **Contact list:**
+  * **Interface amino acid list:** Interfacial amino acid list (within 5Å cut-off), belonging to the input chain ID, as calculated by `interface_residues.py`. The same script also outputs the pairwise contacts, as **Contact list:**
   * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **Mutation models:** Generated mutant models modelled by `BuildMutant` command of EvoEF1.
+  * **Mutation models:** Generated mutant models modelled by `BuildMutant` of EvoEF1.
   * **Individual EvoEF1 score files:** EvoEF1 binding affinity predictions calculated by `ComputeBinding` of EvoEF1.
-  * **Boxplot of EvoEF1 scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
-  * **Depleting mutations:** are defined by the positive outliers, and;
-  * **Enriching mutations:** are defined by the negative outliers. 
+  * **Boxplot of PROT-ON scores:** All the EvoEF1 binding affinity predictions are analyzed with a boxplot, where;
+  * **Depleting mutations:** are defined by the positive outliers of box plot, and;
+  * **Enriching mutations:** are defined by the negative outliers of box plot. 
+  * **Filtered mutations:** are defined as positive and negative outliers of box plot by filtering with stability changes or PSSM differences between mutant and wild type.
   * **Heatmap of PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
-  * **Filtered mutations:** PSSM-filtered & stability-probed enriching and depleting mutations.
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
@@ -30,7 +27,7 @@ PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format)
 * conda (OR python3)
 ### Python dependencies
 * numpy
-* pandas (**should be version 1.3.0 or higher**)
+* pandas (**least 1.3.0 version**)
 * matplotlib
 * seaborn
 * shutil
@@ -41,9 +38,9 @@ PROT-ON works on dimers. It takes the coordinate file of a dimer (in pdb format)
 git clone https://github.com/CSB-KaracaLab/find-designer-mutations.git
 ```
 ```
-cd find-designer-mutations
+cd prot-on
 ```
-After this, the pre-installed EvoEF folder should be moved into the `find-designer-mutations` directory.
+After this, the pre-installed EvoEF executable should be moved into the `prot-on` directory.
 ### Installation
 Run the following to generate the executables for running PROT-ON (which can only run on Linux or MacOS).
 ```
