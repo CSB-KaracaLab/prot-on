@@ -24,7 +24,7 @@ If the user would like to incorporate a PSSM-based filter on the predictions, an
   * **Depleting mutations:** are defined by the positive outliers, and;
   * **Enriching mutations:** are defined by the negative outliers. 
   * **Heatmap of PROT-ON scores:** All the possible mutation energies are also plotted as a heatmap for visual inspection.
-  * **Filtered mutations:** PSSM-filtered (Enriching mutations: PSSM-score >0 && Depleting mutations: PSSM-score <=0) & stability-probed (uses `ComputeStability` command of EvoEF1, where DDG-stability<0) enriching and depleting mutations.
+  * **Filtered mutations:** PSSM-filtered (Enriching mutations: PSSM-score >=0 && Depleting mutations: PSSM-score <=0) & stability-probed (uses `ComputeStability` command of EvoEF1, where DDG-stability<0) enriching and depleting mutations.
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * gcc
