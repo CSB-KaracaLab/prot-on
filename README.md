@@ -45,7 +45,7 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-After this, the pre-installed EvoEF executable should be moved into the `prot-on` directory.
+After this, the pre-installed EvoEF folder should be moved into the `prot-on` directory.
 ### Installation
 Run the following to generate the executables for running PROT-ON (which can only run on Linux or MacOS).
 ```
