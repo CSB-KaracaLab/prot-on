@@ -188,7 +188,6 @@ def main():
 	shutil.move("{}".format(pdb_file), "../")
 	shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	os.remove("{}_heatmap_mutation_list".format(pdb))
 	t1 = time.time()
 	print("Time elapsed: ", t1-t0, "seconds") 
 	
