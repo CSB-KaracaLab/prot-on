@@ -134,20 +134,21 @@ echo "Files preparing..."
 paste -d ' ' mutants_wt mutant_EvoEF_Scores > all_scores_v1
 paste -d ' ' all_scores_v1 mutant_EvoEF_Stability_Scores > all_scores
 rm mutants_wt
+rm all_scores_v1
 rm mutant_EvoEF_Scores
 rm mutant_EvoEF_Stability_Scores
 awk '{printf "%.2f\n", $4-$2}' all_scores > ddg
 awk '{printf "%.2f\n", $5-$3}' all_scores > ddg_stabilities
-paste -d ' ' heatmap_mutation_list ddg > heatmap_mutation_list_with_ddg_scores
-sort -k1.2n heatmap_mutation_list_with_ddg_scores > heatmap_mutation_list_with_ddg_scores_sorted
-awk 'BEGIN{print "Positions Mutations DDG_EvoEF_Scores"}1' heatmap_mutation_list_with_ddg_scores_sorted >  "$pdb"_heatmap_mutation_list 
 paste -d ' ' all_scores ddg >> proton_scores_v1
 paste -d ' ' proton_scores_v1 ddg_stabilities > proton_scores
-awk 'BEGIN{print "Mutation_ID EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores"}1' proton_scores >  "$pdb"_proton_scores 
+awk '{print $2,$3,$4,$5,$6,$7}' proton_scores > other_scores
+paste -d ' ' heatmap_mutation_list other_scores > heatmap_mutation_list_with_other_scores
+sort -k1.2n heatmap_mutation_list_with_other_scores > heatmap_mutation_list_with_ddg_scores_sorted
+awk 'BEGIN{print "Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores"}1' heatmap_mutation_list_with_ddg_scores_sorted >  "$pdb"_proton_scores 
 rm heatmap_mutation_list
-rm heatmap_mutation_list_with_ddg_scores
+rm heatmap_mutation_list_with_other_scores
+rm other_scores
 rm heatmap_mutation_list_with_ddg_scores_sorted
-rm all_scores_v1
 rm all_scores
 rm ddg
 rm ddg_stabilities
@@ -161,4 +162,3 @@ mv "$pdb"_mutation_models ../"$pdb"_chain_"$2"_output
 mv "$pdb"_individual_score_files ../"$pdb"_chain_"$2"_output
 mv $1 ../src
 mv $3 ../"$pdb"_chain_"$2"_output
-mv "$pdb"_heatmap_mutation_list ../src
