@@ -33,15 +33,10 @@ class StatisticalAnalyze():
         self.chain = sys.argv[2]
         self.PROTON_Scores_File = sys.argv[3]
         self.Scores_File = pd.read_table(self.PROTON_Scores_File, sep = " ")
-        self.pssm_df = pd.read_csv("../example-run/{}_chain_{}_pssm.csv".format(self.pdb,self.chain),sep = ",")
-        self.PSSM_Depletings = open("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain),"w")
-        self.PSSM_Enrichings = open("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain),"w")
         self.Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(self.pdb,self.chain), "w")
         self.Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(self.pdb,self.chain), "w")
         self.Stability_Depletings = open("{}_chain_{}_stabilizing_depleting_mutations".format(self.pdb,self.chain), "w")
         self.Stability_Enrichings = open("{}_chain_{}_stabilizing_enriching_mutations".format(self.pdb,self.chain), "w")
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = self.PSSM_Depletings)
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = self.PSSM_Enrichings)
         print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Positive_Outliers)
         print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Negative_Outliers)
         print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Stability_Depletings)
@@ -100,6 +95,7 @@ class StatisticalAnalyze():
     def PSSM_Filter(self): #filtering mutations by PSSM rule.
         try:
             f = open("../example-run/{}_chain_{}_pssm.csv".format(self.pdb,self.chain))
+            pssm_df = pd.read_csv("../example-run/{}_chain_{}_pssm.csv".format(self.pdb,self.chain),sep = ",")
         except IOError:
             print("""
 ****************************************
@@ -111,6 +107,10 @@ PSSM filter won't work.
             print("PROT-ON Finished! ツ")
             time.sleep(1)
             sys.exit()
+        PSSM_Depletings = open("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain),"w")
+        PSSM_Enrichings = open("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain),"w")
+        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Depletings)
+        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Enrichings)
         position = []
         with open("{}".format(self.pdb_file),"r") as structure:
             for line in structure:
@@ -123,25 +123,25 @@ PSSM filter won't work.
             mutant_aa = self.depleting_mutations["Mutations"][i]
             wt_aa = self.depleting_mutations["Positions"][i][0]
             seq_number = int(self.depleting_mutations["Positions"][i][1:])
-            pssm_wt = self.pssm_df[wt_aa][seq_number-position_starting_point]
-            pssm_mut = self.pssm_df[mutant_aa][seq_number-position_starting_point]
+            pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
+            pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
             pssm_diff = pssm_mut - pssm_wt
             if pssm_diff <= 0:
-                print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["EvoEF_WT_Scores"],self.depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = self.PSSM_Depletings)
+                print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["EvoEF_WT_Scores"],self.depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
         print("Depleting mutations are being filtered by PSSM differences")
-        self.PSSM_Depletings.close()
+        PSSM_Depletings.close()
         time.sleep(1)
         for i in range(0,len(self.enriching_mutations)):
             mutant_aa = self.enriching_mutations["Mutations"][i][-1:]
             wt_aa = self.enriching_mutations["Positions"][i][0]
             seq_number = int(self.enriching_mutations["Positions"][i][1:])
-            pssm_wt = self.pssm_df[wt_aa][seq_number-position_starting_point]
-            pssm_mut = self.pssm_df[mutant_aa][seq_number-position_starting_point]
+            pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
+            pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
             pssm_diff = pssm_mut - pssm_wt
             if pssm_diff >= 0:
-                print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["EvoEF_WT_Scores"],self.enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = self.PSSM_Enrichings)
+                print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["EvoEF_WT_Scores"],self.enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
         print("Enriching mutations are being filtered by PSSM differences")
-        self.PSSM_Enrichings.close()
+        PSSM_Enrichings.close()
         time.sleep(1)
         pssm_dep = pd.read_table("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain),sep = " ")
         pssm_enr = pd.read_table("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain),sep = " ")
