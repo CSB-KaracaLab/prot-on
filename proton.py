@@ -21,11 +21,9 @@ import shutil
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
-    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
-
+	os.system("chmod +x foldx")
 elif platform == "darwin":
-    os.system("chmod +x src/rapid_EvoEF1_PROTON.csh")
-
+	os.system("chmod +x foldx")
 t0 = time.time()
 
 try:
@@ -56,11 +54,6 @@ python proton.py complex.pdb D
 **********************************	
 	""")
 	sys.exit()
-
-try:
-	shutil.move("{}_chain_{}_pssm.csv".format(pdb,chain), "src")
-except:
-	pass
 
 def check_argv():
 	if sys.argv[1] in ["help","h"]:
@@ -98,6 +91,17 @@ Example:
 python proton.py <pdb-file> <chainID>
 python proton.py complex.pdb D
 **********************************	
+		""")
+		sys.exit()
+
+	try:
+		f = open("foldx")
+		r = open("rotabase.txt")
+	except IOError:
+		print("""
+***********************************************************************
+Please move foldx executable or rotabase.txt file in the run directory. 
+***********************************************************************
 		""")
 		sys.exit()
 
@@ -152,44 +156,91 @@ You can clean your file with PDB-Tools. (https://github.com/haddocking/pdb-tools
 		else:
 			pass
 
-InterfaceResidues = "python interface_residues.py {} {}".format(pdb_file,chain) 
-EnergyCalculation = "python energy_calculation.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain)
-DetectOutliers = "python detect_outliers.py {} {} {}_proton_scores".format(pdb_file,chain,pdb)
+algorithms = """
+*****************************************************
+Please select an algorithm that you want to run with.
+
+(1) EvoEF1
+(2) FoldX
+(3) Optimized EvoEF1
+*****************************************************
+"""
 
 def Interface_Residues():
-	 return os.system(InterfaceResidues)
+	 os.system("python interface_residues.py {} {}".format(pdb_file,chain))
 
-def Energy_Calculation():
-	return os.system(EnergyCalculation)
+def FoldXEnergyCalculation():
+	os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
 
-def Detect_Outliers():
-	return os.system(DetectOutliers)
-	
 def main():	
 	check_argv()
-	os.mkdir("{}_chain_{}_output".format(pdb,chain))
 	shutil.move("{}".format(pdb_file), "src")	
 	print("Defining the Interface Residues...")
 	time.sleep(1)
 	os.chdir("src")
 	Interface_Residues()
-	shutil.move("{}_chain_{}_distance_list".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_distance_list".format(pdb), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("heatmap_mutation_list", "../EvoEF")
-	print("Mutant structures and their energies are being calculated ...")
-	time.sleep(3)	
-	Energy_Calculation()
-	Detect_Outliers()
-	shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_proton_scores".format(pdb), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}".format(pdb_file), "../")
-	shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_output".format(pdb,chain))
-	t1 = time.time()
-	print("Time elapsed: ", t1-t0, "seconds") 
-	
+	print(algorithms)
+	while True:
+		query = input("Enter ID number of an algorithm you want to run with (q for exit):")
+		if query == "q":
+			print("Prot-on is ending...")
+			break
+		elif query == "1" or "3":
+			if query == "1":
+				algorithm = "EvoEF"
+			else:
+				algorithm = "Optimized_EvoEF"
+			os.chdir("../")
+			os.mkdir("{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			os.chdir("src")
+			shutil.move("{}_chain_{}_distance_list".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_distance_list".format(pdb), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			print("Mutant structures and their energies are being calculated ...")
+			time.sleep(3)
+			os.system("python energy_calculation_EvoEF.py {} {} {}_chain_{}_mutation_list {}".format(pdb_file,chain,pdb,chain,query))
+			os.system("python detect_outliers.py {} {} {}_proton_scores {}".format(pdb_file,chain,pdb,query))
+			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_proton_scores".format(pdb), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move(pdb_file, "../")
+			shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
+			t1 = time.time()
+			print("Time elapsed: ", t1-t0, "seconds") 
+			sys.exit()
+		elif query == "2":
+			algorithm = "FoldX"
+			os.chdir("../")
+			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,chain))
+			os.chdir("src")
+			shutil.move("{}_chain_{}_distance_list".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_distance_list".format(pdb), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("heatmap_mutation_list", "../")
+			shutil.move("energy_calculation_FoldX.py","../")
+			shutil.move("{}_chain_{}_mutation_list".format(pdb,chain),"../")
+			shutil.move("{}".format(pdb_file),"../")
+			os.chdir("..")
+			print("Mutant structures and their energies are being calculated ...")
+			time.sleep(3)
+			FoldXEnergyCalculation()
+			os.chdir("src")
+			os.system("python detect_outliers.py {} {} {}_proton_scores {}".format(pdb_file,chain,pdb,query))
+			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_proton_scores".format(pdb), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}".format(pdb_file), "../")
+			shutil.move("{}_chain_{}_boxplot.png".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			shutil.move("{}_chain_{}_heatmap.png".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
+			t1 = time.time()
+			print("Time elapsed: ", t1-t0, "seconds") 
+			sys.exit()
+		else:
+			print("You entered wrong ID.")
+			print("Enter the following options",algorithms)
+
 if __name__ == "__main__":
 	main()

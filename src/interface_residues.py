@@ -224,7 +224,7 @@ Please modify your PDB file with a PDBTool.
 			for j in l[0]:
 				for item in aa:
 					if j != item:
-						print(l,item,sep = "",file = mutation_list)
+						print(l,item,";",sep = "",file = mutation_list)
 						m = 1
 						n = l[:m] + l[m+1:] #deleting chain ID for heatmap
 						print(n,item,sep = " ", file = heatmap_mutations)

@@ -32,26 +32,33 @@ class StatisticalAnalyze():
         self.pdb = self.pdb_file[:-4]
         self.chain = sys.argv[2]
         self.PROTON_Scores_File = sys.argv[3]
+        self.query = sys.argv[4]
+        if self.query == "1":
+            self.algorithm = "EvoEF"
+        elif self.query == "3":
+            self.algorithm = "Optimized_EvoEF"
+        else:
+            self.algorithm = "FoldX"
         self.Scores_File = pd.read_table(self.PROTON_Scores_File, sep = " ")
         self.Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(self.pdb,self.chain), "w")
         self.Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(self.pdb,self.chain), "w")
         self.Stability_Depletings = open("{}_chain_{}_stabilizing_depleting_mutations".format(self.pdb,self.chain), "w")
         self.Stability_Enrichings = open("{}_chain_{}_stabilizing_enriching_mutations".format(self.pdb,self.chain), "w")
-        print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Positive_Outliers)
-        print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Negative_Outliers)
-        print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Stability_Depletings)
-        print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores", file = self.Stability_Enrichings)
+        print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm), file = self.Positive_Outliers)
+        print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm), file = self.Negative_Outliers)
+        print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm), file = self.Stability_Depletings)
+        print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm), file = self.Stability_Enrichings)
 
     def Plots(self): #draw boxplot and heatmaps of interfacial mutations
-        ax = sns.boxplot(x = self.Scores_File["DDG_EvoEF_Scores"])
+        ax = sns.boxplot(x = self.Scores_File["DDG_{}_Scores".format(self.algorithm)])
         ax.set_title("Boxplot for chain {} of {}".format(self.chain,self.pdb))
         boxplotfig = ax.get_figure()
         boxplotfig.savefig("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), dpi = 300)
         print("Box plot analysis is being perfomed ...")
         time.sleep(1)
-        pivot_table = self.Scores_File.pivot_table(index="Positions",columns="Mutations",values="DDG_EvoEF_Scores",sort=False)
+        pivot_table = self.Scores_File.pivot_table(index="Positions",columns="Mutations",values="DDG_{}_Scores".format(self.algorithm),sort=False)
         fig, ax = plt.subplots(figsize=(10,10)) 
-        heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True,cbar_kws={'label': 'DDG_EvoEF_Scores'})
+        heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True,cbar_kws={'label': 'DDG_{}_Scores'.format(self.algorithm)})
         heatmap.set_title("Heatmap for chain {} of {}".format(self.chain,self.pdb))
         heatmapfig = heatmap.get_figure()
         heatmapfig.savefig("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), dpi = 300)
@@ -59,20 +66,20 @@ class StatisticalAnalyze():
         time.sleep(1)
 
     def Detect_Outliers(self): #detect positive and negative outliers by IQR rule.
-        Q1 = np.quantile(self.Scores_File["DDG_EvoEF_Scores"], 0.25)
-        Q3 = np.quantile(self.Scores_File["DDG_EvoEF_Scores"], 0.75)
+        Q1 = np.quantile(self.Scores_File["DDG_{}_Scores".format(self.algorithm)], 0.25)
+        Q3 = np.quantile(self.Scores_File["DDG_{}_Scores".format(self.algorithm  )], 0.75)
         IQR = Q3 - Q1
         Upper_Bound = Q3 + (1.5*IQR)
         Lower_Bound = Q1 - (1.5*IQR)
-        print("Positions Mutations EvoEF_WT_Scores Stability_WT_Scores EvoEF_Mutant_Scores Stability_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores")
+        print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm))
         for i in range(0, len(self.Scores_File)):
-            if self.Scores_File.iloc[i]["DDG_EvoEF_Scores"] >= Upper_Bound:
-                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["EvoEF_WT_Scores"],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["EvoEF_Mutant_Scores"],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_EvoEF_Scores"],self.Scores_File.iloc[i]["DDG_Stability_Scores"], file = self.Positive_Outliers)
-                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["EvoEF_WT_Scores"],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["EvoEF_Mutant_Scores"],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_EvoEF_Scores"],self.Scores_File.iloc[i]["DDG_Stability_Scores"])
+            if self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)] >= Upper_Bound:
+                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["DDG_Stability_Scores"], file = self.Positive_Outliers)
+                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["DDG_Stability_Scores"])
         for i in range(0, len(self.Scores_File)):
-            if self.Scores_File.iloc[i]["DDG_EvoEF_Scores"] <= Lower_Bound:
-                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["EvoEF_WT_Scores"],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["EvoEF_Mutant_Scores"],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_EvoEF_Scores"],self.Scores_File.iloc[i]["DDG_Stability_Scores"], file = self.Negative_Outliers)
-                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["EvoEF_WT_Scores"],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["EvoEF_Mutant_Scores"],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_EvoEF_Scores"],self.Scores_File.iloc[i]["DDG_Stability_Scores"])
+            if self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)] <= Lower_Bound:
+                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["DDG_Stability_Scores"], file = self.Negative_Outliers)
+                print(self.Scores_File.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.Scores_File.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_WT_Scores"],self.Scores_File.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["Stability_Mutant_Scores"],self.Scores_File.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.Scores_File.iloc[i]["DDG_Stability_Scores"])
         self.Positive_Outliers.close()
         self.Negative_Outliers.close()
     
@@ -81,12 +88,12 @@ class StatisticalAnalyze():
         self.enriching_mutations = pd.read_table("{}_chain_{}_enriching_mutations".format(self.pdb,self.chain), sep = " ")
         for i in range(0, len(self.depleting_mutations)):
             if self.depleting_mutations.iloc[i]["DDG_Stability_Scores"] < 0:
-                print(self.depleting_mutations.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["EvoEF_WT_Scores"],self.depleting_mutations.iloc[i]["Stability_WT_Scores"],self.depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.depleting_mutations.iloc[i]["Stability_Mutant_Scores"],self.depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"], file = self.Stability_Depletings)
+                print(self.depleting_mutations.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["Stability_WT_Scores"],self.depleting_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["Stability_Mutant_Scores"],self.depleting_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"], file = self.Stability_Depletings)
         print("Stabilizing depleting mutations are being filtered!")
         time.sleep(1)
         for i in range(0, len(self.enriching_mutations)):
             if self.enriching_mutations.iloc[i]["DDG_Stability_Scores"] < 0:
-                print(self.enriching_mutations.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["EvoEF_WT_Scores"],self.enriching_mutations.iloc[i]["Stability_WT_Scores"],self.enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.enriching_mutations.iloc[i]["Stability_Mutant_Scores"],self.enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"], file = self.Stability_Enrichings)
+                print(self.enriching_mutations.iloc[i]["Positions"],self.Scores_File.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["Stability_WT_Scores"],self.enriching_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["Stability_Mutant_Scores"],self.enriching_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"], file = self.Stability_Enrichings)
         print("Stabilizing enriching mutations are being filtered!")
         time.sleep(1)
         self.Stability_Enrichings.close()
@@ -109,8 +116,8 @@ PSSM filter won't work.
             sys.exit()
         PSSM_Depletings = open("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain),"w")
         PSSM_Enrichings = open("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain),"w")
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Depletings)
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff", file = PSSM_Enrichings)
+        print("Positions Mutations {}_WT_Scores {}_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff".format(self.algorithm,self.algorithm,self.algorithm), file = PSSM_Depletings)
+        print("Positions Mutations {}_WT_Scores {}_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff".format(self.algorithm,self.algorithm,self.algorithm), file = PSSM_Enrichings)
         position = []
         with open("{}".format(self.pdb_file),"r") as structure:
             for line in structure:
@@ -127,7 +134,7 @@ PSSM filter won't work.
             pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
             pssm_diff = pssm_mut - pssm_wt
             if pssm_diff <= 0:
-                print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["EvoEF_WT_Scores"],self.depleting_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.depleting_mutations.iloc[i]["DDG_EvoEF_Scores"],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
+                print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
         print("Depleting mutations are being filtered by PSSM differences")
         PSSM_Depletings.close()
         time.sleep(1)
@@ -139,26 +146,26 @@ PSSM filter won't work.
             pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
             pssm_diff = pssm_mut - pssm_wt
             if pssm_diff >= 0:
-                print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["EvoEF_WT_Scores"],self.enriching_mutations.iloc[i]["EvoEF_Mutant_Scores"],self.enriching_mutations.iloc[i]["DDG_EvoEF_Scores"],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
+                print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
         print("Enriching mutations are being filtered by PSSM differences")
         PSSM_Enrichings.close()
         time.sleep(1)
         pssm_dep = pd.read_table("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain),sep = " ")
         pssm_enr = pd.read_table("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain),sep = " ")
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff")
+        print("Positions Mutations {}_WT_Scores {}_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff".format(self.algorithm,self.algorithm,self.algorithm))
         for i in range(0,len(pssm_dep)):
             if pssm_dep["DDG_Stability_Scores"][i] < 0:
-                print(pssm_dep.iloc[i]["Positions"],pssm_dep.iloc[i]["Mutations"],pssm_dep.iloc[i]["EvoEF_WT_Scores"],pssm_dep.iloc[i]["EvoEF_Mutant_Scores"],pssm_dep.iloc[i]["DDG_EvoEF_Scores"],pssm_dep.iloc[i]["DDG_Stability_Scores"],pssm_dep.iloc[i]["PSSM_wt"],pssm_dep.iloc[i]["PSSM_mut"],pssm_dep.iloc[i]["PSSM_diff"])
+                print(pssm_dep.iloc[i]["Positions"],pssm_dep.iloc[i]["Mutations"],pssm_dep.iloc[i]["{}_WT_Scores".format(self.algorithm)],pssm_dep.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],pssm_dep.iloc[i]["DDG_{}_Scores".format(self.algorithm)],pssm_dep.iloc[i]["DDG_Stability_Scores"],pssm_dep.iloc[i]["PSSM_wt"],pssm_dep.iloc[i]["PSSM_mut"],pssm_dep.iloc[i]["PSSM_diff"])
         print("Depleting mutations are being filtered by PSSM and stabilitiy differences")
         time.sleep(1)
-        print("Positions Mutations EvoEF_WT_Scores EvoEF_Mutant_Scores DDG_EvoEF_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff")
+        print("Positions Mutations {}_WT_Scores {}_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff".format(self.algorithm,self.algorithm,self.algorithm))
         for i in range(0,len(pssm_enr)):
             if pssm_enr["DDG_Stability_Scores"][i] < 0:
-                print(pssm_enr.iloc[i]["Positions"],pssm_enr.iloc[i]["Mutations"],pssm_enr.iloc[i]["EvoEF_WT_Scores"],pssm_enr.iloc[i]["EvoEF_Mutant_Scores"],pssm_enr.iloc[i]["DDG_EvoEF_Scores"],pssm_enr.iloc[i]["DDG_Stability_Scores"],pssm_enr.iloc[i]["PSSM_wt"],pssm_enr.iloc[i]["PSSM_mut"],pssm_enr.iloc[i]["PSSM_diff"])
+                print(pssm_enr.iloc[i]["Positions"],pssm_enr.iloc[i]["Mutations"],pssm_enr.iloc[i]["{}_WT_Scores".format(self.algorithm)],pssm_enr.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],pssm_enr.iloc[i]["DDG_{}_Scores".format(self.algorithm)],pssm_enr.iloc[i]["DDG_Stability_Scores"],pssm_enr.iloc[i]["PSSM_wt"],pssm_enr.iloc[i]["PSSM_mut"],pssm_enr.iloc[i]["PSSM_diff"])
         print("Enriching mutations are being filtered by PSSM and stability differences")
         time.sleep(1)
-        shutil.move("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain), "../{}_chain_{}_output".format(self.pdb,self.chain))
-        shutil.move("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain), "../{}_chain_{}_output".format(self.pdb,self.chain))
+        shutil.move("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
 
 def main():
     c = StatisticalAnalyze()
