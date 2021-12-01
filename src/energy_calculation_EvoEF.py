@@ -127,14 +127,14 @@ class EvoEF():
 		self.scoresfile["DDG_Stability_Scores"] = DDGStabilityFormatted
 		self.scoresfile.rename(columns={0:"Positions",1:"Mutations"},inplace=True)
 		self.scoresfile.to_csv("{}_proton_scores_v1".format(self.pdb), index=False, sep = " ")
-		os.system("sort -k1.2n {}_proton_scores_v1 > {}_proton_scores".format(self.pdb,self.pdb))
+		os.system("sort -k1.2n {}_proton_scores_v1 > {}_chain_{}_proton_scores".format(self.pdb,self.pdb,self.chain_id))
 		os.remove("{}_proton_scores_v1".format(self.pdb))
 		os.rename("individual_list.txt","{}_chain_{}_mutation_list".format(self.pdb,self.chain_id))
 		os.system("rm *.fxout")
 		shutil.move("{}_chain_{}_mutation_list".format(self.pdb,self.chain_id),"../{}_chain_{}_{}_output".format(self.pdb,self.chain_id,self.algorithm))
 		shutil.move("{}".format(self.structure),"../src")
 		os.system("rm *.pdb")
-		shutil.move("{}_proton_scores".format(self.pdb),"../src")
+		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id),"../src")
 		if self.query == "3":
 			if platform == "linux" or platform == "linux2":
 				os.chdir("../src")

@@ -30,8 +30,6 @@ If the user would like to incorporate a PSSM-based filter on the predictions, an
 ### System dependencies
 * [EvoEF1](https://github.com/tommyhuangthu/EvoEF)
 * [FoldX](http://foldxsuite.crg.eu/)
-* gcc
-* csh
 * conda (OR python3)
 ### Python dependencies
 * numpy
@@ -95,7 +93,7 @@ python detect_outliers.py <pdb-filename> <chainID> <proton_scores> <algorithm>
 
 Example for optimized EvoEF1:
 
-python detect_outliers.py complex.pdb D cluster1_1_proton_scores 3
+python detect_outliers.py complex.pdb D complex_chain_D_proton_scores 3
 ```
 ## Acknowledgement
 We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project.
