@@ -124,17 +124,20 @@ PSSM filter won't work.
                 if line[:4] == "ATOM":
                     if line[21] == self.chain:
                         psp = line[22:26]
-                        position.append(psp)
-        position_starting_point = int(position[0])
+                        position.append(int(psp))
+        sequence_numbers = np.unique(position) #collect sequence numbers of related chain ID
+        pssm_df["sequence_numbers"] = sequence_numbers #add sequence numbers to pssm file
         for i in range(0,len(self.depleting_mutations)):
             mutant_aa = self.depleting_mutations["Mutations"][i]
             wt_aa = self.depleting_mutations["Positions"][i][0]
             seq_number = int(self.depleting_mutations["Positions"][i][1:])
-            pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
-            pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
-            pssm_diff = pssm_mut - pssm_wt
-            if pssm_diff <= 0:
-                print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
+            for j in range(0,len(pssm_df)):
+                if pssm_df["sequence_numbers"][j] == seq_number:
+                    pssm_wt = pssm_df[wt_aa][j]
+                    pssm_mut = pssm_df[mutant_aa][j]
+                    pssm_diff = pssm_mut - pssm_wt
+                    if pssm_diff <= 0:
+                        print(self.depleting_mutations.iloc[i]["Positions"],self.depleting_mutations.iloc[i]["Mutations"],self.depleting_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.depleting_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Depletings)
         print("Depleting mutations are being filtered by PSSM differences")
         PSSM_Depletings.close()
         time.sleep(1)
@@ -142,11 +145,13 @@ PSSM filter won't work.
             mutant_aa = self.enriching_mutations["Mutations"][i][-1:]
             wt_aa = self.enriching_mutations["Positions"][i][0]
             seq_number = int(self.enriching_mutations["Positions"][i][1:])
-            pssm_wt = pssm_df[wt_aa][seq_number-position_starting_point]
-            pssm_mut = pssm_df[mutant_aa][seq_number-position_starting_point]
-            pssm_diff = pssm_mut - pssm_wt
-            if pssm_diff >= 0:
-                print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
+            for j in range(0,len(pssm_df)):
+                if pssm_df["sequence_numbers"][j] == seq_number:
+                    pssm_wt = pssm_df[wt_aa][j]
+                    pssm_mut = pssm_df[mutant_aa][j]
+                    pssm_diff = pssm_mut - pssm_wt
+                    if pssm_diff >= 0:
+                        print(self.enriching_mutations.iloc[i]["Positions"],self.enriching_mutations.iloc[i]["Mutations"],self.enriching_mutations.iloc[i]["{}_WT_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["{}_Mutant_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_{}_Scores".format(self.algorithm)],self.enriching_mutations.iloc[i]["DDG_Stability_Scores"],pssm_wt,pssm_mut,pssm_diff, file = PSSM_Enrichings)
         print("Enriching mutations are being filtered by PSSM differences")
         PSSM_Enrichings.close()
         time.sleep(1)
