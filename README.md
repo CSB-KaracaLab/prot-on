@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="300" src="https://github.com/CSB-KaracaLab/prot-on/blob/main/logo.png">
+  <img width="300" height="250" src="logo.png">
 </p>
 
 ### PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
