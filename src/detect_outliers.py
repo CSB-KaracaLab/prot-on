@@ -58,7 +58,7 @@ class StatisticalAnalyze():
         time.sleep(1)
         pivot_table = self.Scores_File.pivot_table(index="Positions",columns="Mutations",values="DDG_{}_Scores".format(self.algorithm),sort=False)
         fig, ax = plt.subplots(figsize=(10,10)) 
-        heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True,cbar_kws={'label': 'DDG_{}_Scores'.format(self.algorithm)})
+        heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True, cmap="bwr", center= 0, cbar_kws={'label': 'DDG_{}_Scores'.format(self.algorithm)})
         heatmap.set_title("Heatmap for chain {} of {}".format(self.chain,self.pdb))
         heatmapfig = heatmap.get_figure()
         heatmapfig.savefig("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), dpi = 300)
