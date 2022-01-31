@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="250" src="logo.png">
+  <img width="250" height="150" src="logo.png">
 </p>
 
 ### PROT-ON: Structure-based detection of designer PROTein-protein interface mutatiONs
