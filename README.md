@@ -36,8 +36,7 @@ If the user would like to incorporate a PSSM-based filter on the predictions, an
 ### Python dependencies
 * numpy
 * pandas (**should be version 1.3.0 or higher**)
-* matplotlib
-* seaborn
+* plotly
 * shutil
 * time
 ## Usage

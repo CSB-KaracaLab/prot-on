@@ -176,9 +176,9 @@ Please modify your PDB file with a PDBTool.
 			self.chain_2_coord_float.append([float(ele) for ele in self.chain_2_coord[i]]) 			
 			
 	def FindDistances(self):
-		interaction = open("{}_distance_list".format(pdb), "w")
+		interaction = open("{}_pairwise_distance_list".format(pdb), "w")
 		print("Atom1|AA1|Position1|ChainID1|Atom2|AA2|Position2|ChainID2|Distance", file = interaction)
-		chain_distance = open("{}_chain_{}_distance_list".format(pdb,chain), "w")
+		chain_distance = open("{}_chain_{}_interface_aa_list".format(pdb,chain), "w")
 		for i in np.arange(0,len(self.chain_1),1):
 			for j in np.arange(0,len(self.chain_2),1):
 				distance = ((self.chain_2_coord_float[j][0]-self.chain_1_coord_float[i][0])**2+(self.chain_2_coord_float[j][1]-self.chain_1_coord_float[i][1])**2+(self.chain_2_coord_float[j][2]-self.chain_1_coord_float[i][2])**2)**0.5
@@ -192,9 +192,9 @@ Please modify your PDB file with a PDBTool.
 		interaction.close()
 		chain_distance.close()    
 
-		with open("{}_chain_{}_distance_list".format(pdb,chain)) as result:
+		with open("{}_chain_{}_interface_aa_list".format(pdb,chain)) as result:
 			uniqlines = set(result.readlines())
-			with open("{}_chain_{}_distance_list".format(pdb,chain), 'w') as rmdup:
+			with open("{}_chain_{}_interface_aa_list".format(pdb,chain), 'w') as rmdup:
 				rmdup.writelines(set(uniqlines))
 
 	def ThereToOneCode(self):
@@ -203,7 +203,7 @@ Please modify your PDB file with a PDBTool.
 		'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
 		'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 		
-		with open("{}_chain_{}_distance_list".format(pdb,chain), "r") as int_list:
+		with open("{}_chain_{}_interface_aa_list".format(pdb,chain), "r") as int_list:
 			for line in int_list:
 				seperating = line[:3], line[4], line[5:10]
 				seperating = [x.strip(' ') for x in seperating]

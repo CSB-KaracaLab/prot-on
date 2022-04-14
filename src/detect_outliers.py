@@ -18,9 +18,8 @@ import sys
 import numpy as np
 import pandas as pd
 import time
-import seaborn as sns
-import matplotlib.pyplot as plt
-import os
+import plotly.express as px
+import plotly.graph_objects as go
 import shutil
 
 print("Outlier Detection Process Started ...")
@@ -50,21 +49,49 @@ class StatisticalAnalyze():
         print("Positions Mutations {}_WT_Scores Stability_WT_Scores {}_Mutant_Scores Stability_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores".format(self.algorithm,self.algorithm,self.algorithm), file = self.Stability_Enrichings)
 
     def Plots(self): #draw boxplot and heatmaps of interfacial mutations
-        ax = sns.boxplot(x = self.Scores_File["DDG_{}_Scores".format(self.algorithm)])
-        ax.set_title("Boxplot for chain {} of {}".format(self.chain,self.pdb))
-        boxplotfig = ax.get_figure()
-        boxplotfig.savefig("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), dpi = 300)
+        boxplot = px.box(self.Scores_File, y="DDG_{}_Scores".format(self.algorithm),hover_data=["Positions","Mutations"],template="plotly_white")
+        boxplot.update_layout(title="Distribution of ΔΔG {} Scores".format(self.algorithm),
+            title_x=0.5,
+            yaxis={"title": 'ΔΔG {} Scores'.format(self.algorithm)},
+            xaxis_nticks=len(self.Scores_File["Positions"]))
+        boxplot.write_image("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), format = "png")
+        shutil.move("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        PositionSpecificBP = px.box(self.Scores_File, x="Positions", y="DDG_{}_Scores".format(self.algorithm),color="Positions",hover_data=["Mutations"],template="plotly_white")
+        PositionSpecificBP.update_layout(title="Position Specific Distribution of ΔΔG {} Scores".format(self.algorithm),
+            title_x=0.5,
+            xaxis={"title": 'Positions'},
+            yaxis={"title": 'ΔΔG {} Scores'.format(self.algorithm)},
+            xaxis_nticks=len(self.Scores_File["Positions"]))
+        PositionSpecificBP.write_image("{}_chain_{}_PositionSpecificBoxPlot.png".format(self.pdb,self.chain), format = "png")
+        shutil.move("{}_chain_{}_PositionSpecificBoxPlot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        MutationSpecificBP = px.box(self.Scores_File, x="Mutations", y="DDG_{}_Scores".format(self.algorithm),color="Mutations",hover_data=["Positions"],template="plotly_white")
+        MutationSpecificBP.update_layout(title="Mutation Specific Distribution of ΔΔG {} Scores".format(self.algorithm),
+            title_x=0.5,
+            xaxis={"title": 'Mutations'},
+            yaxis={"title": 'ΔΔG {} Scores'.format(self.algorithm)},
+            xaxis_nticks=len(self.Scores_File["Mutations"]))
+        MutationSpecificBP.write_image("{}_chain_{}_MutationSpecificBoxPlot.png".format(self.pdb,self.chain), format = "png")
+        shutil.move("{}_chain_{}_MutationSpecificBoxPlot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         print("Box plot analysis is being perfomed ...")
         time.sleep(1)
-        pivot_table = self.Scores_File.pivot_table(index="Positions",columns="Mutations",values="DDG_{}_Scores".format(self.algorithm),sort=False)
-        fig, ax = plt.subplots(figsize=(10,10)) 
-        heatmap = sns.heatmap(pivot_table, xticklabels=True, yticklabels=True, cmap="bwr", center= 0, cbar_kws={'label': 'DDG_{}_Scores'.format(self.algorithm)})
-        heatmap.set_title("Heatmap for chain {} of {}".format(self.chain,self.pdb))
-        heatmapfig = heatmap.get_figure()
-        heatmapfig.savefig("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), dpi = 300)
+        fig = go.Figure(go.Heatmap(colorbar={"title": "ΔΔG {} Scores".format(self.algorithm)},
+            z=self.Scores_File["DDG_{}_Scores".format(self.algorithm)],
+            x=self.Scores_File["Mutations"],
+            y=self.Scores_File["Positions"],
+            colorscale="RdBu",
+            zmid=0,
+            hovertemplate='Mutation: %{x}<br>Position: %{y}<br>ΔΔG: %{z}<extra></extra>'))
+        fig.update_layout(title="Heatmap for chain {} of {}".format(self.chain,self.pdb),
+            title_x=0.5,
+            yaxis={"title": 'Positions'},
+            xaxis={"title": 'Mutations'},
+            yaxis_nticks=len(self.Scores_File["Positions"]),
+            width=750, height=750)
+        fig.write_image("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), format = "png")
+        shutil.move("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         print("Heatmap is being generated ...")
         time.sleep(1)
-
+        
     def Detect_Outliers(self): #detect positive and negative outliers by IQR rule.
         Q1 = np.quantile(self.Scores_File["DDG_{}_Scores".format(self.algorithm)], 0.25)
         Q3 = np.quantile(self.Scores_File["DDG_{}_Scores".format(self.algorithm  )], 0.75)
