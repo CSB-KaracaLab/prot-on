@@ -39,6 +39,7 @@ If the user would like to incorporate a PSSM-based filter on the predictions, an
 * plotly
 * shutil
 * time
+* kaleido
 ## Usage
 ### Clone the repository
 ```
