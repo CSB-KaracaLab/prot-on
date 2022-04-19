@@ -38,7 +38,13 @@ class EvoEF():
 		shutil.move(self.mutation_list,"../EvoEF")
 		os.remove("heatmap_mutation_list")
 		os.chdir("../EvoEF")
-		os.system("grep ' {} ' {}.pdb > chain_{}.pdb".format(self.chain_id,self.pdb,self.chain_id))
+		single_chain = open("chain_{}.pdb".format(self.chain_id),"w")
+		with open("{}.pdb".format(self.pdb),"r") as pdb:
+			for line in pdb:
+				if line[:4] == "ATOM":
+					if line[21] == self.chain_id:
+						print(line,file=single_chain,end="")
+		single_chain.close()
 		os.mkdir("../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
 	def BuildMutation(self):
 		os.system("./EvoEF --command=RepairStructure --pdb={}".format(self.structure))
