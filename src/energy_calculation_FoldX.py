@@ -29,7 +29,13 @@ class FoldX():
 	def Preparing(self):
 		self.pdb = self.structure[:-4]
 		os.mkdir("{}_chain_{}_FoldX_output/mutation_models".format(self.pdb,self.chain_id))
-		os.system("grep ' {} ' {} > chain_{}.pdb".format(self.chain_id,self.structure,self.chain_id))
+		single_chain = open("chain_{}.pdb".format(self.chain_id),"w")
+		with open("{}.pdb".format(self.pdb),"r") as pdb:
+			for line in pdb:
+				if line[:4] == "ATOM":
+					if line[21] == self.chain_id:
+						print(line,file=single_chain,end="")
+		single_chain.close()
 	def BuildMutation(self):
 		os.system("./foldx --command=RepairPDB --pdb={}".format(self.structure))
 		os.system("./foldx --command=RepairPDB --pdb=chain_{}.pdb".format(self.chain_id))
