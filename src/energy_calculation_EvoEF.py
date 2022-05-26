@@ -67,8 +67,6 @@ class EvoEF():
 				shutil.move("optimized_weights.py","../../src")
 				os.chdir("../")
 				os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
-				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
 			elif platform == "darwin":
 				os.chdir("../src")
 				shutil.move("optimized_weights.py","../EvoEF/src")
@@ -77,29 +75,33 @@ class EvoEF():
 				shutil.move("optimized_weights.py","../../src")
 				os.chdir("../")
 				os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
-				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
-		else:
-			os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-			os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
+		
 		print("Energies are calculating. Please wait...")
 		for i in range(1,len(self.mutations)+1):
 			if i < 10:
+				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_000{}_WT.pdb > Interaction_{}_WT_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
+				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_000{}_WT.pdb > WT_{}_CS.fxout".format(self.chain_id,i,i))
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_000{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_000{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_000{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
 				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
 			elif 9 < i < 100:
+				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_00{}_WT.pdb > Interaction_{}_WT_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
+				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_00{}_WT.pdb > WT_{}_CS.fxout".format(self.chain_id,i,i))
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_00{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_00{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_00{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
 				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
 			elif 99 < i < 1000:
+				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_0{}_WT.pdb > Interaction_{}_WT_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
+				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_0{}_WT.pdb > WT_{}_CS.fxout".format(self.chain_id,i,i))
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_0{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_0{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_0{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
 				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
 			elif 999 < i < 10000:
+				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_{}_WT.pdb > Interaction_{}_WT_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
+				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_{}_WT.pdb > WT_{}_CS.fxout".format(self.chain_id,i,i))
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
@@ -108,7 +110,7 @@ class EvoEF():
 				for line in scoresfile:
 					if line[:23] == "Total                 =":
 						MutantEvoEFScores.append(float(line[37:43]))
-			with open("WT_CB.fxout") as wtbinding:
+			with open("Interaction_{}_WT_{}_CB.fxout".format(self.pdb,i)) as wtbinding:
 				for line in wtbinding:
 					if line[:23] == "Total                 =":
 						WTEvoEFScores.append(float(line[37:43]))
@@ -116,7 +118,7 @@ class EvoEF():
 				for line in stabilityscore:
 					if line[:23] == "Total                 =":
 						StabilityMutantScores.append(float(line[37:43]))
-			with open("WT_CS.fxout") as wtstability:
+			with open("WT_{}_CS.fxout".format(i)) as wtstability:
 				for line in wtstability:
 					if line[:23] == "Total                 =":
 						StabilityWTScores.append(float(line[37:43]))

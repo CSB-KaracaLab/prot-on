@@ -139,20 +139,7 @@ python interface_residues.py complex.pdb D
 *************************************************************
 				
 """)
-			sys.exit(0)
-
-		for i in self.amino_acids:
-			if i[0] != " ":
-				print("""
-******************************************
-Your PDB file have multiple conformations. 
-Please modify your PDB file with a PDBTool.
-(https://github.com/haddocking/pdb-tools)
-******************************************			
-		""") 
-				sys.exit()
-			else:
-				pass	
+			sys.exit(0)	
 			
 	def PDBParse(self):
 		with open("{}".format(pdb_file), "r") as pdbfile:

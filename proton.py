@@ -143,18 +143,6 @@ We could not find the indicated chain id in your complex!
 				
 """)
 		sys.exit(0)
-		
-	for i in amino_acids:
-		if i[0] != " ":
-			print("""
-**********************************************************************************
-Your PDB file contains multiple occupancies for certain atoms. 
-You can clean your file with PDB-Tools. (https://github.com/haddocking/pdb-tools)
-**********************************************************************************			
-		""") 
-			sys.exit()
-		else:
-			pass
 
 algorithms = """
 *****************************************************
