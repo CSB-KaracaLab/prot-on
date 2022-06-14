@@ -97,10 +97,12 @@ Example for optimized EvoEF1:
 
 python detect_outliers.py complex.pdb D complex_chain_D_proton_scores 3
 ```
+## Web Server
+You can access user friendly web server of PROT-ON in here: http://proton.tools.ibg.edu.tr:8001
 ## Acknowledgement
 We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project.
 ## Bug Report
 If you encounter any problem, you can contact Mehdi or Ezgi via:
 ## Contacts
 * ezgi.karaca@ibg.edu.tr
-* mehdi.kosaca@msfr.ibg.edu.tr
+* mehdi.kosaca@ibg.edu.tr
