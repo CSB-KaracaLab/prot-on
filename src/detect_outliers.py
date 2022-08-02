@@ -120,14 +120,14 @@ class StatisticalAnalyze():
             ))
         fig.update_layout(title="<b>Heatmap for chain {} of {}</b>".format(self.chain,self.pdb),
             title_x=0.5,
-            yaxis={"title": '<b>Positions</b>'},
-            xaxis={"title": '<b>Mutations</b>'},
+            yaxis={"title": 'Positions'},
+            xaxis={"title": 'Mutations'},
             yaxis_nticks=len(heatmap["Positions"]),
             width=800, height=800)
         fig.update_yaxes(tickprefix="<b>",ticksuffix="</b><br>")
         fig.update_xaxes(tickprefix="<b>",ticksuffix="</b><br>")
         fig.write_image("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), format = "png")
-        shutil.move("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), "{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         print("Heatmap is being generated ...")
         time.sleep(1)
         

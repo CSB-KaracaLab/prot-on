@@ -20,11 +20,11 @@ from sys import platform
 if platform == "linux" or platform == "linux2":
 	os.chdir("EvoEF/")
 	os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
-	os.system("../")
+	os.chdir("../")
 elif platform == "darwin":
 	os.chdir("EvoEF/")
 	os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
-	os.system("../")
+	os.chdir("../")
 
 os.system("pip install -r requirements.txt")
 

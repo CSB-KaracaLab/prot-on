@@ -185,7 +185,7 @@ Please select an algorithm that you want to run with.
 """
 
 def Interface_Residues():
-	 os.system("python interface_residues.py {} {} {}".format(pdb_file,chain,IQR))
+	 os.system("python interface_residues.py {} {} {}".format(pdb_file,chain,cut_off))
 
 def FoldXEnergyCalculation():
 	os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
@@ -211,6 +211,10 @@ def main():
 			os.chdir("../")
 			os.mkdir("{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			os.chdir("src")
+			parameters = open("parameters","w")
+			print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameters)
+			parameters.close()
+			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			print("Mutant structures and their energies are being calculated ...")
@@ -232,6 +236,10 @@ def main():
 			os.chdir("../")
 			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,chain))
 			os.chdir("src")
+			parameters = open("parameters","w")
+			print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameters)
+			parameters.close()
+			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("heatmap_mutation_list", "../")
@@ -260,6 +268,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-	parameter = open("parameters","w")
-	print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameter)
-	parameter.close()
