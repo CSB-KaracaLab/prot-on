@@ -25,16 +25,16 @@ try:
 	
 except:
 	print("""
-**********************************
+***************************************************
 Please specify a PDB file 
 		
 Example:
 
-python interface_residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id --cut_off
     		
-python interface_residues.py complex.pdb D
+python interface_residues.py complex.pdb D 5.0
 
-**********************************	
+***************************************************	
 	""")
 	sys.exit()
 	
@@ -42,16 +42,33 @@ try:
 	chain = sys.argv[2]
 except:
 	print("""
-**********************************
+***************************************************
 Please specify a chain ID 
 		
 Example:
 
-python interface_residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id --cut_off
     		
-python interface_residues.py complex.pdb D
+python interface_residues.py complex.pdb D 5.0
 
-**********************************	
+***************************************************	
+	""")
+	sys.exit()
+
+try:
+	IQR = float(sys.argv[3])
+except:
+	print("""
+***************************************************
+Please specify a chain ID 
+		
+Example:
+
+python interface_residues.py --pdb --chain_id --cut_off
+    		
+python interface_residues.py complex.pdb D 5.0
+
+***************************************************	
 	""")
 	sys.exit()
 
@@ -73,21 +90,21 @@ class InterfaceResidues():
 	def check_argv(self):
 		if sys.argv[1] in ["help", "h"]:
 			print("""
-**************************************************
+************************************************************
 Usage:
 
-    python interface_residues.py <pdb> <chain_id>
+    python interface_residues.py <pdb> <chain_id> <cut_off>
     <chain_id>: chain id of interest
     <pdb>: pdb file 
 
 Example:
 
-    python interface_residues.py complex.pdb D
-**************************************************    
+    python interface_residues.py complex.pdb D 5.0
+************************************************************  
 	""")
 			sys.exit()
 			
-		if len(sys.argv) > 3:
+		if len(sys.argv) > 4:
 			print("""
 *****************************************************    
 Too many parameters entered. Please select just 
@@ -95,7 +112,7 @@ a PDB file and a chain!
     
 Example:
 
-python interface_residues.py complex.pdb D
+python interface_residues.py complex.pdb D 5.0
 *****************************************************
 """)
 			sys.exit()
@@ -133,9 +150,9 @@ Please check the chain ID that you interest.
 	
 Example:
 
-python interface_residues.py --pdb --chain_id
+python interface_residues.py --pdb --chain_id --cut_off
     		
-python interface_residues.py complex.pdb D
+python interface_residues.py complex.pdb D 5.0
 *************************************************************
 				
 """)
@@ -169,7 +186,7 @@ python interface_residues.py complex.pdb D
 		for i in np.arange(0,len(self.chain_1),1):
 			for j in np.arange(0,len(self.chain_2),1):
 				distance = ((self.chain_2_coord_float[j][0]-self.chain_1_coord_float[i][0])**2+(self.chain_2_coord_float[j][1]-self.chain_1_coord_float[i][1])**2+(self.chain_2_coord_float[j][2]-self.chain_1_coord_float[i][2])**2)**0.5
-				if distance <= 5.0:
+				if distance <= IQR:
 					print(self.chain_1[i][2],self.chain_1[i][3],self.chain_1[i][5],self.chain_1[i][4],self.chain_2[j][2],self.chain_2[j][3],self.chain_2[j][5],self.chain_2[j][4],distance, file = interaction,sep = "|")
 					print("{} {} {} {} ------- {} {} {} {}  ======  Distance is" .format(self.chain_1[i][2],self.chain_1[i][3],self.chain_1[i][5],self.chain_1[i][4],self.chain_2[j][2],self.chain_2[j][3],self.chain_2[j][5],self.chain_2[j][4]), '%.1f' % distance)
 					if chain == self.chains[0]:

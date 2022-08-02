@@ -31,13 +31,13 @@ try:
 	pdb = pdb_file[:-4] #pdb filename without .pdb extension
 except:
 	print("""
-**********************************
+************************************************************
 Please specify of your PDB file 
 		
 Example:
-python proton.py <pdb-file> <chainID>
-python proton.py complex.pdb D
-**********************************	
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
+python proton.py complex.pdb D 5.0 1.5
+************************************************************	
 	""")
 	sys.exit()
 	
@@ -45,38 +45,68 @@ try:
 	chain = sys.argv[2]
 except:
 	print("""
-**********************************
+************************************************************
 Please specify the relevant chain ID 
 		
 Example:
-python proton.py <pdb-file> <chainID>    		
-python proton.py complex.pdb D
-**********************************	
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
+python proton.py complex.pdb D 5.0 1.5
+************************************************************
+	""")
+	sys.exit()
+
+try:
+	cut_off = float(sys.argv[3])
+except:
+	print("""
+************************************************************
+Please specify a cut off distance to identify an interface
+		
+Example:
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>   		
+python proton.py complex.pdb D 5.0 1.5
+************************************************************	
+	""")
+	sys.exit()
+
+try:
+	IQR = float(sys.argv[4])
+except:
+	print("""
+************************************************************
+Please specify an IQR rule to draw whole data box plot
+		
+Example:
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>   		
+python proton.py complex.pdb D 5.0 1.5
+************************************************************	
 	""")
 	sys.exit()
 
 def check_argv():
 	if sys.argv[1] in ["help","h"]:
 		print("""
-**************************************************
+************************************************************
 Usage:
-    python proton.py <pdb-file> <chainID>
-    <pdb-file>: pdb file
+    python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
+    <pdb-file>: structure file
     <chainID>: chain id of interest
+	<cut_off>: cut-off distance for inteface
+	<IQR>: IQR rule for box plot
 Example:
-    python proton.py complex.pdb D
-**************************************************    
+    python proton.py complex.pdb D 5.0 1.5
+************************************************************    
 	""")
 		sys.exit()
 		
-	if len(sys.argv) > 3:
+	if len(sys.argv) > 5:
 		print("""
-*************************************************
+************************************************************
 Too many input files! Please follow the advised usage:
     
-python proton.py <pdb-filen> <chainID>
-python proton.py complex.pdb D
-*************************************************
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>
+python proton.py complex.pdb D 5.0 1.5
+************************************************************
     	""")
 		sys.exit()
 	
@@ -84,13 +114,13 @@ python proton.py complex.pdb D
 		f = open("{}".format(pdb_file))
 	except IOError:
 		print("""
-**********************************
+************************************************************
 Please specify of your PDB file 
 		
 Example:
-python proton.py <pdb-file> <chainID>
-python proton.py complex.pdb D
-**********************************	
+python proton.py <pdb-file> <chainID> <cut_off> <IQR>
+python proton.py complex.pdb D 5.0 1.5
+************************************************************	
 		""")
 		sys.exit()
 
@@ -155,7 +185,7 @@ Please select an algorithm that you want to run with.
 """
 
 def Interface_Residues():
-	 os.system("python interface_residues.py {} {}".format(pdb_file,chain))
+	 os.system("python interface_residues.py {} {} {}".format(pdb_file,chain,IQR))
 
 def FoldXEnergyCalculation():
 	os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
@@ -186,7 +216,8 @@ def main():
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
 			os.system("python energy_calculation_EvoEF.py {} {} {}_chain_{}_mutation_list {}".format(pdb_file,chain,pdb,chain,query))
-			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {}".format(pdb_file,chain,pdb,chain,query))
+			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
+			os.remove("heatmap_df")
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
@@ -212,7 +243,8 @@ def main():
 			time.sleep(3)
 			FoldXEnergyCalculation()
 			os.chdir("src")
-			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {}".format(pdb_file,chain,pdb,chain,query))
+			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
+			os.remove("heatmap_df")
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
@@ -228,3 +260,6 @@ def main():
 
 if __name__ == "__main__":
 	main()
+	parameter = open("parameters","w")
+	print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameter)
+	parameter.close()

@@ -48,33 +48,33 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-After this, the pre-installed EvoEF folder, foldx executable and rotabase.txt files should be moved into the `prot-on` directory.
+After this, the pre-installed EvoEF folder, foldx executable and rotabase.txt files should be moved into the `prot-on` directory and `setup.py` should be run. according to the [EvoEF1](https://github.com/tommyhuangthu/EvoEF) instruction.
 ### Installation
 Run the following to generate the executables for running PROT-ON (which can only run on Linux or MacOS).
 ```
 conda activate
 ```
 ```
-python proton.py <pdb-filename> <chainID> 
+python proton.py <pdb-filename> <chainID> <cut_off> <IQR>
 
 Example:
 
-python proton.py complex.pdb D > proton.log
+python proton.py complex.pdb D 5.0 1.5> proton.log
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py <pdb-filename> <chainID>
+python3 proton.py <pdb-filename> <chainID> <cut_off> <IQR>
 ```
 ### Usage of individual scripts
 If you want, you can also run the PROT-ON scripts located under `src/` independently. 
 
 As an example, if you are interested only getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
-python inteface_residues.py <pdb-filename> <chainID> 
+python inteface_residues.py <pdb-filename> <chainID> <cut_off> <IQR>
 
 Example:
 
-python inteface_residues.py complex.pdb D
+python inteface_residues.py complex.pdb D 5.0 1.5
 ```
 Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_EvoEF.py` as in:
 ```
@@ -91,11 +91,11 @@ python energy_calculation_FoldX.py complex.pdb D mutation_list 2
 ```
 You can generate boxplot, heatmap, or depleted&enriched mutation list with `detect_outliers.py`:
 ```
-python detect_outliers.py <pdb-filename> <chainID> <proton_scores> <algorithm>
+python detect_outliers.py <pdb-filename> <chainID> <proton_scores> <algorithm> <IQR>
 
 Example for optimized EvoEF1:
 
-python detect_outliers.py complex.pdb D complex_chain_D_proton_scores 3
+python detect_outliers.py complex.pdb D complex_chain_D_proton_scores 3 1.5
 ```
 ## Acknowledgement
 We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project.
