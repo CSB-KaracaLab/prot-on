@@ -158,6 +158,8 @@ class EvoEF():
 				shutil.move("normal_weights.py","../../src")
 				os.chdir("../")
 				os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
+
+
 		else:
 			pass
 

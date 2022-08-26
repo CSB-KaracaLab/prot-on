@@ -28,7 +28,7 @@ class FoldX():
 		self.scoresfile = pd.read_table("heatmap_mutation_list",sep = " ", header = None)
 	def Preparing(self):
 		self.pdb = self.structure[:-4]
-		os.mkdir("{}_chain_{}_FoldX_output/mutation_models".format(self.pdb,self.chain_id))
+		os.mkdir("mutation_models".format(self.pdb,self.chain_id))
 		single_chain = open("chain_{}.pdb".format(self.chain_id),"w")
 		with open("{}.pdb".format(self.pdb),"r") as pdb:
 			for line in pdb:
@@ -45,32 +45,32 @@ class FoldX():
 		StabilityWTScores = []
 		DDGBinding = []
 		DDGStability = []
-		os.rename("{}_chain_{}_mutation_list".format(self.pdb,self.chain_id),"individual_list.txt")
-		os.system("./foldx --command=BuildModel --pdb=chain_{}_Repair.pdb --mutant-file=individual_list.txt".format(self.chain_id))
-		os.system("./foldx --command=BuildModel --pdb={}_Repair.pdb --mutant-file=individual_list.txt".format(self.pdb))
 		for i in range(1,len(self.mutations)+1):
-			os.system("./foldx --command=AnalyseComplex --pdb={}_Repair_{}.pdb".format(self.pdb,i))
-			with open("Interaction_{}_Repair_{}_AC.fxout".format(self.pdb,i),"r") as scoresfile:
+			os.system("echo '{}' > individual_list.txt".format(self.mutations[0][i-1]))
+			os.system("./foldx --command=BuildModel --pdb=chain_{}_Repair.pdb --mutant-file=individual_list.txt".format(self.chain_id))
+			os.system("./foldx --command=BuildModel --pdb={}_Repair.pdb --mutant-file=individual_list.txt".format(self.pdb))
+			os.system("./foldx --command=AnalyseComplex --pdb={}_Repair_1.pdb".format(self.pdb))
+			with open("Interaction_{}_Repair_1_AC.fxout".format(self.pdb),"r") as scoresfile:
 				for line in scoresfile:
 					if line[:2] == "./":
 						score = line.split("\t")
 						MutantFoldXScores.append(float(score[5]))
-			os.rename("{}_Repair_{}.pdb".format(self.pdb,i), "{}_Repair_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
-			shutil.move("{}_Repair_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]),"{}_chain_{}_FoldX_output/mutation_models".format(self.pdb,self.chain_id))
-			os.system("./foldx --command=AnalyseComplex --pdb=WT_{}_Repair_{}.pdb".format(self.pdb,i))
-			with open("Interaction_WT_{}_Repair_{}_AC.fxout".format(self.pdb,i),"r") as scoresfile:
+			os.rename("{}_Repair_1.pdb".format(self.pdb), "{}_Repair_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
+			shutil.move("{}_Repair_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]),"mutation_models".format(self.pdb,self.chain_id))
+			os.system("./foldx --command=AnalyseComplex --pdb=WT_{}_Repair_1.pdb".format(self.pdb))
+			with open("Interaction_WT_{}_Repair_1_AC.fxout".format(self.pdb),"r") as scoresfile:
 				for line in scoresfile:
 					if line[:2] == "./":
 						score = line.split("\t")
 						WTFoldXScores.append(float(score[5]))
-			os.system("./foldx --command=Stability --pdb=chain_{}_Repair_{}.pdb".format(self.chain_id,i))
-			with open("chain_{}_Repair_{}_0_ST.fxout".format(self.chain_id,i)) as Stability_score:
+			os.system("./foldx --command=Stability --pdb=chain_{}_Repair_1.pdb".format(self.chain_id))
+			with open("chain_{}_Repair_1_0_ST.fxout".format(self.chain_id,)) as Stability_score:
 				for line in Stability_score:
 					if line[:2] == "./":
 						score = line.split("\t")
 						StabilityMutantScores.append(float(score[1]))
-			os.system("./foldx --command=Stability --pdb=WT_chain_{}_Repair_{}.pdb".format(self.chain_id,i))
-			with open("WT_chain_{}_Repair_{}_0_ST.fxout".format(self.chain_id,i)) as Stability_score:
+			os.system("./foldx --command=Stability --pdb=WT_chain_{}_Repair_1.pdb".format(self.chain_id))
+			with open("WT_chain_{}_Repair_1_0_ST.fxout".format(self.chain_id,1)) as Stability_score:
 				for line in Stability_score:
 					if line[:2] == "./":
 						score = line.split("\t")
@@ -79,6 +79,7 @@ class FoldX():
 			DDGStability.append(StabilityMutantScores[i-1] - StabilityWTScores[i-1])
 			DDGBindingFormatted = [round(num,2) for num in DDGBinding]
 			DDGStabilityFormatted = [round(num,2) for num in DDGStability]
+			os.system("rm *.fxout")
 		self.scoresfile["FoldX_WT_Scores"] = WTFoldXScores
 		self.scoresfile["FoldX_Mutant_Scores"] = MutantFoldXScores
 		self.scoresfile["Stability_Mutant_Scores"] = StabilityMutantScores
@@ -89,12 +90,12 @@ class FoldX():
 		self.scoresfile.to_csv("{}_proton_scores_v1".format(self.pdb), index=False, sep = " ")
 		os.system("sort -k1.2n {}_proton_scores_v1 > {}_chain_{}_proton_scores".format(self.pdb,self.pdb,self.chain_id))
 		os.remove("{}_proton_scores_v1".format(self.pdb))
-		os.rename("individual_list.txt","{}_chain_{}_mutation_list".format(self.pdb,self.chain_id))
+		os.remove("individual_list.txt")
 		os.system("rm *.fxout")
-		shutil.move("{}_chain_{}_mutation_list".format(self.pdb,self.chain_id),"{}_chain_{}_FoldX_output".format(self.pdb,self.chain_id))
 		shutil.move("{}".format(self.structure),"src")
+		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id), "src")
 		os.system("rm *.pdb")
-		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id),"src")
+
 		
 def main():
 	f = FoldX()

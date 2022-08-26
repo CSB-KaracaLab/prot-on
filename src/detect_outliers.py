@@ -124,7 +124,6 @@ class StatisticalAnalyze():
             xaxis={"title": 'Mutations'},
             yaxis_nticks=len(heatmap["Positions"]),
             width=800, height=800)
-        fig.update_yaxes(tickprefix="<b>",ticksuffix="</b><br>")
         fig.update_xaxes(tickprefix="<b>",ticksuffix="</b><br>")
         fig.write_image("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), format = "png")
         shutil.move("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
@@ -243,7 +242,6 @@ def main():
     c.Plots()
     c.Stability_Filter()
     c.PSSM_Filter()
-    
     print("PROT-ON Finished! ツ")
     time.sleep(1)
 

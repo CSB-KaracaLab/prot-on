@@ -203,7 +203,7 @@ def main():
 		if query == "q":
 			print("Prot-on is ending...")
 			break
-		elif query == "2":
+		if query == "2":
 			algorithm = "FoldX"
 			os.chdir("../")
 			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,chain))
@@ -222,9 +222,10 @@ def main():
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
 			os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
+			shutil.move("energy_calculation_FoldX.py","src/")
 			os.chdir("src")
 			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
-			os.remove("heatmap_df")
+			shutil.move("heatmap_df","../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
 			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
@@ -234,7 +235,7 @@ def main():
 			t1 = time.time()
 			print("Time elapsed: ", t1-t0, "seconds") 
 			sys.exit()
-		elif query == "1" or "3":
+		if query == "1" or "3":
 			if query == "1":
 				algorithm = "EvoEF"
 			else:
@@ -252,7 +253,7 @@ def main():
 			time.sleep(3)
 			os.system("python energy_calculation_EvoEF.py {} {} {}_chain_{}_mutation_list {}".format(pdb_file,chain,pdb,chain,query))
 			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
-			os.remove("heatmap_df")
+			shutil.move("heatmap_df","../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
 			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
