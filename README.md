@@ -8,6 +8,9 @@
 
 PROT-ON’s primary aim is to deliver the most critical PPI mutations, i.e., the designer mutations, that can be used to propose new binders. For this, PROT-ON probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on a selected protein partner, filters the mutational landscape according to stability and/or mutability criteria, and statistically analyzes the final mutation set to propose the most binding enriching and depleting interfacial mutations in less than five minutes.
 
+## Web Server
+This site describes the use of stand-alone version of PROT-ON. If you would like to use our tool as a web service, please visit  http://proton.tools.ibg.edu.tr:8001
+
 ### PROT-ON Architecture
 <p align="center">
 <img align="center" src="proton_code_architecture.png" alt="proton_code_architecture" width = "600" />
@@ -50,10 +53,10 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-After this, the pre-installed EvoEF folder, FoldX executable and rotabase.txt files should be moved into the `prot-on` directory and `setup.py` should be run according to the [EvoEF1](https://github.com/tommyhuangthu/EvoEF) instruction.
+After this, the pre-installed EvoEF folder, FoldX executable and its rotabase.txt should be moved into the `prot-on` directory and `setup.py` should be run according to [EvoEF1](https://github.com/tommyhuangthu/EvoEF) instruction.
 
 ### Installation
-For Linux or MacOS
+For Linux or MacOS:
 ```
 conda activate
 ```
@@ -100,10 +103,10 @@ Example for optimized EvoEF1:
 
 python detect_outliers.py complex.pdb D complex_chain_D_proton_scores 3 1.5
 ```
-## Web Server
-You can access user friendly web server of PROT-ON in here: http://proton.tools.ibg.edu.tr:8001
+
 ## Acknowledgement
-We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture. We also thank Eda Şamiloğlu and Mehmet Ergüven for their contribution to the intial phase of the project. Also big thanks to İrem Yılmazbilek for analyzing the case studies to test the PROT-ON performance to detect the crical positions and mutations. 
+We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture.
+
 ## Bug Report
 If you encounter any problem, you can contact Mehdi or Ezgi via:
 ## Contacts
