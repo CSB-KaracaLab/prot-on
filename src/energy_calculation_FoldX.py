@@ -64,13 +64,13 @@ class FoldX():
 						score = line.split("\t")
 						WTFoldXScores.append(float(score[5]))
 			os.system("./foldx --command=Stability --pdb=chain_{}_Repair_1.pdb".format(self.chain_id))
-			with open("chain_{}_Repair_1_0_ST.fxout".format(self.chain_id,)) as Stability_score:
+			with open("chain_{}_Repair_1_0_ST.fxout".format(self.chain_id),"r") as Stability_score:
 				for line in Stability_score:
 					if line[:2] == "./":
 						score = line.split("\t")
 						StabilityMutantScores.append(float(score[1]))
 			os.system("./foldx --command=Stability --pdb=WT_chain_{}_Repair_1.pdb".format(self.chain_id))
-			with open("WT_chain_{}_Repair_1_0_ST.fxout".format(self.chain_id,1)) as Stability_score:
+			with open("WT_chain_{}_Repair_1_0_ST.fxout".format(self.chain_id),"r") as Stability_score:
 				for line in Stability_score:
 					if line[:2] == "./":
 						score = line.split("\t")

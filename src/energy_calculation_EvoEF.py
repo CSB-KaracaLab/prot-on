@@ -30,9 +30,9 @@ class EvoEF():
 		self.mutations = pd.read_table(self.mutation_list, header = None)
 		self.scoresfile = pd.read_table("heatmap_mutation_list",sep = " ", header = None)
 		if self.query == "1":
-			self.algorithm = "EvoEF"
-		if self.query == "3":
-			self.algorithm = "Optimized_EvoEF"
+			self.algorithm = "EvoEF1"
+		#if self.query == "3":
+		#	self.algorithm = "Optimized_EvoEF"
 	def Preparing(self):
 		shutil.move(self.structure,"../EvoEF")
 		shutil.move(self.mutation_list,"../EvoEF")
@@ -58,30 +58,30 @@ class EvoEF():
 		StabilityWTScores = []
 		DDGBinding = []
 		DDGStability = []
-		if self.query == "3":
-			if platform == "linux" or platform == "linux2":
-				os.chdir("../src")
-				shutil.move("optimized_weights.py","../EvoEF/src")
-				os.chdir("../EvoEF/src")
-				os.system("python optimized_weights.py")
-				shutil.move("optimized_weights.py","../../src")
-				os.chdir("../")
-				os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
-				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
-			elif platform == "darwin":
-				os.chdir("../src")
-				shutil.move("optimized_weights.py","../EvoEF/src")
-				os.chdir("../EvoEF/src")
-				os.system("python optimized_weights.py")
-				shutil.move("optimized_weights.py","../../src")
-				os.chdir("../")
-				os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
-				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
-		else:
-			os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
-			os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
+		#if self.query == "3":
+		#	if platform == "linux" or platform == "linux2":
+		#		os.chdir("../src")
+		#		shutil.move("optimized_weights.py","../EvoEF/src")
+		#		os.chdir("../EvoEF/src")
+		#		os.system("python optimized_weights.py")
+		#		shutil.move("optimized_weights.py","../../src")
+		#		os.chdir("../")
+		#		os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
+		#		os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
+		#		os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
+		#	elif platform == "darwin":
+		#		os.chdir("../src")
+		#		shutil.move("optimized_weights.py","../EvoEF/src")
+		#		os.chdir("../EvoEF/src")
+		#		os.system("python optimized_weights.py")
+		#		shutil.move("optimized_weights.py","../../src")
+		#		os.chdir("../")
+		#		os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
+		#		os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
+		#		os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
+		#else:
+		os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
+		os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
 		print("Energies are calculating. Please wait...")
 		for i in range(1,len(self.mutations)+1):
 			if i < 10:
@@ -141,27 +141,27 @@ class EvoEF():
 		shutil.move("{}".format(self.structure),"../src")
 		os.system("rm *.pdb")
 		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id),"../src")
-		if self.query == "3":
-			if platform == "linux" or platform == "linux2":
-				os.chdir("../src")
-				shutil.move("normal_weights.py","../EvoEF/src")
-				os.chdir("../EvoEF/src")
-				os.system("python normal_weights.py")
-				shutil.move("normal_weights.py","../../src")
-				os.chdir("../")
-				os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
-			elif platform == "darwin":
-				os.chdir("../src")
-				shutil.move("normal_weights.py","../EvoEF/src")
-				os.chdir("../EvoEF/src")
-				os.system("python normal_weights.py")
-				shutil.move("normal_weights.py","../../src")
-				os.chdir("../")
-				os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
+		#if self.query == "3":
+		#	if platform == "linux" or platform == "linux2":
+		#		os.chdir("../src")
+		#		shutil.move("normal_weights.py","../EvoEF/src")
+		#		os.chdir("../EvoEF/src")
+		#		os.system("python normal_weights.py")
+		#		shutil.move("normal_weights.py","../../src")
+		#		os.chdir("../")
+		#		os.system("g++ -O3 --fast-math -o EvoEF src/*.cpp")
+		#	elif platform == "darwin":
+		#		os.chdir("../src")
+		#		shutil.move("normal_weights.py","../EvoEF/src")
+		#		os.chdir("../EvoEF/src")
+		#		os.system("python normal_weights.py")
+		#		shutil.move("normal_weights.py","../../src")
+		#		os.chdir("../")
+		#		os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
 
 
-		else:
-			pass
+		#else:
+		#	pass
 
 def main():
 	f = EvoEF()

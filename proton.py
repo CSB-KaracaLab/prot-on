@@ -19,6 +19,7 @@ import sys
 import time
 import shutil
 from sys import platform
+import argparse
 
 if platform == "linux" or platform == "linux2":
 	os.system("chmod +x foldx")
@@ -27,107 +28,9 @@ elif platform == "darwin":
 t0 = time.time()
 
 try:
-	pdb_file = sys.argv[1]
-	pdb = pdb_file[:-4] #pdb filename without .pdb extension
-except:
-	print("""
-************************************************************
-Please specify of your PDB file 
-		
-Example:
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
-python proton.py complex.pdb D 5.0 1.5
-************************************************************	
-	""")
-	sys.exit()
-	
-try:
-	chain = sys.argv[2]
-except:
-	print("""
-************************************************************
-Please specify the relevant chain ID 
-		
-Example:
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
-python proton.py complex.pdb D 5.0 1.5
-************************************************************
-	""")
-	sys.exit()
-
-try:
-	cut_off = float(sys.argv[3])
-except:
-	print("""
-************************************************************
-Please specify a cut off distance to identify an interface
-		
-Example:
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>   		
-python proton.py complex.pdb D 5.0 1.5
-************************************************************	
-	""")
-	sys.exit()
-
-try:
-	IQR = float(sys.argv[4])
-except:
-	print("""
-************************************************************
-Please specify an IQR rule to draw whole data box plot
-		
-Example:
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>   		
-python proton.py complex.pdb D 5.0 1.5
-************************************************************	
-	""")
-	sys.exit()
-
-def check_argv():
-	if sys.argv[1] in ["help","h"]:
-		print("""
-************************************************************
-Usage:
-    python proton.py <pdb-file> <chainID> <cut_off> <IQR>    		
-    <pdb-file>: structure file
-    <chainID>: chain id of interest
-	<cut_off>: cut-off distance for inteface
-	<IQR>: IQR rule for box plot
-Example:
-    python proton.py complex.pdb D 5.0 1.5
-************************************************************    
-	""")
-		sys.exit()
-		
-	if len(sys.argv) > 5:
-		print("""
-************************************************************
-Too many input files! Please follow the advised usage:
-    
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>
-python proton.py complex.pdb D 5.0 1.5
-************************************************************
-    	""")
-		sys.exit()
-	
-	try:
-		f = open("{}".format(pdb_file))
-	except IOError:
-		print("""
-************************************************************
-Please specify of your PDB file 
-		
-Example:
-python proton.py <pdb-file> <chainID> <cut_off> <IQR>
-python proton.py complex.pdb D 5.0 1.5
-************************************************************	
-		""")
-		sys.exit()
-
-	try:
 		f = open("foldx")
 		r = open("rotabase.txt")
-	except IOError:
+except IOError:
 		print("""
 ***********************************************************************
 Please move foldx executable or rotabase.txt file in the run directory. 
@@ -135,10 +38,105 @@ Please move foldx executable or rotabase.txt file in the run directory.
 		""")
 		sys.exit()
 
+algorithms = """
+*****************************************************
+Please select an algorithm that you want to run with.
+
+(1) EvoEF1
+(2) FoldX
+*****************************************************
+"""
+
+def Interface_Residues(args):
+	 os.system("python interface_residues.py {} {} {}".format(args.pdb,args.chain_ID,args.cut_off))
+
+def main(args):	
+	shutil.move(args.pdb, "src")	
+	print("Defining the Interface Residues...")
+	time.sleep(1)
+	os.chdir("src")
+	Interface_Residues(args)
+	print(algorithms)
+	while True:
+		query = input("Enter ID number of an algorithm you want to run with (q for exit):")
+		if query == "q":
+			print("Prot-on is ending...")
+			break
+		if query == "2":
+			algorithm = "FoldX"
+			os.chdir("../")
+			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			os.chdir("src")
+			parameters = open("parameters","w")
+			print("cut_off:{} IQR:{}".format(args.cut_off,args.IQR),file=parameters)
+			parameters.close()
+			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("heatmap_mutation_list", "../")
+			shutil.move("energy_calculation_FoldX.py","../")
+			shutil.move("{}_chain_{}_mutation_list".format(pdb,args.chain_ID),"../")
+			shutil.move(args.pdb,"../")
+			os.chdir("..")
+			print("Mutant structures and their energies are being calculated ...")
+			time.sleep(3)
+			os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(args.pdb,args.chain_ID,pdb,args.chain_ID))
+			shutil.move("energy_calculation_FoldX.py","src/")
+			os.chdir("src")
+			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,query,args.IQR))
+			shutil.move("heatmap_df","../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}_chain_{}_proton_scores".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
+			shutil.move("{}.pdb".format(pdb), "../")
+			t1 = time.time()
+			print("Time elapsed: ", t1-t0, "seconds") 
+			sys.exit()
+		if query == "1":
+			#if query == "1":
+			algorithm = "EvoEF1"
+			#else:
+			#	algorithm = "Optimized_EvoEF"
+			os.chdir("../")
+			os.mkdir("{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			os.chdir("src")
+			parameters = open("parameters","w")
+			print("cut_off:{} IQR:{}".format(args.cut_off,args.IQR),file=parameters)
+			parameters.close()
+			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			print("Mutant structures and their energies are being calculated ...")
+			time.sleep(3)
+			os.system("python energy_calculation_EvoEF.py {} {} {}_chain_{}_mutation_list {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,query))
+			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,query,args.IQR))
+			shutil.move("heatmap_df","../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}_chain_{}_proton_scores".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,algorithm))
+			shutil.move("{}.pdb".format(pdb), "../")
+			t1 = time.time()
+			print("Time elapsed: ", t1-t0, "seconds") 
+			sys.exit()	
+		else:
+			print("You entered wrong ID.")
+			print("Enter the following options",algorithms)
+
+if __name__ == "__main__":
+	parser = argparse.ArgumentParser(description='PROT-ON')
+	parser.add_argument("--pdb", type=str, default="complex.pdb", help="dimer complex")
+	parser.add_argument("--chain_ID", type=str, default="D", help="chain ID of interest")
+	parser.add_argument("--cut_off", type=float, default=5.0, help="cut-off distance for defining the interface")
+	parser.add_argument("--IQR", type=float, default=1.5, help="IQR range to define the outliers of box-and-whisker plot")
+	args = parser.parse_args()
 	chains = []	
 	unique_chains = []
 	amino_acids = []
-	with open("{}".format(pdb_file), "r") as pdbfile:
+	with open(args.pdb, "r") as pdbfile:
 		for line in pdbfile:
 			if line[:4] == "ATOM":
 				chains.append(line[21])
@@ -161,9 +159,9 @@ PROT-ON works only with dimers! Please isolate the relevant dimer from your comp
 	chain1 = unique_chains[0]
 	chain2 = unique_chains[1]
 	
-	if chain == chain1:
+	if args.chain_ID == chain1:
 		pass
-	elif chain == chain2:
+	elif args.chain_ID == chain2:
 		pass
 	else:
 		print("""
@@ -174,98 +172,5 @@ We could not find the indicated chain id in your complex!
 """)
 		sys.exit(0)
 
-algorithms = """
-*****************************************************
-Please select an algorithm that you want to run with.
-
-(1) EvoEF1
-(2) FoldX
-(3) Optimized EvoEF1
-*****************************************************
-"""
-
-def Interface_Residues():
-	 os.system("python interface_residues.py {} {} {}".format(pdb_file,chain,cut_off))
-
-def FoldXEnergyCalculation():
-	os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
-
-def main():	
-	check_argv()
-	shutil.move("{}".format(pdb_file), "src")	
-	print("Defining the Interface Residues...")
-	time.sleep(1)
-	os.chdir("src")
-	Interface_Residues()
-	print(algorithms)
-	while True:
-		query = input("Enter ID number of an algorithm you want to run with (q for exit):")
-		if query == "q":
-			print("Prot-on is ending...")
-			break
-		if query == "2":
-			algorithm = "FoldX"
-			os.chdir("../")
-			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,chain))
-			os.chdir("src")
-			parameters = open("parameters","w")
-			print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameters)
-			parameters.close()
-			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("heatmap_mutation_list", "../")
-			shutil.move("energy_calculation_FoldX.py","../")
-			shutil.move("{}_chain_{}_mutation_list".format(pdb,chain),"../")
-			shutil.move("{}".format(pdb_file),"../")
-			os.chdir("..")
-			print("Mutant structures and their energies are being calculated ...")
-			time.sleep(3)
-			os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(pdb_file,chain,pdb,chain))
-			shutil.move("energy_calculation_FoldX.py","src/")
-			os.chdir("src")
-			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
-			shutil.move("heatmap_df","../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}_chain_{}_proton_scores".format(pdb,chain), "../{}_chain_{}_FoldX_output".format(pdb,chain))
-			shutil.move("{}".format(pdb_file), "../")
-			t1 = time.time()
-			print("Time elapsed: ", t1-t0, "seconds") 
-			sys.exit()
-		if query == "1" or "3":
-			if query == "1":
-				algorithm = "EvoEF"
-			else:
-				algorithm = "Optimized_EvoEF"
-			os.chdir("../")
-			os.mkdir("{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			os.chdir("src")
-			parameters = open("parameters","w")
-			print("cut_off:{} IQR:{}".format(cut_off,IQR),file=parameters)
-			parameters.close()
-			shutil.move("parameters", "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_interface_aa_list".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_pairwise_distance_list".format(pdb), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			print("Mutant structures and their energies are being calculated ...")
-			time.sleep(3)
-			os.system("python energy_calculation_EvoEF.py {} {} {}_chain_{}_mutation_list {}".format(pdb_file,chain,pdb,chain,query))
-			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(pdb_file,chain,pdb,chain,query,IQR))
-			shutil.move("heatmap_df","../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_stabilizing_depleting_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_stabilizing_enriching_mutations".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move("{}_chain_{}_proton_scores".format(pdb,chain), "../{}_chain_{}_{}_output".format(pdb,chain,algorithm))
-			shutil.move(pdb_file, "../")
-			t1 = time.time()
-			print("Time elapsed: ", t1-t0, "seconds") 
-			sys.exit()	
-		else:
-			print("You entered wrong ID.")
-			print("Enter the following options",algorithms)
-
-if __name__ == "__main__":
-	main()
+	pdb = args.pdb[:-4] #pdb filename without .pdb extension
+	main(args)
