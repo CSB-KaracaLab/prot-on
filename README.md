@@ -3,11 +3,6 @@
 </p>
 
 ### PROT-ON: A Structure- and Statistics-Based Detection of Designer PROTein Interface MutatiONs
-<<<<<<< HEAD
-
-This repo contains the collection of codes to find designer interfacial mutations by setting multiple runs with [EvoEF1](https://github.com/tommyhuangthu/EvoEF). 
-=======
->>>>>>> 0abc4416d5f2aace629c64563dc9791bbd336c4a
 
 ### Motivation
 
