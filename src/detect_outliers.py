@@ -86,7 +86,9 @@ class StatisticalAnalyze():
             font=dict(family='Times New Roman', size=20, color='black'))
         boxplot.update_yaxes(tickprefix="<b>",ticksuffix ="</b><br>")
         boxplot.write_image("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), format = "png")
+        boxplot.write_image("{}_chain_{}_boxplot.svg".format(self.pdb,self.chain))
         shutil.move("{}_chain_{}_boxplot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_boxplot.svg".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         PositionSpecificBP = px.box(self.Scores_File, x="Positions", y="DDG_{}_Scores".format(self.algorithm),color="Positions",hover_data=["Mutations"],template="plotly_white")
         PositionSpecificBP.update_layout(title="Position Specific Distribution of {} ΔΔG Scores".format(self.algorithm),
             title_x=0.5,
@@ -95,7 +97,9 @@ class StatisticalAnalyze():
             showlegend=False,
             xaxis_nticks=len(self.Scores_File["Positions"]))
         PositionSpecificBP.write_image("{}_chain_{}_PositionSpecificBoxPlot.png".format(self.pdb,self.chain), format = "png")
+        PositionSpecificBP.write_image("{}_chain_{}_PositionSpecificBoxPlot.svg".format(self.pdb,self.chain))
         shutil.move("{}_chain_{}_PositionSpecificBoxPlot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_PositionSpecificBoxPlot.svg".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         MutationSpecificBP = px.box(self.Scores_File, x="Mutations", y="DDG_{}_Scores".format(self.algorithm),color="Mutations",hover_data=["Positions"],template="plotly_white")
         MutationSpecificBP.update_layout(title="Residue Specific Distribution of {} ΔΔG Scores".format(self.algorithm),
             title_x=0.5,
@@ -104,7 +108,9 @@ class StatisticalAnalyze():
             showlegend=False,
             xaxis_nticks=len(self.Scores_File["Mutations"]))
         MutationSpecificBP.write_image("{}_chain_{}_ResidueSpecificBoxPlot.png".format(self.pdb,self.chain), format = "png")
+        MutationSpecificBP.write_image("{}_chain_{}_ResidueSpecificBoxPlot.svg".format(self.pdb,self.chain))
         shutil.move("{}_chain_{}_ResidueSpecificBoxPlot.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_ResidueSpecificBoxPlot.svg".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         print("Box plot analysis is being perfomed ...")
         time.sleep(1)
         heatmap = pd.read_table("heatmap_df",sep = " ")
@@ -128,7 +134,9 @@ class StatisticalAnalyze():
             width=800, height=800)
         fig.update_xaxes(tickprefix="<b>",ticksuffix="</b><br>")
         fig.write_image("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), format = "png")
+        fig.write_image("{}_chain_{}_heatmap.svg".format(self.pdb,self.chain))
         shutil.move("{}_chain_{}_heatmap.png".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        shutil.move("{}_chain_{}_heatmap.svg".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         print("Heatmap is being generated ...")
         time.sleep(1)
         
