@@ -60,7 +60,7 @@ For Linux or MacOS:
 conda activate
 ```
 ```
-python proton.py -pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
+python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
 
 Example:
 
@@ -68,7 +68,7 @@ python proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5> proton.
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py -pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot
+python3 proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot
 ```
 ### Usage of individual scripts
 If you want, you can also run the PROT-ON scripts located under `src/` independently. 
