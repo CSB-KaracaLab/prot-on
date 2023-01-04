@@ -52,7 +52,7 @@ conda activate
 ```
 PROT-ON works on the coordinates of protein dimers. It takes the PDB file of a dimer as an input together with the chain ID that will be modified/scanned. We are providing an input `complex.pdb` file in the main distribution folder of PROT-ON, which can be used for testing purposes. The output files for this complex are provided in the `example-run` directory.
 
-If the user would like to incorporate evolutionary information, s/he can also impose a PSSM-based filter on the predictions. For this, an externally generated PSSM file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The external PSSM file, which can be obtained from https://possum.erc.monash.edu/server.jsp should be seperated with a comma `,`. An exemplary PSSM file can be found in the `example-run` directory. 
+If the user would like to incorporate evolutionary information, s/he can also impose a PSSM-based filter on the predictions. For this, an externally generated PSSM file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The external PSSM file, which can be obtained from https://possum.erc.monash.edu/server.jsp should be seperated with a comma `,`. 
 
 !! All prot-on commands should be run in the cloned prot-on folder !!
 ```
