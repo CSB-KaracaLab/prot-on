@@ -26,7 +26,7 @@ try:
 except:
 	print("""
 ***************************************************
-Please specify a PDB file 
+Please specify the input PDB file
 		
 Example:
 
@@ -43,7 +43,7 @@ try:
 except:
 	print("""
 ***************************************************
-Please specify a chain ID 
+Please specify the chain ID of interest
 		
 Example:
 
@@ -60,7 +60,7 @@ try:
 except:
 	print("""
 ***************************************************
-Please specify a chain ID 
+Please specify the interface cut-off
 		
 Example:
 
@@ -94,8 +94,9 @@ class InterfaceResidues():
 Usage:
 
     python interface_residues.py <pdb> <chain_id> <cut_off>
-    <chain_id>: chain id of interest
     <pdb>: pdb file 
+    <chain_id>: chain id of interest
+    <cut_off>: treshold in A to define an interface
 
 Example:
 
@@ -107,8 +108,7 @@ Example:
 		if len(sys.argv) > 4:
 			print("""
 *****************************************************    
-Too many parameters entered. Please select just 
-a PDB file and a chain!
+Too many input parameters entered. Please revisit your input definition!
     
 Example:
 
@@ -130,7 +130,7 @@ python interface_residues.py complex.pdb D 5.0
 		if len(self.unique_chains) != 2:
 			print("""
 **********************************
-PROT-ON work with only dimers.
+PROT-ON works only with dimers.
 Please provide a dimer structure. 
 **********************************	
 			""")
@@ -146,7 +146,7 @@ Please provide a dimer structure.
 		else:
 			print("""
 *************************************************************
-Please check the chain ID that you interest. 
+Please check the chain ID of your interest. 
 	
 Example:
 

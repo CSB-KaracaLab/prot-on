@@ -20,23 +20,22 @@ import time
 import shutil
 from sys import platform
 import argparse
-
-if platform == "linux" or platform == "linux2":
-	os.system("chmod +x foldx")
-elif platform == "darwin":
-	os.system("chmod +x foldx")
+# if platform == "linux" or platform == "linux2":
+# 	os.system("chmod +x foldx")
+# elif platform == "darwin":
+# 	os.system("chmod +x foldx")
 t0 = time.time()
 
-try:
-		f = open("foldx")
-		r = open("rotabase.txt")
-except IOError:
-		print("""
-***********************************************************************
-Please move foldx executable or rotabase.txt file in the run directory. 
-***********************************************************************
-		""")
-		sys.exit()
+# try:
+# 		f = open("foldx")
+# 		r = open("rotabase.txt")
+# except IOError:
+# 		print("""
+# ***********************************************************************
+# Please move foldx executable or rotabase.txt file in the run directory. 
+# ***********************************************************************
+# 		""")
+# 		sys.exit()
 
 algorithms = """
 *****************************************************

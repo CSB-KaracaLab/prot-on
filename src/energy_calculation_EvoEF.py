@@ -82,7 +82,7 @@ class EvoEF():
 		#else:
 		os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair.pdb > WT_CB.fxout".format(self.pdb))
 		os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair.pdb > WT_CS.fxout".format(self.chain_id))
-		print("Energies are calculating. Please wait...")
+		print("Energies are being calculating. Please wait...")
 		for i in range(1,len(self.mutations)+1):
 			if i < 10:
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_000{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
@@ -124,7 +124,7 @@ class EvoEF():
 			DDGStability.append(StabilityMutantScores[i-1] - StabilityWTScores[i-1])
 			DDGBindingFormatted = [round(num,2) for num in DDGBinding]
 			DDGStabilityFormatted = [round(num,2) for num in DDGStability]
-		print("Files are preparing...")
+		print("Files are being prepared...")
 		self.scoresfile["{}_WT_Scores".format(self.algorithm)] = WTEvoEFScores
 		self.scoresfile["{}_Mutant_Scores".format(self.algorithm)] = MutantEvoEFScores
 		self.scoresfile["Stability_Mutant_Scores"] = StabilityMutantScores
