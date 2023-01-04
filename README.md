@@ -2,11 +2,11 @@
   <img width="250" height="150" src="logo.png">
 </p>
 
-### PROT-ON: A Structure- and Statistics-Based Detection of Designer PROTein Interface MutatiONs
+### PROT-ON: A Structure-Based Detection of Designer PROTein Interface MutatiONs
 
 ### Motivation
 
-PROT-ON’s primary aim is to deliver the most critical PPI mutations, i.e., the designer mutations, that can be used to propose new binders. For this, PROT-ON probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on a selected protein partner, filters the mutational landscape according to stability and/or mutability criteria, and statistically analyzes the final mutation set to propose the most binding enriching and depleting interfacial mutations in less than five minutes.
+PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein partner. The probed mutational landscape is then filtered  the according to stability and/or mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
 
 ## Web Server
 This site describes the use of stand-alone version of PROT-ON. If you would like to use our tool as a web service, please visit  http://proton.tools.ibg.edu.tr:8001
