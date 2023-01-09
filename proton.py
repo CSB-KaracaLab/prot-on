@@ -49,8 +49,12 @@ Please select an algorithm that you want to run with.
 def Interface_Residues(args):
 	 os.system("python interface_residues.py {} {} {}".format(args.pdb,args.chain_ID,args.cut_off))
 
-def main(args):	
-	shutil.move(args.pdb, "src")	
+def main(args):
+	os.system("cp -rf {} src".format(args.pdb))
+	os.system("cp -rf src results")
+	os.system("cp -rf EvoEF results")
+	os.chdir("results")
+	#shutil.copy(args.pdb, "src")
 	print("Defining the Interface Residues...")
 	time.sleep(1)
 	os.chdir("src")
@@ -63,7 +67,11 @@ def main(args):
 			break
 		if query == "2":
 			algorithm = "FoldX"
-			os.chdir("../")
+			os.chdir("../../")
+			os.system("cp -rf foldx results")
+			os.system("cp -rf rotabase.txt results")
+			os.chdir("results")
+			os.system("rm -rf {}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
 			os.mkdir("{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
 			os.chdir("src")
 			parameters = open("parameters","w")
@@ -75,7 +83,7 @@ def main(args):
 			shutil.move("heatmap_mutation_list", "../")
 			shutil.move("energy_calculation_FoldX.py","../")
 			shutil.move("{}_chain_{}_mutation_list".format(pdb,args.chain_ID),"../")
-			shutil.move(args.pdb,"../")
+			os.system("cp -r {} ../".format(args.pdb))
 			os.chdir("..")
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
