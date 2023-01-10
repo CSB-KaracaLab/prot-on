@@ -19,7 +19,7 @@ This site describes the use of stand-alone version of PROT-ON. If you would like
 ## Usage
 
 ### System dependencies
-* conda (OR python3)
+* python3 (which could be obtained through conda)
 * [FoldX](http://foldxsuite.crg.eu/) (optional)
 
 ### Python dependencies
@@ -37,13 +37,16 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-In the `prot-on` folder, you will find the source files to run EvoEF1 (January 2021 version). The installation of EvoEF1 requires running of `setup.py`, which is also located in `prot-on`.
+In the `prot-on` folder, you will find the source files to run EvoEF1 (January 2021 version). For installing of the python requirements, as well as EvoEF1, you should run `setup.py`, located in `prot-on` folder. 
 
 ```
 python setup.py
 ```
-
-To run FoldX, its executable and its rotabase.txt should be moved into the `prot-on` directory.
+If you call python3 independently (not through conda), then you should
+```
+python3 setup.py
+```
+To run FoldX, its executable (foldx) and its rotabase.txt should be moved into the `prot-on` directory.
 
 ### To Run PROT-ON
 For Linux or MacOS:
@@ -55,6 +58,7 @@ PROT-ON works on the coordinates of protein dimers. It takes the PDB file of a d
 If the user would like to incorporate evolutionary information, s/he can also impose a PSSM-based filter on the predictions. For this, an externally generated PSSM file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The external PSSM file, which can be obtained from https://possum.erc.monash.edu/server.jsp should be seperated with a comma `,`. 
 
 !! All prot-on commands should be run in the cloned prot-on folder !!
+
 ```
 python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
 
