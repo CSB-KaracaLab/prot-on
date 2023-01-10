@@ -6,10 +6,10 @@
 
 ### Motivation
 
-PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein partner. The probed mutational landscape is then filtered  the according to stability and/or mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
+PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein monomer. The probed mutational landscape is then filtered according to the stability and optionally to the mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
 
 ## Web Server
-This site describes the use of stand-alone version of PROT-ON. If you would like to use our tool as a web service, please visit http://proton.tools.ibg.edu.tr:8001
+This site describes the use of stand-alone version of PROT-ON, which is tested on Linux and MacOS systems. If you would like to use our tool through our web service, please visit http://proton.tools.ibg.edu.tr:8001
 
 ### PROT-ON Architecture
 <p align="center">
@@ -19,15 +19,13 @@ This site describes the use of stand-alone version of PROT-ON. If you would like
 ## Usage
 
 ### System dependencies
-* python3 OR conda (we made the test with version 4.10)
+* python3 OR conda (version 4.10 or higher)
 * [FoldX](http://foldxsuite.crg.eu/) (optional)
 
-### Python dependencies
+### Python dependencies (also listed in requirements.txt)
 * numpy
 * pandas (**should be version 1.3.0 or higher**)
 * plotly
-* shutil
-* time
 * kaleido
 
 ### Clone the repository
@@ -37,28 +35,26 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-In the `prot-on` folder, you will find the source files to run EvoEF1 (January 2021 version). For installing of the python requirements, as well as EvoEF1, you should run `setup.py`, located in `prot-on` folder. 
+In the `prot-on` folder, you will find the `setup.py`, which will set the stage to run PROT-ON. As the first thing, if you use conda, please execute:
 
 ```
+conda activate
 python setup.py
 ```
-If you call python3 independently (not through conda), then you should
+or if you use python3 independently, please execute:
 ```
 python3 setup.py
 ```
-To run FoldX, its executable (foldx) and its rotabase.txt should be moved into the `prot-on` directory.
+As a result of running setup.py, PROT-ON will be ready to perform the mutation scan with EvoEF1. 
 
 ### To Run PROT-ON
-For Linux or MacOS:
-```
-conda activate
-```
-PROT-ON works on the coordinates of protein dimers. It takes the PDB file of a dimer as an input together with the chain ID that will be modified/scanned. We are providing an input `complex.pdb` file in the main distribution folder of PROT-ON, which can be used for testing purposes. The output files for this complex are provided in the `example-run` directory.
+* Must: Please locate your complex pdb file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
 
-If the user would like to incorporate evolutionary information, s/he can also impose a PSSM-based filter on the predictions. For this, an externally generated PSSM file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The external PSSM file, which can be obtained from https://possum.erc.monash.edu/server.jsp should be seperated with a comma `,`. 
+* Optional: If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable, i.e. `foldx`, and `rotabase.txt` in the `prot-on` folder.
 
-!! All prot-on commands should be run in the cloned prot-on folder !!
+* Optional: If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
+* After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
 python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
 
@@ -68,7 +64,8 @@ python proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot
+python3 proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5
+
 ```
 
 ### PROT-ON Output Files
