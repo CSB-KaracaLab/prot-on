@@ -60,28 +60,30 @@ python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest>
 
 Example:
 
-python proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5
+python proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5
-
+python3 proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
 
 ### PROT-ON Output Files
-`proton.py` script generates a folder named as `PDBID_chainID_algorithm_output`, containing: 
-  * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off), belonging to the input chain ID, calculated by `interface_residues.py`. The same script outputs the pairwise contacts, as **Pairwise distance list**
-  * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **Mutation models:** Generated mutant models modelled by `BuildMutant` command of EvoEF1 or `BuildModel` command of FoldX.
-  * **Individual EvoEF1/FoldX files:** EvoEF1/FoldX binding affinity predictions calculated by `ComputeBinding` of EvoEF1 or `AnalyseComplex` of FoldX.
-  * **Boxplot of EvoEF1/FoldX scores:** All EvoEF1/FoldX binding affinity predictions are analyzed with the box-whisker statistics, where;
-  * **Depleting mutations:** are defined by the positive outliers, and;
-  * **Enriching mutations:** are defined by the negative outliers. 
-  * **Heatmap of PROT-ON scores:** All possible mutation energies are plotted as a heatmap for visual inspection.
-  * **Filtered mutations:** Stability-filtered (uses `ComputeStability` command of EvoEF1 or `Stability` command of FoldX, where DDG-stability<0) enriching and depleting mutations and optionally PSSM-filtered (Enriching mutations with PSSM-score >0 && Depleting mutations with PSSM-score <=0).
+When PROT-ON is finished, you can find your output files in the `results/PDBID_chainID_output` folder. In this folder, as given in the `example-output` folder, you will find: 
+  * **parameters:** Containing the define interface cut-off and IQR range.
+  * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off). This file corresponds to `complex_chain_D_interface_aa_list` in the `example-output` folder.
+  * **Pairwise inter-monomeric distance list**: `complex_pairwise_distance_list` as given in the `example-output` folder.
+  * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid). `complex_chain_D_mutation_list` as given in the `example-output` folder.
+  * **Mutation models:** The folder containing all the generated mutant structures. 
+  * All EvoEF1/FoldX binding affinity predictions are analyzed with the box-whisker statistics, where;
+  * **Depleting mutations:** are defined by the positive outliers (as in `complex_chain_D_depleting_mutations` in `example-output``), and;
+  * **Enriching mutations:** are defined by the negative outliers (as in `complex_chain_D_enriching_mutations` in `example-output`). 
+  * **Heatmap source file:** is given in `heatmap_df` in a single column format. This file can be converted ınto a 2x2 matrix by executing `pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_{}_Scores".format(algorithm)`
+  * **Designer mutations:** Stability-filtered enriching and depleting mutations, named as `complex_chain_D_stabilizing_enriching_mutations` and `complex_chain_D_stabilizing_depleting_mutations` as given in the `example-output` directory .
+  * **Complete list of all PROT-ON scores:** All the scores calculated throughout a single run are saved under `complex_chain_{}_proton_scores`.
+  * **Graphical Outputs:** We provide png and svg files of the scanned mutational energies as heatmap, boxplot of the all interfacial binding scores, boxplot of the same scores sorted according to the residue position and type.
 
 ### Usage of individual PROT-ON scripts
-The PROT-ON scripts located under `src/`can be run independently from the main prot-on framework. 
+All the PROT-ON scripts located under `src/`can be run independently from the main PROT-ON framework. 
 
 As an example, if you are interested  getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
@@ -91,7 +93,7 @@ Example:
 
 python inteface_residues.py complex.pdb D 5.0
 ```
-Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_EvoEF.py` as in:
+Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_{algorithm}.py` as in:
 ```
 python energy_calculation_EvoEF.py <filename of structure> <filename of mutation list> <selected algorithm; EvoEF1: 1, FoldX: 2> 
 
