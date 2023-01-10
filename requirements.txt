@@ -2,4 +2,5 @@ plotly<=5.6.0
 pandas<=1.4.2
 numpy<=1.22.3
 kaleido<=0.2.1.post1
-
+shutil<=3.8
+time<=3.7
