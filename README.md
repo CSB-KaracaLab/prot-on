@@ -6,10 +6,10 @@
 
 ### Motivation
 
-PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein partner. The probed mutational landscape is then filtered  the according to stability and/or mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
+PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein monomer. The probed mutational landscape is then filtered according to the stability and optionally to the mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
 
 ## Web Server
-This site describes the use of stand-alone version of PROT-ON. If you would like to use our tool as a web service, please visit http://proton.tools.ibg.edu.tr:8001
+This site describes the use of stand-alone version of PROT-ON, which is tested on Linux and MacOS systems. If you would like to use our tool through our web service, please visit http://proton.tools.ibg.edu.tr:8001
 
 ### PROT-ON Architecture
 <p align="center">
@@ -19,15 +19,13 @@ This site describes the use of stand-alone version of PROT-ON. If you would like
 ## Usage
 
 ### System dependencies
-* python3 OR conda (we made the test with version 4.10)
+* python3 OR conda (version 4.10 or higher)
 * [FoldX](http://foldxsuite.crg.eu/) (optional)
 
-### Python dependencies
+### Python dependencies (also listed in requirements.txt)
 * numpy
 * pandas (**should be version 1.3.0 or higher**)
 * plotly
-* shutil
-* time
 * kaleido
 
 ### Clone the repository
@@ -37,54 +35,55 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-In the `prot-on` folder, you will find the source files to run EvoEF1 (January 2021 version). For installing of the python requirements, as well as EvoEF1, you should run `setup.py`, located in `prot-on` folder. 
+In the `prot-on` folder, you will find the `setup.py`, which will set the stage to run PROT-ON. As the first thing, if you use conda, please execute:
 
 ```
+conda activate
 python setup.py
 ```
-If you call python3 independently (not through conda), then you should
+or if you use python3 independently, please execute:
 ```
 python3 setup.py
 ```
-To run FoldX, its executable (foldx) and its rotabase.txt should be moved into the `prot-on` directory.
+As a result of running setup.py, PROT-ON will be ready to perform the mutation scan with EvoEF1. 
 
 ### To Run PROT-ON
-For Linux or MacOS:
-```
-conda activate
-```
-PROT-ON works on the coordinates of protein dimers. It takes the PDB file of a dimer as an input together with the chain ID that will be modified/scanned. We are providing an input `complex.pdb` file in the main distribution folder of PROT-ON, which can be used for testing purposes. The output files for this complex are provided in the `example-run` directory.
+* Must: Please locate your complex pdb file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
 
-If the user would like to incorporate evolutionary information, s/he can also impose a PSSM-based filter on the predictions. For this, an externally generated PSSM file (in csv format with the `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` naming) should be placed in the run directory. The external PSSM file, which can be obtained from https://possum.erc.monash.edu/server.jsp should be seperated with a comma `,`. 
+* Optional: If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable, i.e. `foldx`, and `rotabase.txt` in the `prot-on` folder.
 
-!! All prot-on commands should be run in the cloned prot-on folder !!
+* Optional: If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
+* After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
 python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
 
 Example:
 
-python proton.py --pdb=complex.pdb --chain_ID=D --cut_off=5.0 --IQR=1.5
+python proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
 If you call python3 independently (not with conda), then you should execute:
 ``` 
-python3 proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot
+python3 proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
 
 ### PROT-ON Output Files
-`proton.py` script generates a folder named as `PDBID_chainID_algorithm_output`, containing: 
-  * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off), belonging to the input chain ID, calculated by `interface_residues.py`. The same script outputs the pairwise contacts, as **Pairwise distance list**
-  * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid)
-  * **Mutation models:** Generated mutant models modelled by `BuildMutant` command of EvoEF1 or `BuildModel` command of FoldX.
-  * **Individual EvoEF1/FoldX files:** EvoEF1/FoldX binding affinity predictions calculated by `ComputeBinding` of EvoEF1 or `AnalyseComplex` of FoldX.
-  * **Boxplot of EvoEF1/FoldX scores:** All EvoEF1/FoldX binding affinity predictions are analyzed with the box-whisker statistics, where;
-  * **Depleting mutations:** are defined by the positive outliers, and;
-  * **Enriching mutations:** are defined by the negative outliers. 
-  * **Heatmap of PROT-ON scores:** All possible mutation energies are plotted as a heatmap for visual inspection.
-  * **Filtered mutations:** Stability-filtered (uses `ComputeStability` command of EvoEF1 or `Stability` command of FoldX, where DDG-stability<0) enriching and depleting mutations and optionally PSSM-filtered (Enriching mutations with PSSM-score >0 && Depleting mutations with PSSM-score <=0).
+When PROT-ON is finished, you can find your output files in the `results/PDBID_chainID_output` folder. In this folder, as given in the `example-output` folder, you will find: 
+  * **parameters:** Containing the define interface cut-off and IQR range.
+  * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off). This file corresponds to `complex_chain_D_interface_aa_list` in the `example-output` folder.
+  * **Pairwise inter-monomeric distance list**: `complex_pairwise_distance_list` as given in the `example-output` folder.
+  * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid). `complex_chain_D_mutation_list` as given in the `example-output` folder.
+  * **Mutation models:** The folder containing all the generated mutant structures. 
+  * All EvoEF1/FoldX binding affinity predictions are analyzed with the box-whisker statistics, where;
+  * **Depleting mutations:** are defined by the positive outliers (as in `complex_chain_D_depleting_mutations` in `example-output``), and;
+  * **Enriching mutations:** are defined by the negative outliers (as in `complex_chain_D_enriching_mutations` in `example-output`). 
+  * **Heatmap source file:** is given in `heatmap_df` in a single column format. This file can be converted ınto a 2x2 matrix by executing `pivot_table = heatmap_df.pivot("Positions","Mutations","DDG_{}_Scores".format(algorithm)`
+  * **Designer mutations:** Stability-filtered enriching and depleting mutations, named as `complex_chain_D_stabilizing_enriching_mutations` and `complex_chain_D_stabilizing_depleting_mutations` as given in the `example-output` directory .
+  * **Complete list of all PROT-ON scores:** All the scores calculated throughout a single run are saved under `complex_chain_{}_proton_scores`.
+  * **Graphical Outputs:** We provide png and svg files of the scanned mutational energies as heatmap, boxplot of the all interfacial binding scores, boxplot of the same scores sorted according to the residue position and type.
 
 ### Usage of individual PROT-ON scripts
-The PROT-ON scripts located under `src/`can be run independently from the main prot-on framework. 
+All the PROT-ON scripts located under `src/`can be run independently from the main PROT-ON framework. 
 
 As an example, if you are interested  getting the interface information on the complex you study, you can use `interface_residues.py` as in:
 ```
@@ -94,7 +93,7 @@ Example:
 
 python inteface_residues.py complex.pdb D 5.0
 ```
-Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_EvoEF.py` as in:
+Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_{algorithm}.py` as in:
 ```
 python energy_calculation_EvoEF.py <filename of structure> <filename of mutation list> <selected algorithm; EvoEF1: 1, FoldX: 2> 
 
