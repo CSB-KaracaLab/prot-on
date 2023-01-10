@@ -19,7 +19,7 @@ This site describes the use of stand-alone version of PROT-ON. If you would like
 ## Usage
 
 ### System dependencies
-* python3 (which could be obtained through conda)
+* python3 OR conda (we made the test with version 4.10)
 * [FoldX](http://foldxsuite.crg.eu/) (optional)
 
 ### Python dependencies
