@@ -50,8 +50,8 @@ def Interface_Residues(args):
 	 os.system("python interface_residues.py {} {} {}".format(args.pdb,args.chain_ID,args.cut_off))
 
 def main(args):
-	os.system("cp -rf {} src".format(args.pdb))
 	os.system("cp -rf src results")
+	os.system("cp -rf {} results/src".format(args.pdb))
 	os.system("cp -rf EvoEF results")
 	os.chdir("results")
 	#shutil.copy(args.pdb, "src")
@@ -88,7 +88,7 @@ def main(args):
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
 			os.system("python energy_calculation_FoldX.py {} {} {}_chain_{}_mutation_list".format(args.pdb,args.chain_ID,pdb,args.chain_ID))
-			shutil.move("energy_calculation_FoldX.py","src/")
+			os.system("cp -rf energy_calculation_FoldX.py src")
 			os.chdir("src")
 			os.system("python detect_outliers.py {} {} {}_chain_{}_proton_scores {} {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,query,args.IQR))
 			shutil.move("heatmap_df","../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))

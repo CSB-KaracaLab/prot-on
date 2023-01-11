@@ -92,7 +92,7 @@ class FoldX():
 		os.remove("{}_proton_scores_v1".format(self.pdb))
 		os.remove("individual_list.txt")
 		os.system("rm *.fxout")
-		shutil.move("{}".format(self.structure),"src")
+		os.system("cp -rf {} src".format(self.structure))
 		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id), "src")
 		os.system("rm *.pdb")
 
