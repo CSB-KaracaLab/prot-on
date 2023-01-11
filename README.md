@@ -13,7 +13,7 @@ This site describes the use of stand-alone version of PROT-ON, which is tested o
 
 ### PROT-ON Architecture
 <p align="center">
-<img align="center" src="proton_code_architecture.jpg" alt="proton_code_architecture" width = "600" />
+<img align="center" src="proton_code_architecture.jpg" alt="proton_code_architecture" width = "300" />
 </p>
 
 ## Usage
