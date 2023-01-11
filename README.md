@@ -27,6 +27,8 @@ This site describes the use of stand-alone version of PROT-ON, which is tested o
 * pandas (**should be version 1.3.0 or higher**)
 * plotly
 * kaleido
+* shutil
+* time
 
 ### Clone the repository
 ```
@@ -35,41 +37,48 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
-In the `prot-on` folder, you will find the `setup.py`, which will set the stage to run PROT-ON. As the first thing, if you use conda, please execute:
+In the `prot-on` folder, you will find the `setup.py`, which will set the stage to run PROT-ON. If you use conda, please execute:
 
 ```
 conda activate
 python setup.py
 ```
-or if you use python3 independently, please execute:
+If you use python3 independently, please execute:
 ```
 python3 setup.py
 ```
-As a result of running setup.py, PROT-ON will be ready to perform the mutation scan with EvoEF1. 
+As a result of running `setup.py`, PROT-ON will be ready to perform the mutation scan with EvoEF1. 
 
 ### To Run PROT-ON
-* Must: Please locate your complex pdb file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
+* **Must:** Please locate your complex PDB file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
 
-* Optional: If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable, i.e. `foldx`, and `rotabase.txt` in the `prot-on` folder.
+* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable, i.e. `foldx`, and `rotabase.txt` in the `prot-on` folder.
 
-* Optional: If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
+* **Optional:** If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
 * After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
-python proton.py --pdb=<filename of structure> --chain_ID=<chain ID of interest> --cut_off=<cut off to define interface> --IQR=<IQR rule to define outliers of box-and-whisker plot>
+python proton.py --pdb <filename of the structure> --chain_ID <chain ID of interest> --cut_off <cut-off to define the interface> --IQR <IQR rule to define outliers of box-and-whisker statistics>
 
 Example:
 
 python proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
-If you call python3 independently (not with conda), then you should execute:
+If you call python3 independently (not with conda), then you should execute (which is also valid for any python command given below):
 ``` 
 python3 proton.py --pdb complex.pdb --chain_ID D --cut_off 5.0 --IQR 1.5
 ```
-
+Here `cut-off` and `IQR` definitions are optional. By default they will be set to 5.0 and 1.5, respectively. If these settings are fine with you, you can run PROT-ON with:
+``` 
+python proton.py --pdb complex.pdb --chain_ID D 
+```
+You can also call the help page of PROT-ON with:
+``` 
+python proton.py --help
+```
 ### PROT-ON Output Files
 When PROT-ON is finished, you can find your output files in the `results/PDBID_chainID_output` folder. In this folder, as given in the `example-output` folder, you will find: 
-  * **parameters:** Containing the define interface cut-off and IQR range.
+  * **Parameters:** Containing the define interface cut-off and IQR range.
   * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off). This file corresponds to `complex_chain_D_interface_aa_list` in the `example-output` folder.
   * **Pairwise inter-monomeric distance list**: `complex_pairwise_distance_list` as given in the `example-output` folder.
   * **Mutation list:** The list of all possible interfacial mutations (format: KD28A; K: Wild-type amino acid, D: Chain ID, 28: Amino acid position, A: Mutant amino acid). `complex_chain_D_mutation_list` as given in the `example-output` folder.
