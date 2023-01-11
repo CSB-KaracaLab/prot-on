@@ -38,6 +38,7 @@ git clone https://github.com/CSB-KaracaLab/prot-on.git
 ```
 cd prot-on
 ```
+### Environment Setup
 In the `prot-on` folder, you will find the `setup.py`, which will set the stage to run PROT-ON. January-2021 version of EvoEF1 also comes together with the PROT-ON package. If you use conda, please execute:
 
 ```
