@@ -54,7 +54,7 @@ As a result of running `setup.py`, PROT-ON will be ready to perform the mutation
 ### To Run PROT-ON
 * **Must:** Please locate your complex PDB file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
 
-* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` directly in the `prot-on` folder.
+* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` directly in the `prot-on/src` folder.
 
 * **Optional:** If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
