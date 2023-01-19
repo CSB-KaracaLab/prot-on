@@ -21,6 +21,7 @@ import time
 import plotly.express as px
 import plotly.graph_objects as go
 import shutil
+import os
 
 print("Outlier Detection Process Started ...")
 time.sleep(1)
@@ -31,14 +32,8 @@ class StatisticalAnalyze():
         self.pdb = self.pdb_file[:-4]
         self.chain = sys.argv[2]
         self.PROTON_Scores_File = sys.argv[3]
-        self.query = sys.argv[4]
+        self.algorithm = sys.argv[4]
         self.iqr = float(sys.argv[5])
-        if self.query == "1":
-            self.algorithm = "EvoEF1"
-        #elif self.query == "3":
-        #    self.algorithm = "Optimized_EvoEF"
-        else:
-            self.algorithm = "FoldX"
         self.Scores_File = pd.read_table(self.PROTON_Scores_File, sep = " ")
         self.Positive_Outliers = open("{}_chain_{}_depleting_mutations".format(self.pdb,self.chain), "w")
         self.Negative_Outliers = open("{}_chain_{}_enriching_mutations".format(self.pdb,self.chain), "w")
@@ -175,8 +170,8 @@ class StatisticalAnalyze():
 
     def PSSM_Filter(self): #filtering mutations by PSSM rule.
         try:
-            f = open("../example-run/{}_chain_{}_pssm.csv".format(self.pdb,self.chain))
-            pssm_df = pd.read_csv("../example-run/{}_chain_{}_pssm.csv".format(self.pdb,self.chain),sep = ",")
+            f = open("../../{}_chain_{}_pssm.csv".format(self.pdb,self.chain))
+            pssm_df = pd.read_csv("../../{}_chain_{}_pssm.csv".format(self.pdb,self.chain),sep = ",")
         except IOError:
             print("""
 ****************************************
@@ -231,6 +226,7 @@ PSSM filter won't work.
         time.sleep(1)
         shutil.move("{}_chain_{}_pssm_depleting".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
         shutil.move("{}_chain_{}_pssm_enriching".format(self.pdb,self.chain), "../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.algorithm))
+        os.system("cp -rf ../../{}_chain_{}_pssm.csv ../{}_chain_{}_{}_output".format(self.pdb,self.chain,self.pdb,self.chain,self.algorithm))
 
 def main():
     c = StatisticalAnalyze()

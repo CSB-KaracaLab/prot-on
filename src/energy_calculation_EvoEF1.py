@@ -26,18 +26,13 @@ class EvoEF():
 		self.chain_id = sys.argv[2]
 		self.mutation_list = sys.argv[3]
 		self.pdb = self.structure[:-4]
-		self.query = sys.argv[4]
 		self.mutations = pd.read_table(self.mutation_list, header = None)
 		self.scoresfile = pd.read_table("heatmap_mutation_list",sep = " ", header = None)
-		if self.query == "1":
-			self.algorithm = "EvoEF1"
-		#if self.query == "3":
-		#	self.algorithm = "Optimized_EvoEF"
 	def Preparing(self):
-		shutil.move(self.structure,"../EvoEF")
-		shutil.move(self.mutation_list,"../EvoEF")
+		shutil.move(self.structure,"../EvoEF1")
+		shutil.move(self.mutation_list,"../EvoEF1")
 		os.remove("heatmap_mutation_list")
-		os.chdir("../EvoEF")
+		os.chdir("../EvoEF1")
 		single_chain = open("chain_{}.pdb".format(self.chain_id),"w")
 		with open("{}.pdb".format(self.pdb),"r") as pdb:
 			for line in pdb:
@@ -45,7 +40,7 @@ class EvoEF():
 					if line[21] == self.chain_id:
 						print(line,file=single_chain,end="")
 		single_chain.close()
-		os.mkdir("../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
+		os.mkdir("../{}_chain_{}_EvoEF1_output/mutation_models".format(self.pdb,self.chain_id))
 	def BuildMutation(self):
 		os.system("./EvoEF --command=RepairStructure --pdb={}".format(self.structure))
 		os.system("./EvoEF --command=RepairStructure --pdb=chain_{}.pdb".format(self.chain_id))
@@ -88,22 +83,22 @@ class EvoEF():
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_000{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_000{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_000{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
-				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
+				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_EvoEF1_output/mutation_models".format(self.pdb,self.chain_id))
 			elif 9 < i < 100:
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_00{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_00{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_00{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
-				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
+				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_EvoEF1_output/mutation_models".format(self.pdb,self.chain_id))
 			elif 99 < i < 1000:
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_0{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_0{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_0{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
-				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
+				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_EvoEF1_output/mutation_models".format(self.pdb,self.chain_id))
 			elif 999 < i < 10000:
 				os.system("./EvoEF --command=ComputeBinding --pdb={}_Repair_Model_{}.pdb > Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i,self.pdb,i))
 				os.system("./EvoEF --command=ComputeStability --pdb=chain_{}_Repair_Model_{}.pdb > chain_{}_Repair_{}_0_CS.fxout".format(self.chain_id,i,self.chain_id,i))
 				os.rename("{}_Repair_Model_{}.pdb".format(self.pdb,i), "{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]))
-				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_{}_output/mutation_models".format(self.pdb,self.chain_id,self.algorithm))
+				shutil.move("{}_Repair_Model_{}.pdb".format(self.pdb,self.mutations[0][i-1][:-1]), "../{}_chain_{}_EvoEF1_output/mutation_models".format(self.pdb,self.chain_id))
 			with open("Interaction_{}_Repair_{}_CB.fxout".format(self.pdb,i)) as scoresfile:
 				for line in scoresfile:
 					if line[:23] == "Total                 =":
@@ -125,11 +120,11 @@ class EvoEF():
 			DDGBindingFormatted = [round(num,2) for num in DDGBinding]
 			DDGStabilityFormatted = [round(num,2) for num in DDGStability]
 		print("Files are being prepared...")
-		self.scoresfile["{}_WT_Scores".format(self.algorithm)] = WTEvoEFScores
-		self.scoresfile["{}_Mutant_Scores".format(self.algorithm)] = MutantEvoEFScores
+		self.scoresfile["EvoEF1_WT_Scores"] = WTEvoEFScores
+		self.scoresfile["EvoEF1_Mutant_Scores"] = MutantEvoEFScores
 		self.scoresfile["Stability_Mutant_Scores"] = StabilityMutantScores
 		self.scoresfile["Stability_WT_Scores"] = StabilityWTScores
-		self.scoresfile["DDG_{}_Scores".format(self.algorithm)] = DDGBindingFormatted
+		self.scoresfile["DDG_EvoEF1_Scores"] = DDGBindingFormatted
 		self.scoresfile["DDG_Stability_Scores"] = DDGStabilityFormatted
 		self.scoresfile.rename(columns={0:"Positions",1:"Mutations"},inplace=True)
 		self.scoresfile.to_csv("{}_proton_scores_v1".format(self.pdb), index=False, sep = " ")
@@ -137,7 +132,7 @@ class EvoEF():
 		os.remove("{}_proton_scores_v1".format(self.pdb))
 		os.rename("individual_list.txt","{}_chain_{}_mutation_list".format(self.pdb,self.chain_id))
 		os.system("rm *.fxout")
-		shutil.move("{}_chain_{}_mutation_list".format(self.pdb,self.chain_id),"../{}_chain_{}_{}_output".format(self.pdb,self.chain_id,self.algorithm))
+		shutil.move("{}_chain_{}_mutation_list".format(self.pdb,self.chain_id),"../{}_chain_{}_EvoEF1_output".format(self.pdb,self.chain_id))
 		shutil.move("{}".format(self.structure),"../src")
 		os.system("rm *.pdb")
 		shutil.move("{}_chain_{}_proton_scores".format(self.pdb,self.chain_id),"../src")
