@@ -53,7 +53,7 @@ def main(args): #it runs the script depend on the selected algorithm.
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
 			os.system("python energy_calculation_EvoEF1.py --pdb {} --chain_ID {} --mutation_list {}_chain_{}_mutation_list".format(args.pdb,args.chain_ID,pdb,args.chain_ID))
-			os.system("python detect_outliers.py --pdb {} --chain_ID {} --scores_file {}_chain_{}_proton_scores --algorithm EvoEF1 --IQR {} --pssm {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,args.IQR,args.pssm))
+			os.system("python detect_outliers.py --pdb {} --chain_ID {} --scores_file {}_chain_{}_proton_scores --algorithm EvoEF1 --IQR {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,args.IQR))
 			shutil.move("heatmap_df","../{}_chain_{}_EvoEF1_output".format(pdb,args.chain_ID))
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_EvoEF1_output".format(pdb,args.chain_ID))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_EvoEF1_output".format(pdb,args.chain_ID))
@@ -83,7 +83,7 @@ def main(args): #it runs the script depend on the selected algorithm.
 			print("Mutant structures and their energies are being calculated ...")
 			time.sleep(3)
 			os.system("python energy_calculation_FoldX.py --pdb {} --chain_ID {} --mutation_list {}_chain_{}_mutation_list".format(args.pdb,args.chain_ID,pdb,args.chain_ID))
-			os.system("python detect_outliers.py --pdb {} --chain_ID {} --scores_file {}_chain_{}_proton_scores --algorithm FoldX --IQR {} --pssm".format(args.pdb,args.chain_ID,pdb,args.chain_ID,args.IQR,args.pssm))
+			os.system("python detect_outliers.py --pdb {} --chain_ID {} --scores_file {}_chain_{}_proton_scores --algorithm FoldX --IQR {}".format(args.pdb,args.chain_ID,pdb,args.chain_ID,args.IQR))
 			shutil.move("heatmap_df","../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
 			shutil.move("{}_chain_{}_depleting_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
 			shutil.move("{}_chain_{}_enriching_mutations".format(pdb,args.chain_ID), "../{}_chain_{}_FoldX_output".format(pdb,args.chain_ID))
@@ -111,7 +111,6 @@ if __name__ == "__main__":
 	parser.add_argument("--algorithm", type=str, default="EvoEF1", help="algorithm for building mutation and calculating the binding affinities. Selection: EvoEF1 or FoldX")
 	parser.add_argument("--cut_off", type=float, default=5.0, help="cut-off distance for defining the interface")
 	parser.add_argument("--IQR", type=float, default=1.5, help="IQR range to define the outliers of box-and-whisker plot")
-	parser.add_argument("--pssm", type=str, help="PSSM file for filtering mutations.")
 	args = parser.parse_args()
 	chains = []	
 	unique_chains = []

@@ -61,11 +61,11 @@ As a result of running `setup.py`, PROT-ON will be ready to perform the mutation
 
 * After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
-python proton.py --pdb <dir/filename of the structure> --chain_ID <chain ID of interest> --algorithm <EvoEF1/FoldX> --cut_off <cut-off to define the interface> --IQR <IQR rule to define outliers of box-and-whisker statistics> --pssm <PPSM matrix for filterin mutations>
+python proton.py --pdb <dir/filename of the structure> --chain_ID <chain ID of interest> --algorithm <EvoEF1/FoldX> --cut_off <cut-off to define the interface> --IQR <IQR rule to define outliers of box-and-whisker statistics> 
 
 Example:
 
-python proton.py --pdb example-input/complex.pdb --chain_ID D --algorithm EvoEF1 --cut_off 5.0 --IQR 1.5 --pssm example-input/complex_chain_D_pssm.csv
+python proton.py --pdb example-input/complex.pdb --chain_ID D --algorithm EvoEF1 --cut_off 5.0 --IQR 1.5
 ```
 Beware that `cut-off`, `IQR` and `algorithm` definitions are optional. By default they will be set to 5.0, 1.5, and EvoEF1 respectively. If these settings are fine with you, you can run PROT-ON with only:
 ``` 
