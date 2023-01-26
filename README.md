@@ -41,7 +41,7 @@ cd prot-on
 ```
 ### Environment Setup
 
-We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. After creating the environment and activate it, you will find the `setup.py`, which will set the stage to run PROT-ON in the `prot-on` folder. January-2021 version of EvoEF1 also comes together with the PROT-ON package. 
+We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. For this, please follow the below-given steps, which will set the stage for running PROT-ON. 
 
 ```
 python3 -m venv <environment name>
@@ -49,7 +49,7 @@ source <environment name>/bin/activate
 python setup.py
 ```
 
-As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1. 
+As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1 (January-2021 version of EvoEF1 also comes together with the PROT-ON package). 
 
 ### To Run PROT-ON
 * **Must:** Please locate your complex PDB file in the `prot-on` folder. Also, you can call your dimer structure from wherever you want. An example complex file is located in the `example-input` directory.
