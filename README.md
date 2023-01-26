@@ -52,7 +52,7 @@ When the environment is active, please execute:
 python setup.py
 ```
 
-As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1 (January-2021 version of EvoEF1 also comes together with the PROT-ON package). 
+As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1 (January-2021 version of EvoEF1 comes in the PROT-ON package). 
 
 ### To Run PROT-ON
 * **Must:** Please locate your complex PDB file in the `prot-on` folder. Also, you can call your dimer structure from wherever you want. An example complex file is located in the `example-input` directory.
