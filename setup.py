@@ -27,5 +27,6 @@ elif platform == "darwin":
 	os.chdir("../")
 
 os.system("pip install -r requirements.txt")
-os.system("pip install --upgrade 'kaleido==0.1.*'")
+os.system("pip install plotly==5.13.0")
+os.system("pip install -U kaleido")
 
