@@ -12,7 +12,7 @@ PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that
 This site describes the use of stand-alone version of PROT-ON, which is tested on Linux and MacOS systems. If you would like to use our tool through our web service, please visit http://proton.tools.ibg.edu.tr:8001
 
 ### PROT-ON Architecture
-PROT-ON calls several python scripts to find the designer mutations (binding enriching/depleting) on one monomer of a complex. Here is the flow of the approach:
+PROT-ON calls several python scripts to find the designer mutations (binding enriching/depleting) on one monomer of a complex. Here is the flow of the approach (pssm option is available only on the web server version):
 <p align="center">
 <img align="center" src="proton_code_architecture.jpg" alt="proton_code_architecture" width = "300" />
 </p>
