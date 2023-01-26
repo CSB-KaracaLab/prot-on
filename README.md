@@ -41,22 +41,23 @@ cd prot-on
 ```
 ### Environment Setup
 
-We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. For this, please follow the below-given steps, which will set the stage for running PROT-ON. 
+We strongly suggest creating a Python Virtual Envrionment and activating it before the installation of PROT-ON dependencies. For this, please follow: 
 
 ```
-python3 -m venv <environment name>
-source <environment name>/bin/activate
+python3 -m venv <environment-name-you-choose>
+source <environment-name-you-choose>/bin/activate
+```
+When the environment is active, please execute:
+```
 python setup.py
 ```
 
-As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1 (January-2021 version of EvoEF1 also comes together with the PROT-ON package). 
+As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1 (January-2021 version of EvoEF1 comes in the PROT-ON package). 
 
 ### To Run PROT-ON
-* **Must:** Please locate your complex PDB file in the `prot-on` folder. Also, you can call your dimer structure from wherever you want. An example complex file is located in the `example-input` directory.
+* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the obtained source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` in the `prot-on/src` folder.
 
-* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` directly in the `prot-on/src` folder.
-
-* **Optional:** If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
+* **Optional:** If you would like to include the evolutionary information into the filtering process, please feed in the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
 * After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
@@ -74,7 +75,11 @@ Here `cut-off`, `IQR` and `algorithm` definitions are optional. By default they 
 ``` 
 python proton.py --pdb complex.pdb --chain_ID D 
 ```
-You can also call the help page of PROT-ON with:
+If defined properly, the input PDB file can also be called from another directory:
+``` 
+python proton.py --pdb example-input/complex.pdb --chain_ID D 
+```
+The help pahe of PROT-ON can be printed with:
 ``` 
 python proton.py --help
 ```
