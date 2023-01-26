@@ -223,7 +223,7 @@ def main(args):
     c = StatisticalAnalyze()
     c.Detect_Outliers()
     c.Stability_Filter()
-    c.PSSM_Filter()
+    #c.PSSM_Filter()
     c.Plots()
     print("PROT-ON Finished! ツ")
     time.sleep(1)
