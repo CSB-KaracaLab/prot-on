@@ -65,7 +65,7 @@ Example:
 
 python proton.py --pdb example-input/complex.pdb --chain_ID D --algorithm EvoEF1 --cut_off 5.0 --IQR 1.5
 ```
-Beware that `cut-off`, `IQR` and `algorithm` definitions are optional. By default they will be set to 5.0, 1.5, and EvoEF1 respectively. If these settings are fine with you, you can run PROT-ON with only:
+`cut-off`, `IQR` and `algorithm` definitions are optional. By default they will be set to 5.0, 1.5, and EvoEF1 respectively. If these settings are fine with you, you can run PROT-ON with only:
 ``` 
 python proton.py --pdb complex.pdb --chain_ID D 
 ```
