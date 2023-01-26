@@ -30,6 +30,7 @@ PROT-ON calls several python scripts to find the designer mutations (binding enr
 * kaleido
 * shutil
 * time
+* virtualenv
 
 ### Clone the repository
 ```
@@ -40,22 +41,20 @@ cd prot-on
 ```
 ### Environment Setup
 
-We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. After creating the environment and activate it, you will find the `setup.py`, which will set the stage to run PROT-ON in the `prot-on` folder. January-2021 version of EvoEF1 also comes together with the PROT-ON package. If you use conda, please execute:
+We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. After creating the environment and activate it, you will find the `setup.py`, which will set the stage to run PROT-ON in the `prot-on` folder. January-2021 version of EvoEF1 also comes together with the PROT-ON package. 
 
 ```
-conda activate
+python3 -m venv <environment name>
+source <environment name>/bin/activate
 python setup.py
 ```
-If you use python3 independently, please execute:
-```
-python3 setup.py
-```
+
 As a result of running `setup.py`, PROT-ON will be ready to perform the mutational scan with EvoEF1. 
 
 ### To Run PROT-ON
-* **Must:** Please locate your complex PDB file in the `prot-on` folder. An example complex file is located in the `example-input` directory.
+* **Must:** Please locate your complex PDB file in the `prot-on` folder. Also, you can call your dimer structure from wherever you want. An example complex file is located in the `example-input` directory.
 
-* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` directly in the `prot-on` folder.
+* **Optional:** If you would like to perform the mutational scanning with FoldX, you first have to get its academic licenced soure files. Among the provided source files, please locate the FoldX executable (please name it as `foldx`) and `rotabase.txt` directly in the `prot-on/src` folder.
 
 * **Optional:** If you would like to include the evolutionary information into the filtering process, please obtain the PSSM file of the monomer you will be scanning in the csv format. The external PSSM file, which can be obtained via https://possum.erc.monash.edu/server.jsp should be in a comma `,` seperated format. Please name your PSSM file as `<root-pdb-filename>_chain_<chain_ID>_pssm.csv` and place it in the `prot-on` folder. You can find an example PSSM file under `example-input` directory.
 
@@ -80,7 +79,7 @@ You can also call the help page of PROT-ON with:
 python proton.py --help
 ```
 ### PROT-ON Output Files
-When PROT-ON is finished, your results will be located at `results/PDBID_chainID_output` folder. In this folder, as given in the `example-output` folder, you will find: 
+When PROT-ON is finished, your results will be located at `results/runID_PDBID_chainID_output` folder. In this folder, as given in the `example-output` folder, you will find: 
   * **Parameters:** Containing the defined interface cut-off and IQR range.
   * **Interface amino acid list:** Interfacial amino acid list. This file corresponds to `complex_chain_D_interface_aa_list` in the `example-output` folder.
   * **Pairwise inter-monomeric distance list**: `complex_pairwise_distance_list` as given in the `example-output` folder.
@@ -94,42 +93,6 @@ When PROT-ON is finished, your results will be located at `results/PDBID_chainID
   * **Complete list of all PROT-ON scores:** All the scores calculated throughout a single run are saved under `complex_chain_{}_proton_scores`.
   * **Graphical Outputs:** We provide png and svg files of the scanned mutational energies as a heatmap, as a boxplot distribution representing all interfacial binding scores, as well as as boxplot distributions of the scores according to residue position and type.
 
-### Usage of individual PROT-ON scripts
-All the PROT-ON scripts located under `src/`can be run independently from the main PROT-ON framework. 
-
-As an example, if you are interested getting the interface information of the complex you study, you can use `interface_residues.py` as in:
-```
-python inteface_residues.py <filename of structure> <chain ID of interest> <cut off to define interface>
-
-Example:
-
-python inteface_residues.py complex.pdb D 5.0
-```
-Or if you are insterested just in the binding affinity prediction for a specific mutation list, you can use `energy_calculation_{algorithm}.py` as in:
-```
-python energy_calculation_EvoEF.py <filename of structure> <filename of mutation list>
-
-Example for EvoEF1:
-
-python energy_calculation_FoldX.py complex.pdb D complex_chain_D_mutation_list
-```
-```
-Example for FoldX
-
-python energy_calculation_FoldX.py complex.pdb D complex_chain_D_mutation_list
-```
-You can generate boxplot, heatmap or create depleting&enriching mutation lists with `detect_outliers.py`:
-```
-python detect_outliers.py <pdb-filename> <filename of structure> <filename of proton scores> <selected algorithm; EvoEF1 or FoldX> <IQR rule to define outliers of box-and-whisker plot>
-
-Example for EvoEF1:
-
-python detect_outliers.py complex.pdb D complex_chain_D_proton_scores EvoEF1 1.5
-
-Example for FoldX:
-
-python detect_outliers.py complex.pdb D complex_chain_D_proton_scores FoldX 1.5
-```
 Thank you for following our guidelines until this point! We hope that you will enjoy using our package!
 
 ## Acknowledgement

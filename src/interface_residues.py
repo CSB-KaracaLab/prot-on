@@ -18,59 +18,7 @@ import sys
 import numpy as np
 import pandas as pd
 import os
-
-try:
-	pdb_file = sys.argv[1]
-	pdb = pdb_file[:-4] #pdb filename without .pdb extension
-	
-except:
-	print("""
-***************************************************
-Please specify the input PDB file
-		
-Example:
-
-python interface_residues.py --pdb --chain_id --cut_off
-    		
-python interface_residues.py complex.pdb D 5.0
-
-***************************************************	
-	""")
-	sys.exit()
-	
-try:
-	chain = sys.argv[2]
-except:
-	print("""
-***************************************************
-Please specify the chain ID of interest
-		
-Example:
-
-python interface_residues.py --pdb --chain_id --cut_off
-    		
-python interface_residues.py complex.pdb D 5.0
-
-***************************************************	
-	""")
-	sys.exit()
-
-try:
-	cut_off = float(sys.argv[3])
-except:
-	print("""
-***************************************************
-Please specify the interface cut-off
-		
-Example:
-
-python interface_residues.py --pdb --chain_id --cut_off
-    		
-python interface_residues.py complex.pdb D 5.0
-
-***************************************************	
-	""")
-	sys.exit()
+import argparse
 
 class InterfaceResidues():	
 	def __init__(self):
@@ -86,80 +34,9 @@ class InterfaceResidues():
 		self.chain_2_coord_float = []
 		self.interaction_list = []
 		self.one_letter_codes = []
-	
-	def check_argv(self):
-		if sys.argv[1] in ["help", "h"]:
-			print("""
-************************************************************
-Usage:
-
-    python interface_residues.py <pdb> <chain_id> <cut_off>
-    <pdb>: pdb file 
-    <chain_id>: chain id of interest
-    <cut_off>: treshold in A to define an interface
-
-Example:
-
-    python interface_residues.py complex.pdb D 5.0
-************************************************************  
-	""")
-			sys.exit()
 			
-		if len(sys.argv) > 4:
-			print("""
-*****************************************************    
-Too many input parameters entered. Please revisit your input definition!
-    
-Example:
-
-python interface_residues.py complex.pdb D 5.0
-*****************************************************
-""")
-			sys.exit()
-			
-		with open("{}".format(pdb_file), "r") as pdbfile:
-			for line in pdbfile:
-				if line[:4] == "ATOM":
-					self.chain_ids.append(line[21])
-					self.amino_acids.append(line[16:21])
-				
-		for x in self.chain_ids:
-			if x not in self.unique_chains:
-				self.unique_chains.append(x)
-	
-		if len(self.unique_chains) != 2:
-			print("""
-**********************************
-PROT-ON works only with dimers.
-Please provide a dimer structure. 
-**********************************	
-			""")
-			sys.exit()
-
-		self.chain1 = self.unique_chains[0]
-		self.chain2 = self.unique_chains[1]
-	
-		if chain == self.chain1:
-			pass
-		elif chain == self.chain2:
-			pass
-		else:
-			print("""
-*************************************************************
-Please check the chain ID of your interest. 
-	
-Example:
-
-python interface_residues.py --pdb --chain_id --cut_off
-    		
-python interface_residues.py complex.pdb D 5.0
-*************************************************************
-				
-""")
-			sys.exit(0)	
-			
-	def PDBParse(self):
-		with open("{}".format(pdb_file), "r") as pdbfile:
+	def PDBParse(self): #parsing the pdb file into coordinates and residue names for annotation and calculation of distance.
+		with open("{}.pdb".format(pdb), "r") as pdbfile:
 			for line in pdbfile:
 				if line[:4] == "ATOM":
 					self.chains.append(line[21])
@@ -173,41 +50,41 @@ python interface_residues.py complex.pdb D 5.0
 						self.chain_2.append(splitted_chain_2)
 						self.chain_2_coord.append(splitted_chain_2[6:9])
 	
-	def ChainCoordinates(self):
+	def ChainCoordinates(self): #convert string to float of coordinates.
 		for i in np.arange(0,len(self.chain_1),1):
 			self.chain_1_coord_float.append([float(ele) for ele in self.chain_1_coord[i]])
 		for i in np.arange(0,len(self.chain_2),1):
 			self.chain_2_coord_float.append([float(ele) for ele in self.chain_2_coord[i]]) 			
 			
-	def FindDistances(self):
+	def FindDistances(self): #it finds the distance between two atoms of dimers
 		interaction = open("{}_pairwise_distance_list".format(pdb), "w")
 		print("Atom1|AA1|Position1|ChainID1|Atom2|AA2|Position2|ChainID2|Distance", file = interaction)
-		chain_distance = open("{}_chain_{}_interface_aa_list".format(pdb,chain), "w")
+		chain_distance = open("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID), "w")
 		for i in np.arange(0,len(self.chain_1),1):
 			for j in np.arange(0,len(self.chain_2),1):
 				distance = ((self.chain_2_coord_float[j][0]-self.chain_1_coord_float[i][0])**2+(self.chain_2_coord_float[j][1]-self.chain_1_coord_float[i][1])**2+(self.chain_2_coord_float[j][2]-self.chain_1_coord_float[i][2])**2)**0.5
-				if distance <= cut_off:
+				if distance <= args.cut_off:
 					print(self.chain_1[i][2],self.chain_1[i][3],self.chain_1[i][5],self.chain_1[i][4],self.chain_2[j][2],self.chain_2[j][3],self.chain_2[j][5],self.chain_2[j][4],distance, file = interaction,sep = "|")
 					print("{} {} {} {} ------- {} {} {} {}  ======  Distance is" .format(self.chain_1[i][2],self.chain_1[i][3],self.chain_1[i][5],self.chain_1[i][4],self.chain_2[j][2],self.chain_2[j][3],self.chain_2[j][5],self.chain_2[j][4]), '%.1f' % distance)
-					if chain == self.chains[0]:
+					if args.chain_ID == self.chains[0]:
 						print("{} {} {}".format(self.chain_1[i][3],self.chain_1[i][4],self.chain_1[i][5]), file = chain_distance)
 					else:
 						print("{} {} {}".format(self.chain_2[j][3],self.chain_2[j][4],self.chain_2[j][5]), file = chain_distance)
 		interaction.close()
 		chain_distance.close()    
 
-		with open("{}_chain_{}_interface_aa_list".format(pdb,chain)) as result:
+		with open("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID)) as result:
 			uniqlines = set(result.readlines())
-			with open("{}_chain_{}_interface_aa_list".format(pdb,chain), 'w') as rmdup:
+			with open("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID), 'w') as rmdup:
 				rmdup.writelines(set(uniqlines))
 
-	def ThereToOneCode(self):
+	def ThereToOneCode(self): #it converts the amino acid code names from three to one annotation.
 		aa_dict = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 		'ILE': 'I', 'PRO': 'P', 'THR': 'T', 'PHE': 'F', 'ASN': 'N', 
 		'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
 		'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 		
-		with open("{}_chain_{}_interface_aa_list".format(pdb,chain), "r") as int_list:
+		with open("{}_chain_{}_interface_aa_list".format(pdb,args.chain_ID), "r") as int_list:
 			for line in int_list:
 				seperating = line[:3], line[4], line[5:10]
 				seperating = [x.strip(' ') for x in seperating]
@@ -218,9 +95,9 @@ python interface_residues.py complex.pdb D 5.0
 		for i in self.interaction_list[0]:
 			self.one_letter_codes.append(aa_dict[i])
 	
-	def MutationFile(self):
+	def MutationFile(self): #it creates mutation list and heatmap mutation list for next scripts.
 		heatmap_mutations = open("heatmap_mutation_list", "w")
-		mutation_list = open("{}_chain_{}_mutation_list".format(pdb,chain), "w")	
+		mutation_list = open("{}_chain_{}_mutation_list".format(pdb,args.chain_ID), "w")	
 		EvoEF_Mut_Pattern = self.one_letter_codes + self.interaction_list[1] + self.interaction_list[2].astype(str)
 		EvoEF_Mut_Pattern_Sorted = sorted(EvoEF_Mut_Pattern)
 		aa = ["A","C","D","E","F","G","H","I","K","L","M","N","P","Q","R","S","T","V","W","Y"]
@@ -235,9 +112,8 @@ python interface_residues.py complex.pdb D 5.0
 		heatmap_mutations.close()
 		mutation_list.close()
 
-def main():
+def main(args):
 	s = InterfaceResidues()
-	s.check_argv()
 	s.PDBParse()
 	s.ChainCoordinates()
 	s.FindDistances()
@@ -245,4 +121,13 @@ def main():
 	s.MutationFile()
 	
 if __name__ == "__main__":
-	main()
+	parser = argparse.ArgumentParser(description='PROT-ON')
+	parser.add_argument("--pdb", type=str, help="dimer complex")
+	parser.add_argument("--chain_ID", type=str, help="chain ID of interest")
+	parser.add_argument("--cut_off", type=float, default=5.0, help="cut-off distance for defining the interface")
+	args = parser.parse_args()
+	if "/" in args.pdb:
+		pdb = (args.pdb.split("/")[-1])[:-4]
+	else:
+		pdb = args.pdb[:-4] #pdb filename without .pdb extension
+	main(args)
