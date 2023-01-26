@@ -61,25 +61,17 @@ As a result of running `setup.py`, PROT-ON will be ready to perform the mutation
 
 * After these steps, you can execute PROT-ON on your PDB formatted complex via:
 ```
-python proton.py --pdb <filename of the structure> --chain_ID <chain ID of interest> --algorithm <EvoEF1/FoldX> --cut_off <cut-off to define the interface> --IQR <IQR rule to define outliers of box-and-whisker statistics>
+python proton.py --pdb <dir/filename of the structure> --chain_ID <chain ID of interest> --algorithm <EvoEF1/FoldX> --cut_off <cut-off to define the interface> --IQR <IQR rule to define outliers of box-and-whisker statistics>
 
 Example:
 
-python proton.py --pdb complex.pdb --chain_ID D --algorithm EvoEF1 --cut_off 5.0 --IQR 1.5
+python proton.py --pdb example-input/complex.pdb --chain_ID D --algorithm EvoEF1 --cut_off 5.0 --IQR 1.5
 ```
-If you call python3 independently (not with conda), then you should execute (which is also valid for any python command given below):
-``` 
-python3 proton.py --pdb complex.pdb --chain_ID D --algorithm FoldX --cut_off 5.0 --IQR 1.5
-```
-Here `cut-off`, `IQR` and `algorithm` definitions are optional. By default they will be set to 5.0, 1.5 and EvoEF1 respectively. If these settings are fine with you, you can run PROT-ON with only:
+Beware that `cut-off`, `IQR` and `algorithm` definitions are optional. By default they will be set to 5.0, 1.5, and EvoEF1 respectively. If these settings are fine with you, you can run PROT-ON with only:
 ``` 
 python proton.py --pdb complex.pdb --chain_ID D 
 ```
-If defined properly, the input PDB file can also be called from another directory:
-``` 
-python proton.py --pdb example-input/complex.pdb --chain_ID D 
-```
-The help pahe of PROT-ON can be printed with:
+The help page of PROT-ON can be called with:
 ``` 
 python proton.py --help
 ```
