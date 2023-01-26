@@ -164,8 +164,8 @@ class StatisticalAnalyze():
 
     def PSSM_Filter(self): #it filters mutations by PSSM rule.
         try:
-            f = open("../../{}_chain_{}_pssm.csv".format(pdb,args.chain_ID))
-            pssm_df = pd.read_csv("../../{}_chain_{}_pssm.csv".format(pdb,args.chain_ID),sep = ",")
+            f = open("{}".format(args.pssm))
+            pssm_df = pd.read_csv("{}".format(args.pssm),sep = ",")
             PSSM_Depletings = open("{}_chain_{}_pssm_depleting".format(pdb,args.chain_ID),"w")
             PSSM_Enrichings = open("{}_chain_{}_pssm_enriching".format(pdb,args.chain_ID),"w")
             print("Positions Mutations {}_WT_Scores {}_Mutant_Scores DDG_{}_Scores DDG_Stability_Scores PSSM_wt PSSM_mut PSSM_diff".format(args.algorithm,args.algorithm,args.algorithm), file = PSSM_Depletings)
@@ -209,7 +209,7 @@ class StatisticalAnalyze():
             time.sleep(1)
             shutil.move("{}_chain_{}_pssm_depleting".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,args.algorithm))
             shutil.move("{}_chain_{}_pssm_enriching".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,args.algorithm))
-            os.system("cp -rf ../../{}_chain_{}_pssm.csv ../{}_chain_{}_{}_output".format(pdb,args.chain_ID,pdb,args.chain_ID,args.algorithm))
+            os.system("cp -rf {} ../{}_chain_{}_{}_output".format(args.pssm,pdb,args.chain_ID,args.algorithm))
         except IOError:
             print("""
 ****************************************
@@ -217,8 +217,6 @@ Warning: You didn't enter any PSSM file.
 PSSM filter won't work. 
 ****************************************
 	        """)
-            time.sleep(2)
-            print("PROT-ON Finished! ツ")
             time.sleep(1)
 
 def main(args):
@@ -237,6 +235,7 @@ if __name__ == "__main__":
     parser.add_argument("--scores_file", type=str, help="It is mandotary for statisticaly analyzing of mutations")
     parser.add_argument("--algorithm", type=str, default="EvoEF1", help="algorithm for building mutation and calculating the binding affinities. Selection: EvoEF1 or FoldX")
     parser.add_argument("--IQR", type=float, default=1.5, help="IQR range to define the outliers of box-and-whisker plot")
+    parser.add_argument("--pssm", type=str, help="PSSM file for filtering mutations.")
     args = parser.parse_args()
     if "/" in args.pdb:
         pdb = (args.pdb.split("/")[-1])[:-4]

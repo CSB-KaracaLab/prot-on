@@ -111,6 +111,7 @@ if __name__ == "__main__":
 	parser.add_argument("--algorithm", type=str, default="EvoEF1", help="algorithm for building mutation and calculating the binding affinities. Selection: EvoEF1 or FoldX")
 	parser.add_argument("--cut_off", type=float, default=5.0, help="cut-off distance for defining the interface")
 	parser.add_argument("--IQR", type=float, default=1.5, help="IQR range to define the outliers of box-and-whisker plot")
+	parser.add_argument("--pssm", type=str, help="PSSM file for filtering mutations.")
 	args = parser.parse_args()
 	chains = []	
 	unique_chains = []
