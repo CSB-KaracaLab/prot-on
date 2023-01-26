@@ -41,11 +41,14 @@ cd prot-on
 ```
 ### Environment Setup
 
-We strongly suggest creating a Python Virtual Envrionment before the installation of PROT-ON dependencies. For this, please follow the below-given steps, which will set the stage for running PROT-ON. 
+We strongly suggest creating a Python Virtual Envrionment and activating it before the installation of PROT-ON dependencies. For this, please follow: 
 
 ```
-python3 -m venv <environment name>
-source <environment name>/bin/activate
+python3 -m venv <environment-name-you-choose>
+source <environment-name-you-choose>/bin/activate
+```
+When the environment is active, please execute:
+```
 python setup.py
 ```
 
