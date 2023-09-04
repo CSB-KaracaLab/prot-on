@@ -2,6 +2,9 @@
   <img width="250" height="150" src="logo.png">
 </p>
 
+[![DOI:10.1021/acsomega.0c04672](http://img.shields.io/badge/DOI-10.1021/acsomega.0c04672-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
+
+
 ### PROT-ON: A Structure-Based Detection of Designer PROTein Interface MutatiONs
 
 ### Motivation
@@ -94,6 +97,14 @@ Thank you for following our guidelines until this point! We hope that you will e
 
 ## Acknowledgement
 We would like to thank Ayşe Berçin Barlas for her assistance in revising the code architecture.
+
+## Citation
+If you use the PROT-ON, please cite the following paper:
+```
+Koşaca, M., Yılmazbilek, İ., & Karaca, E. (2023).
+PROT-ON: A structure-based detection of designer PROTein interface MutatiONs.
+Frontiers in Molecular Biosciences, 10, 1063971.
+```
 
 ## Bug Report & Feedback
 If you encounter any problem, you can contact Mehdi or Ezgi via:
