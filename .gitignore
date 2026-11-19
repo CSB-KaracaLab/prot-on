@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Built from EvoEF1/src by setup.py or by the notebook
+EvoEF1/EvoEF
+
+# Everything a run leaves behind
+results/*
+!results/README
+notebook_inputs/
+proton_run.log
