@@ -12,21 +12,24 @@
 
 PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that can be used to propose new protein binders. For this, PROT-ON uses the coordinates of a protein complex. It then probes all possible interface mutations with either [EvoEF1](https://github.com/tommyhuangthu/EvoEF) or [FoldX](http://foldxsuite.crg.eu/) on the selected protein monomer. The probed mutational landscape is then filtered according to the stability and optionally to the mutability criteria. PROT-ON finally statistically analyzes the energy landscape spanned by the probed mutation set with the aim of proposing the most binding enriching and depleting interfacial mutations.
 
+### PROT-ON Architecture
+PROT-ON calls several python scripts to find the designer mutations (binding enriching/depleting) on one monomer of a complex. Here is the flow of the approach:
+<p align="center">
+<img align="center" src="proton_code_architecture.jpg" alt="proton_code_architecture" width = "300" />
+</p>
+
+PROT-ON can be run in three ways: on our web server, from the notebook, or as a stand-alone installation.
+
 ## Web Server
-This site describes the use of stand-alone version of PROT-ON, which is tested on Linux and MacOS systems. If you would like to use our tool through our web service, please visit http://proton.tools.ibg.edu.tr:8001
+To use PROT-ON through our web service, without installing anything, please visit http://proton.tools.ibg.edu.tr:8001
 
 ## Notebook (Google Colab or Jupyter)
 PROT-ON can also be run without any installation from the [`PROT-ON.ipynb`](PROT-ON.ipynb) notebook. [Open it in Google Colab](https://colab.research.google.com/github/CSB-KaracaLab/prot-on/blob/main/PROT-ON.ipynb) and run the cells from top to bottom: the notebook sets up PROT-ON and EvoEF1, runs the example complex or a dimer you upload, draws the best and the worst mutant in their interface in 3D, shows the heatmap, the box plots and the designer mutations, and offers the whole results folder as a zip file when the run finishes. The optional PSSM filter is supported. The same notebook works in a local Jupyter on Linux and MacOS when it is opened from inside this repository.
 
 A structure can also be given by its web address, so a docking model can be scanned straight from its result page. The chain to scan is picked from a dropdown of the chains found in the file. The notebook can also fetch the structures of the [HADDOCK2.4 antibody–antigen tutorial](https://www.bonvinlab.org/education/HADDOCK24/HADDOCK24-antibody-antigen-basic/#bonus-3-dissecting-the-interface-energetics-prot-on-analysis) for its PROT-ON task.
 
-### PROT-ON Architecture
-PROT-ON calls several python scripts to find the designer mutations (binding enriching/depleting) on one monomer of a complex. Here is the flow of the approach (pssm option is available only on the web server version):
-<p align="center">
-<img align="center" src="proton_code_architecture.jpg" alt="proton_code_architecture" width = "300" />
-</p>
-
-## Usage
+## Stand-alone Usage (Linux and macOS)
+The rest of this page describes the stand-alone version of PROT-ON, which is tested on Linux and macOS systems.
 
 ### System dependencies
 * python3 OR conda (version 4.10 or higher)
