@@ -3,6 +3,7 @@
 </p>
 
 [![DOI:10.1021/acsomega.0c04672](http://img.shields.io/badge/DOI-10.1021/acsomega.0c04672-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/CSB-KaracaLab/prot-on/blob/main/PROT-ON.ipynb)
 
 
 ### PROT-ON: A Structure-Based Detection of Designer PROTein Interface MutatiONs
@@ -13,6 +14,11 @@ PROT-ON’s primary aim is to deliver the critical (designer) PPI mutations that
 
 ## Web Server
 This site describes the use of stand-alone version of PROT-ON, which is tested on Linux and MacOS systems. If you would like to use our tool through our web service, please visit http://proton.tools.ibg.edu.tr:8001
+
+## Notebook (Google Colab or Jupyter)
+PROT-ON can also be run without any installation from the [`PROT-ON.ipynb`](PROT-ON.ipynb) notebook. [Open it in Google Colab](https://colab.research.google.com/github/CSB-KaracaLab/prot-on/blob/main/PROT-ON.ipynb) and run the cells from top to bottom: the notebook sets up PROT-ON and EvoEF1, runs the example complex or a dimer you upload, shows the designer mutations and the figures, and packs the results into a zip file. The optional PSSM filter is supported. The same notebook works in a local Jupyter on Linux and MacOS when it is opened from inside this repository.
+
+A structure can also be given by its web address, so a docking model can be scanned straight from its result page. Every scan of a session is kept, which lets the notebook compare the mutations proposed by an experimental structure with those proposed by models of the same complex. It can fetch the structures of the [HADDOCK2.4 antibody–antigen tutorial](https://www.bonvinlab.org/education/HADDOCK24/HADDOCK24-antibody-antigen-basic/#bonus-3-dissecting-the-interface-energetics-prot-on-analysis) for its PROT-ON task.
 
 ### PROT-ON Architecture
 PROT-ON calls several python scripts to find the designer mutations (binding enriching/depleting) on one monomer of a complex. Here is the flow of the approach (pssm option is available only on the web server version):
