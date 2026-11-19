@@ -209,7 +209,7 @@ class StatisticalAnalyze():
             time.sleep(1)
             shutil.move("{}_chain_{}_pssm_depleting".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,args.algorithm))
             shutil.move("{}_chain_{}_pssm_enriching".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,args.algorithm))
-            os.system("cp -rf {} ../{}_chain_{}_{}_output".format(args.pssm,pdb,args.chain_ID,args.algorithm))
+            shutil.copy("{}_chain_{}_pssm.csv".format(pdb,args.chain_ID), "../{}_chain_{}_{}_output".format(pdb,args.chain_ID,args.algorithm))
         except IOError:
             print("""
 ****************************************
