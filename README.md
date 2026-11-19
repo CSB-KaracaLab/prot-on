@@ -2,7 +2,7 @@
   <img width="250" height="150" src="logo.png">
 </p>
 
-[![DOI:10.1021/acsomega.0c04672](http://img.shields.io/badge/DOI-10.1021/acsomega.0c04672-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
+[![DOI:10.3389/fmolb.2023.1063971](https://img.shields.io/badge/DOI-10.3389%2Ffmolb.2023.1063971-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/CSB-KaracaLab/prot-on/blob/main/PROT-ON.ipynb)
 
 
