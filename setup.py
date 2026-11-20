@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import sys
 from sys import platform
 
 if platform == "linux" or platform == "linux2":
@@ -26,7 +27,9 @@ elif platform == "darwin":
 	os.system("g++ -O3 -ffast-math -o EvoEF src/*.cpp")
 	os.chdir("../")
 
-os.system("pip install -r requirements.txt")
-os.system("pip install plotly==5.13.0")
-os.system("pip install -U kaleido")
+# requirements.txt holds every Python dependency, plotly and kaleido included. Install
+# with this interpreter's pip, so that an active virtual environment is the one that gets
+# them, and never with -U: upgrading kaleido past 0.2 breaks the figure export, which
+# then needs a Chrome installation.
+os.system("{} -m pip install -r requirements.txt".format(sys.executable))
 

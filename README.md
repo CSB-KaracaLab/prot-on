@@ -32,17 +32,17 @@ A structure can also be given by its web address, so a docking model can be scan
 The rest of this page describes the stand-alone version of PROT-ON, which is tested on Linux and macOS systems.
 
 ### System dependencies
-* python3 OR conda (version 4.10 or higher)
+* python3 (3.8 or newer; tested up to 3.13) or conda
+* a C++ compiler (`g++`), to build the bundled EvoEF1
 * [FoldX 4.0](http://foldxsuite.crg.eu/) (optional)
 
-### Python dependencies (also listed in requirements.txt)
-* numpy
-* pandas (**should be version 1.3.0 or higher**)
-* plotly
-* kaleido
-* shutil
-* time
-* virtualenv
+### Python dependencies (installed from requirements.txt by `setup.py`)
+* numpy (1.21 or newer, including numpy 2)
+* pandas (1.3 or newer, including pandas 2 and 3)
+* plotly 5
+* kaleido 0.2.1
+
+The last two are pinned on purpose: PROT-ON writes its figures with plotly 5, and kaleido exports them to png and svg without a browser only up to version 0.2. A newer kaleido drives a Chrome installation instead, which a plain virtual environment does not have.
 
 ### Clone the repository
 ```

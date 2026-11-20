@@ -1,6 +1,11 @@
-numpy==1.24.1
-pandas==1.5.3
-python-dateutil==2.8.2
-pytz==2022.7.1
-six==1.16.0
-tenacity==8.1.0
+# Ranges rather than exact versions, so that PROT-ON installs on current Pythons.
+# Tested with numpy 2.x and pandas 2.2 and 3.1 on Python 3.12 and 3.13: the example
+# run gives output identical to example-output/.
+numpy>=1.21
+pandas>=1.3
+
+# PROT-ON writes its figures with plotly 5 and exports them through kaleido 0.2.
+# Later kaleido versions export by driving a Chrome installation, which a plain
+# virtual environment does not have, so this pair is pinned on purpose.
+plotly>=5,<6
+kaleido==0.2.1
